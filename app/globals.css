@@ -1,26 +1,227 @@
 @import "tailwindcss";
 
+/* ===== DESIGN TOKENS ===== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #1a2f5e;
+  --navy-deep: #0e1a38;
+  --navy-mid: #1e3570;
+  --green: #1e6b2e;
+  --green-mid: #2e8b3e;
+  --green-lt: #4caf62;
+  --ink: #080d1c;
+  --ink2: #0c1225;
+  --paper: #eef2ff;
+  --paper2: #e2e8f8;
+  --white: #f5f8ff;
+  --border-g: rgba(30, 107, 46, 0.22);
+  --border-n: rgba(26, 47, 94, 0.4);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ===== FONTS ===== */
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXoQ.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ===== GLOBALS ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ink);
+  color: var(--white);
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.35; transform: scaleY(1); }
+  50%      { opacity: 1;    transform: scaleY(0.6); }
+}
+
+/* ===== HERO ANIMATIONS ===== */
+.animate-fade-up {
+  opacity: 0;
+  animation: fadeUp 0.8s forwards;
+}
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.35s; }
+.delay-3 { animation-delay: 0.5s; }
+.delay-4 { animation-delay: 0.65s; }
+.delay-5 { animation-delay: 0.9s; }
+.delay-6 { animation-delay: 1.2s; }
+.delay-7 { animation-delay: 1.3s; }
+
+/* ===== REVEAL ON SCROLL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal.d1 { transition-delay: 0.1s; }
+.reveal.d2 { transition-delay: 0.2s; }
+.reveal.d3 { transition-delay: 0.3s; }
+.reveal.d4 { transition-delay: 0.4s; }
+
+/* ===== SECTION BASE ===== */
+.section-base {
+  padding: 120px 64px;
+}
+@media (max-width: 1100px) {
+  .section-base { padding: 80px 32px; }
+}
+
+/* ===== MARQUEE ===== */
+.marquee-track {
+  display: inline-flex;
+  gap: 56px;
+  animation: marquee 20s linear infinite;
+}
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ===== HERO BACKGROUND ===== */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 50% at 78% 35%, rgba(26, 47, 94, 0.55) 0%, transparent 60%),
+    radial-gradient(ellipse 38% 50% at 10% 78%, rgba(30, 107, 46, 0.18) 0%, transparent 55%),
+    var(--ink);
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(30, 107, 46, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 107, 46, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4) 25%, rgba(0,0,0,0.4) 75%, transparent);
+}
+
+/* ===== SCROLL LINE ===== */
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--green-lt), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ===== TEXT OUTLINE ===== */
+.text-outline {
+  -webkit-text-stroke: 1.5px rgba(76, 175, 98, 0.28);
+  color: transparent;
+}
+
+/* ===== EVENT CARD UNDERLINE ===== */
+.ecard::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+  transform-origin: left;
+}
+.ecard:hover::before { transform: scaleX(1); }
+
+/* ===== INITIATIVE PILLAR NUMBER ===== */
+.ipillar::after {
+  content: attr(data-n);
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 68px;
+  color: rgba(8, 13, 28, 0.05);
+  line-height: 1;
+  transition: color 0.3s;
+}
+.ipillar:hover::after {
+  color: rgba(245, 248, 255, 0.04);
+}
+
+/* ===== ABOUT WATERMARK ===== */
+.about-sec::before {
+  content: "E-CELL";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 220px;
+  color: rgba(30, 107, 46, 0.025);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ===== PITCH BACKGROUND ===== */
+.pitch-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 58% 55% at 50% 50%, rgba(26, 47, 94, 0.5) 0%, transparent 65%),
+    var(--ink);
+}
+
+/* ===== FORM ===== */
+.form-input {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid rgba(8, 13, 28, 0.12);
+  padding: 13px 15px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+}
+.form-input::placeholder {
+  color: rgba(8, 13, 28, 0.32);
+}
+.form-input:focus {
+  border-color: var(--navy);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+  .hero-title-responsive {
+    font-size: 58px !important;
+  }
 }
