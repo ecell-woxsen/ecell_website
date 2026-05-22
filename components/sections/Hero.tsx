@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen overflow-hidden bg-[#020817] px-16 pb-[90px] pt-36 flex flex-col justify-end max-lg:px-8 max-lg:pb-20"
+      className="relative min-h-screen overflow-hidden bg-[#020817] px-16 pb-[90px] pt-36 flex flex-col justify-center max-lg:px-8 max-lg:pb-20"
     >
       {/* Background Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(22,163,74,0.08),transparent_35%)]" />
@@ -35,9 +35,9 @@ export default function Hero() {
       <div className="absolute top-[90px] left-0 w-full h-px bg-white/[0.06]" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-[760px] md:ml-[8%] lg:ml-[12%] xl:ml-[16%]">
+      <div className="relative z-10 max-w-[760px]" style={{ marginLeft: "clamp(40px, 18%, 50px)" }}>
         {/* Subtitle */}
-        <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-6 flex items-center gap-4 animate-fade-up delay-1 before:content-[''] before:w-10 before:h-px before:bg-[var(--green-lt)]">
+        <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--green-lt)] mb-6 animate-fade-up delay-1">
           Entrepreneurship Cell · {siteConfig.university}
         </p>
 
