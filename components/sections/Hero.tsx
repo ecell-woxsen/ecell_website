@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen overflow-hidden bg-[#020817] px-16 pb-[90px] pt-28 flex flex-col justify-end max-lg:px-8 max-lg:pb-20"
+      className="relative min-h-screen overflow-hidden bg-[#020817] px-16 pb-[90px] pt-36 flex flex-col justify-end max-lg:px-8 max-lg:pb-20"
     >
       {/* Background Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(22,163,74,0.08),transparent_35%)]" />
@@ -15,14 +15,14 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
       {/* Top Right Badge */}
-      <div className="absolute top-[120px] right-[72px] flex flex-col items-center gap-3 animate-fade-in max-lg:hidden">
-        <div className="bg-white p-4 shadow-2xl">
+      <div className="absolute top-[130px] right-[72px] flex flex-col items-center gap-3 animate-fade-in max-lg:hidden">
+        <div className="bg-white/10 backdrop-blur-sm p-4 shadow-2xl border border-white/10 rounded-xl">
           <Image
-            src="/Woxsen_University_Logo.png"
-            alt="Woxsen Logo"
-            width={80}
-            height={80}
-            className="w-[80px] h-auto object-contain"
+            src="/ecell-logo.png"
+            alt="E-Cell Woxsen"
+            width={100}
+            height={100}
+            className="w-[100px] h-auto object-contain"
           />
         </div>
 
@@ -32,7 +32,7 @@ export default function Hero() {
       </div>
 
       {/* Navbar Spacer Line */}
-      <div className="absolute top-[78px] left-0 w-full h-px bg-white/[0.06]" />
+      <div className="absolute top-[90px] left-0 w-full h-px bg-white/[0.06]" />
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-[760px]">

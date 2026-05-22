@@ -15,6 +15,10 @@
   --white: #f5f8ff;
   --border-g: rgba(30, 107, 46, 0.22);
   --border-n: rgba(26, 47, 94, 0.4);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
 }
 
 /* ===== FONTS ===== */
@@ -101,6 +105,14 @@ body {
   .section-base { padding: 80px 32px; }
 }
 
+/* ===== SECTION CONTAINER ===== */
+.section-container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
 /* ===== MARQUEE ===== */
 .marquee-track {
   display: inline-flex;
@@ -156,6 +168,7 @@ body {
   transform: scaleX(0);
   transition: transform 0.4s;
   transform-origin: left;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 .ecard:hover::before { transform: scaleX(1); }
 
@@ -211,6 +224,7 @@ body {
   outline: none;
   transition: border-color 0.2s;
   appearance: none;
+  border-radius: var(--radius-sm);
 }
 .form-input::placeholder {
   color: rgba(8, 13, 28, 0.32);

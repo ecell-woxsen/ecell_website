@@ -22,7 +22,7 @@ const variantStyles: Record<string, string> = {
 };
 
 const baseStyle =
-  "inline-flex items-center gap-2.5 px-8 py-3.5 font-mono text-[11px] tracking-[0.1em] uppercase transition-all duration-200 no-underline";
+  "inline-flex items-center gap-2.5 px-8 py-3.5 font-mono text-[11px] tracking-[0.1em] uppercase transition-all duration-200 no-underline rounded-lg";
 
 export default function Button({
   children,
