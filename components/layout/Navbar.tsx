@@ -8,8 +8,50 @@ import { navLinks } from "@/data/navigation";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
   const pathname = usePathname();
   const navRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer for scroll spy active section highlighting
+  useEffect(() => {
+    const sectionIds = ["about", "events", "initiatives", "team", "community", "affiliations", "contact"];
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: "-30% 0px -55% 0px", // matches section active when centered in viewport
+      threshold: 0.05,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        observer.observe(el);
+      }
+    });
+
+    // Reset active section if scrolled to top (Hero section)
+    const handleScroll = () => {
+      if (window.scrollY < 120) {
+        setActiveSection("");
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // Close menu on outside click
   useEffect(() => {
@@ -22,6 +64,17 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [mobileOpen]);
+
+  // Helper to determine if link is active
+  const isLinkActive = (href: string) => {
+    if (href.startsWith("/#")) {
+      return activeSection === href.substring(2);
+    }
+    if (href.startsWith("#")) {
+      return activeSection === href.substring(1);
+    }
+    return pathname === href;
+  };
 
   return (
     <>
@@ -287,7 +340,7 @@ export default function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`nav-link ${pathname === link.href ? "active" : ""}`}
+                    className={`nav-link ${isLinkActive(link.href) ? "active" : ""}`}
                   >
                     {link.label}
                   </Link>
@@ -325,7 +378,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`nav-mobile-link ${pathname === link.href ? "active" : ""}`}
+                  className={`nav-mobile-link ${isLinkActive(link.href) ? "active" : ""}`}
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
