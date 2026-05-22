@@ -34,7 +34,7 @@ export default function Community() {
           <RevealOnScroll delay={2}>
             <div className="grid grid-cols-2 gap-3">
               {communityStats.map((stat) => (
-                <div key={stat.id} className="bg-[var(--ink)] border border-[var(--border-g)] rounded-2xl px-5 py-7 transition-colors duration-300 hover:border-[rgba(76,175,98,0.4)] text-center">
+                <div key={stat.id} className="card-pad bg-[var(--ink)] border border-[var(--border-g)] rounded-2xl transition-colors duration-300 hover:border-[rgba(76,175,98,0.4)] text-center">
                   <div className="font-['Bebas_Neue',sans-serif] text-[56px] text-[var(--green-lt)] leading-none mb-2">{stat.value}</div>
                   <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-white/[0.36]">{stat.label}</div>
                   <p className="text-xs text-white/[0.2] mt-2.5 leading-[1.5]">{stat.description}</p>

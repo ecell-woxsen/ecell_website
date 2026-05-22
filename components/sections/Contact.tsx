@@ -48,7 +48,7 @@ export default function Contact() {
           </RevealOnScroll>
 
           <RevealOnScroll delay={2}>
-            <div className="bg-[var(--paper2)] border border-[rgba(8,13,28,0.1)] rounded-2xl p-11 max-sm:p-5 text-center">
+            <div className="card-pad bg-[var(--paper2)] border border-[rgba(8,13,28,0.1)] rounded-2xl text-center">
               <h3 className="font-['Bebas_Neue',sans-serif] text-4xl text-[var(--ink)] mb-2.5 tracking-[0.03em]">
                 Send Us a Message
               </h3>

@@ -64,6 +64,13 @@ body {
   0%, 100% { opacity: 0.35; transform: scaleY(1); }
   50%      { opacity: 1;    transform: scaleY(0.6); }
 }
+@keyframes sweep {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(100%) skewX(-15deg); }
+}
+.group:hover .group-hover\:animate-sweep {
+  animation: sweep 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* ===== HERO ANIMATIONS ===== */
 .animate-fade-up {
@@ -233,8 +240,20 @@ body {
   border-color: var(--navy);
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== CARD PADDING ===== */
+/* Consistent inner padding for all card/box elements across the site */
+.card-pad {
+  padding: 2.5rem 2.75rem; /* 40px top/bottom, 44px left/right */
+}
+@media (max-width: 1024px) {
+  .card-pad {
+    padding: 2rem 2.25rem; /* 32px top/bottom, 36px left/right */
+  }
+}
 @media (max-width: 640px) {
+  .card-pad {
+    padding: 1.5rem 1.75rem; /* 24px top/bottom, 28px left/right */
+  }
   .hero-title-responsive {
     font-size: 58px !important;
   }

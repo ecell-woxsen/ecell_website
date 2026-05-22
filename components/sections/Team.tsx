@@ -18,8 +18,8 @@ export default function Team() {
 
         <div className="grid grid-cols-4 gap-3 max-lg:grid-cols-2">
           {teamMembers.map((member, i) => (
-            <RevealOnScroll key={member.id} delay={Math.min(i + 1, 4) as 1 | 2 | 3 | 4}>
-              <div className="bg-[var(--ink)] border border-[var(--border-g)] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[rgba(76,175,98,0.45)] hover:-translate-y-1.5">
+            <RevealOnScroll key={member.id} delay={Math.min(i + 1, 4) as 1 | 2 | 3 | 4} className="flex flex-col">
+              <div className="bg-[var(--ink)] border border-[var(--border-g)] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[rgba(76,175,98,0.45)] hover:-translate-y-1.5 flex-1 flex flex-col">
                 {/* Image placeholder */}
                 <div className="w-full aspect-[3/4] flex items-center justify-center font-['Bebas_Neue',sans-serif] text-[60px] text-[rgba(76,175,98,0.22)] relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] to-transparent" />
@@ -27,7 +27,7 @@ export default function Team() {
                 </div>
 
                 {/* Info */}
-                <div className="px-5.5 py-4.5 pb-6 text-center">
+                <div className="card-pad text-center flex-1">
                   <h4 className="text-[15px] font-medium text-[var(--white)] mb-1">
                     {member.name}
                   </h4>
