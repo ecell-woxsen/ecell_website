@@ -30,12 +30,37 @@ export default function Contact() {
             </p>
             <div className="flex flex-col gap-3.5">
               {[
-                { icon: "📧", label: "Email", value: siteConfig.email },
-                { icon: "📞", label: "Phone", value: siteConfig.phone },
-                { icon: "📍", label: "Address", value: siteConfig.address },
+                {
+                  icon: (
+                    <svg className="w-4.5 h-4.5 text-[rgba(8,13,28,0.55)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  ),
+                  label: "Email",
+                  value: siteConfig.email
+                },
+                {
+                  icon: (
+                    <svg className="w-4.5 h-4.5 text-[rgba(8,13,28,0.55)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  ),
+                  label: "Phone",
+                  value: siteConfig.phone
+                },
+                {
+                  icon: (
+                    <svg className="w-4.5 h-4.5 text-[rgba(8,13,28,0.55)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  ),
+                  label: "Address",
+                  value: siteConfig.address
+                },
               ].map((info) => (
                 <div key={info.label} className="flex gap-3.5 items-start">
-                  <div className="w-9 h-9 border border-[rgba(8,13,28,0.12)] rounded-lg flex items-center justify-center text-[15px] shrink-0">
+                  <div className="w-9 h-9 border border-[rgba(8,13,28,0.12)] rounded-lg flex items-center justify-center shrink-0">
                     {info.icon}
                   </div>
                   <div className="text-[13px] text-[rgba(8,13,28,0.55)] leading-[1.6]">

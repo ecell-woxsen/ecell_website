@@ -1,6 +1,5 @@
 export interface ValueItem {
   id: string;
-  icon: string;
   title: string;
   description: string;
 }
@@ -14,31 +13,27 @@ export interface MiniPillar {
 export const values: ValueItem[] = [
   {
     id: "build-first",
-    icon: "⚡",
     title: "Build First, Plan Later",
     description:
-      "We believe in shipping before perfecting. Velocity over precision.",
+      "We believe in shipping before perfecting. Velocity over precision — a working prototype in the hands of real users beats a polished deck on a slide forever.",
   },
   {
     id: "fail-forward",
-    icon: "🔄",
     title: "Fail Forward",
     description:
-      "Every post-mortem is a pre-mortem for the next venture. We celebrate lessons.",
+      "Every post-mortem is a pre-mortem for the next venture. We celebrate the lessons inside failures loudly, because that's where the real curriculum lives.",
   },
   {
     id: "community-driven",
-    icon: "🤝",
     title: "Community > Competition",
     description:
-      "A rising tide lifts all boats. We grow by helping others grow.",
+      "A rising tide lifts all boats. We grow by opening doors for others — sharing networks, knowledge, and capital inside our ecosystem before looking outside it.",
   },
   {
     id: "impact-matters",
-    icon: "🎯",
     title: "Impact Over Optics",
     description:
-      "Substance over flash. Real outcomes, not vanity metrics.",
+      "Substance over flash. We measure success in real outcomes — startups funded, problems solved, lives changed — not in follower counts or award plaques.",
   },
 ];
 
