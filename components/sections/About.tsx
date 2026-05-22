@@ -22,7 +22,7 @@ export default function About() {
               {miniPillars.map((p) => (
                 <div
                   key={p.id}
-                  className="bg-[rgba(30,107,46,0.07)] border border-[var(--border-g)] px-5 py-5.5 rounded-xl transition-all duration-300 hover:bg-[rgba(26,47,94,0.3)] hover:border-[rgba(26,47,94,0.5)]"
+                  className="bg-[rgba(30,107,46,0.07)] border border-[var(--border-g)] px-5 py-5.5 rounded-xl transition-all duration-300 hover:bg-[rgba(26,47,94,0.3)] hover:border-[rgba(26,47,94,0.5)] text-center"
                 >
                   <div className="font-['Bebas_Neue',sans-serif] text-[34px] text-[var(--green-lt)] leading-none mb-1.5">
                     {p.number}

@@ -27,7 +27,7 @@ export default function Team() {
                 </div>
 
                 {/* Info */}
-                <div className="px-5.5 py-4.5 pb-6">
+                <div className="px-5.5 py-4.5 pb-6 text-center">
                   <h4 className="text-[15px] font-medium text-[var(--white)] mb-1">
                     {member.name}
                   </h4>

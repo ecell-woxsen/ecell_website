@@ -27,7 +27,7 @@ export default function Events() {
           {events.map((ev, i) => (
             <RevealOnScroll key={ev.id} delay={Math.min(i + 1, 4) as 1 | 2 | 3 | 4}>
               <div
-                className={`ecard bg-[var(--ink2)] border border-[var(--border-g)] p-8.5 rounded-2xl relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(76,175,98,0.35)] ${
+                className={`ecard bg-[var(--ink2)] border border-[var(--border-g)] p-8.5 rounded-2xl relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(76,175,98,0.35)] text-center ${
                   ev.featured
                     ? "col-span-2 max-lg:col-span-1 bg-gradient-to-br from-[rgba(26,47,94,0.4)] to-[var(--ink2)] border-[rgba(26,47,94,0.5)]"
                     : ""
