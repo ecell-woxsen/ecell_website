@@ -35,7 +35,7 @@ export default function Hero() {
       <div className="absolute top-[90px] left-0 w-full h-px bg-white/[0.06]" />
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-[760px]">
+      <div className="relative z-10 max-w-[760px] md:ml-[8%] lg:ml-[12%] xl:ml-[16%]">
         {/* Subtitle */}
         <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-6 flex items-center gap-4 animate-fade-up delay-1 before:content-[''] before:w-10 before:h-px before:bg-[var(--green-lt)]">
           Entrepreneurship Cell · {siteConfig.university}
@@ -47,7 +47,7 @@ export default function Hero() {
           <br />
           <span className="text-[var(--green-lt)]">BUILDERS</span>
           <br />
-          <span className="text-transparent stroke-text">START.</span>
+          <span className="text-[var(--green-dk)]">START.</span>
         </h1>
 
         {/* Description */}
