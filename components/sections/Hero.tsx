@@ -16,19 +16,18 @@ export default function Hero() {
 
       {/* Top Right Badge */}
       <div className="absolute top-[130px] right-[72px] flex flex-col items-center gap-3 animate-fade-in max-lg:hidden">
-        <div className="bg-white/10 backdrop-blur-sm p-4 shadow-2xl border border-white/10 rounded-xl">
-          <Image
-            src="/ecell-logo.png"
-            alt="E-Cell Woxsen"
-            width={100}
-            height={100}
-            className="w-[100px] h-auto object-contain"
-          />
-        </div>
+        <Image
+          src="/ecell-logo.png"
+          alt="E-Cell Woxsen"
+          width={100}
+          height={100}
+          className="w-[240px] h-[240px] object-contain"
+          priority
+        />
 
-        <p className="font-mono text-[8px] tracking-[0.24em] uppercase text-white/25">
+        {/* <p className="font-mono text-[8px] tracking-[0.24em] uppercase text-white/25">
           Woxsen University · Hyderabad
-        </p>
+        </p> */}
       </div>
 
       {/* Navbar Spacer Line */}
@@ -58,7 +57,7 @@ export default function Hero() {
         {/* Buttons */}
         <div className="flex items-center gap-4 animate-fade-up delay-4 max-sm:flex-col max-sm:items-start">
           <Button href="/#events" variant="primary">
-            Explore Events →
+            Explore Events
           </Button>
 
           <Button href="/#contact" variant="outline">
