@@ -216,28 +216,29 @@ body {
   inset: 0;
   background:
     radial-gradient(ellipse 58% 55% at 50% 50%, rgba(26, 47, 94, 0.5) 0%, transparent 65%),
-    var(--ink);
+    #020817;
 }
 
 /* ===== FORM ===== */
 .form-input {
   width: 100%;
-  background: var(--paper);
-  border: 1px solid rgba(8, 13, 28, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 13px 15px;
   font-family: "DM Sans", sans-serif;
   font-size: 13px;
-  color: var(--ink);
+  color: var(--white);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
   appearance: none;
   border-radius: var(--radius-sm);
 }
 .form-input::placeholder {
-  color: rgba(8, 13, 28, 0.32);
+  color: rgba(255, 255, 255, 0.3);
 }
 .form-input:focus {
-  border-color: var(--navy);
+  border-color: var(--green-lt);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* ===== CARD PADDING ===== */

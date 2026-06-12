@@ -5,7 +5,7 @@ import { teamMembers } from "@/data/team";
 
 export default function Team() {
   return (
-    <section className="section-base bg-[var(--ink2)]" id="team">
+    <section className="section-base bg-[#020817]" id="team">
       <div className="section-container">
         <RevealOnScroll>
           <div className="flex justify-between items-end mb-15 max-lg:flex-col max-lg:items-start max-lg:gap-4">
@@ -19,10 +19,10 @@ export default function Team() {
         <div className="grid grid-cols-4 gap-3 max-lg:grid-cols-2">
           {teamMembers.map((member, i) => (
             <RevealOnScroll key={member.id} delay={Math.min(i + 1, 4) as 1 | 2 | 3 | 4} className="flex flex-col">
-              <div className="bg-[var(--ink)] border border-[var(--border-g)] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[rgba(76,175,98,0.45)] hover:-translate-y-1.5 flex-1 flex flex-col">
+              <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[var(--green-lt)]/35 hover:-translate-y-1.5 flex-1 flex flex-col">
                 {/* Image placeholder */}
                 <div className="w-full aspect-[3/4] flex items-center justify-center font-['Bebas_Neue',sans-serif] text-[60px] text-[rgba(76,175,98,0.22)] relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#020817] to-transparent" />
                   <span className="relative z-10">{member.initials}</span>
                 </div>
 

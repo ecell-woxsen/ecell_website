@@ -38,7 +38,7 @@ function getValueIcon(id: string) {
 export default function About() {
   return (
     <section
-      className="section-base bg-[var(--ink2)] relative overflow-hidden about-sec"
+      className="section-base bg-[#020817] relative overflow-hidden about-sec"
       id="about"
     >
       <div className="section-container">

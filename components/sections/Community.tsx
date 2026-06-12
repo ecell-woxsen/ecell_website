@@ -5,7 +5,7 @@ import { communitySteps, communityStats } from "@/data/community";
 
 export default function Community() {
   return (
-    <section className="section-base bg-[var(--ink2)]" id="community">
+    <section className="section-base bg-[#020817]" id="community">
       <div className="section-container">
         <div className="grid grid-cols-2 gap-20 items-center max-lg:grid-cols-1 max-lg:gap-12">
           <RevealOnScroll>
@@ -34,7 +34,7 @@ export default function Community() {
           <RevealOnScroll delay={2}>
             <div className="grid grid-cols-2 gap-3">
               {communityStats.map((stat) => (
-                <div key={stat.id} className="card-pad bg-[var(--ink)] border border-[var(--border-g)] rounded-2xl transition-colors duration-300 hover:border-[rgba(76,175,98,0.4)] text-center">
+                <div key={stat.id} className="card-pad bg-white/[0.02] border border-white/[0.06] rounded-2xl transition-all duration-300 hover:border-[var(--green-lt)]/35 text-center">
                   <div className="font-['Bebas_Neue',sans-serif] text-[56px] text-[var(--green-lt)] leading-none mb-2">{stat.value}</div>
                   <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-white/[0.36]">{stat.label}</div>
                   <p className="text-xs text-white/[0.2] mt-2.5 leading-[1.5]">{stat.description}</p>

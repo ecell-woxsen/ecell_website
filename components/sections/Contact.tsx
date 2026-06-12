@@ -18,12 +18,12 @@ export default function Contact() {
   };
 
   return (
-    <section className="section-base bg-[var(--paper)] text-[var(--ink)] py-[110px]" id="contact">
+    <section className="section-base bg-[#020817] text-white py-[110px]" id="contact">
       <div className="section-container">
         <div className="grid grid-cols-2 gap-20 items-start max-lg:grid-cols-1 max-lg:gap-12">
           <RevealOnScroll>
-            <SectionHeader label="Get in Touch" title="Let's Talk" lightMode />
-            <p className="text-[15px] text-[rgba(8,13,28,0.48)] font-light leading-[1.85] mb-8">
+            <SectionHeader label="Get in Touch" title="Let's Talk" />
+            <p className="text-[15px] text-white/45 font-light leading-[1.85] mb-8">
               Have an idea worth building? Want to collaborate, sponsor, or simply
               connect? We&apos;re all ears. Drop us a line — or walk into the
               E-Cell office.
@@ -32,7 +32,7 @@ export default function Contact() {
               {[
                 {
                   icon: (
-                    <svg className="w-4.5 h-4.5 text-[rgba(8,13,28,0.55)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <svg className="w-4.5 h-4.5 text-[var(--green-lt)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   ),
@@ -41,7 +41,7 @@ export default function Contact() {
                 },
                 {
                   icon: (
-                    <svg className="w-4.5 h-4.5 text-[rgba(8,13,28,0.55)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <svg className="w-4.5 h-4.5 text-[var(--green-lt)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   ),
@@ -50,7 +50,7 @@ export default function Contact() {
                 },
                 {
                   icon: (
-                    <svg className="w-4.5 h-4.5 text-[rgba(8,13,28,0.55)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <svg className="w-4.5 h-4.5 text-[var(--green-lt)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -60,11 +60,11 @@ export default function Contact() {
                 },
               ].map((info) => (
                 <div key={info.label} className="flex gap-3.5 items-start">
-                  <div className="w-9 h-9 border border-[rgba(8,13,28,0.12)] rounded-lg flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 border border-[var(--border-g)] rounded-lg flex items-center justify-center shrink-0">
                     {info.icon}
                   </div>
-                  <div className="text-[13px] text-[rgba(8,13,28,0.55)] leading-[1.6]">
-                    <strong className="text-[var(--ink)] font-medium block">{info.label}</strong>
+                  <div className="text-[13px] text-white/50 leading-[1.6]">
+                    <strong className="text-white font-medium block">{info.label}</strong>
                     {info.value}
                   </div>
                 </div>
@@ -73,11 +73,11 @@ export default function Contact() {
           </RevealOnScroll>
 
           <RevealOnScroll delay={2}>
-            <div className="card-pad bg-[var(--paper2)] border border-[rgba(8,13,28,0.1)] rounded-2xl text-center">
-              <h3 className="font-['Bebas_Neue',sans-serif] text-4xl text-[var(--ink)] mb-2.5 tracking-[0.03em]">
+            <div className="card-pad bg-white/[0.02] border border-white/[0.06] rounded-2xl text-center">
+              <h3 className="font-['Bebas_Neue',sans-serif] text-4xl text-white mb-2.5 tracking-[0.03em]">
                 Send Us a Message
               </h3>
-              <p className="text-[13px] text-[rgba(8,13,28,0.46)] font-light leading-[1.7] mb-6.5">
+              <p className="text-[13px] text-white/45 font-light leading-[1.7] mb-6.5">
                 Tell us about your idea, project, or how you want to get involved.
               </p>
               <form onSubmit={handleSubmit}>
@@ -118,7 +118,7 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[var(--navy)] text-white py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 hover:bg-[var(--navy-mid)] mt-2 cursor-pointer"
+                  className="w-full bg-[var(--green)] hover:bg-[var(--green-mid)] text-white py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 mt-2 cursor-pointer"
                 >
                   Send Message
                 </button>

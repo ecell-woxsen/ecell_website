@@ -3,7 +3,7 @@ import Button from "@/components/ui/Button";
 
 export default function PitchCTA() {
   return (
-    <section className="section-base bg-[var(--ink)] relative overflow-hidden py-[140px] max-lg:py-20">
+    <section className="section-base bg-[#020817] relative overflow-hidden py-[140px] max-lg:py-20">
       <div className="pitch-bg" />
 
       <div className="relative z-10 text-center max-w-[820px] mx-auto">

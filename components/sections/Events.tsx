@@ -80,7 +80,7 @@ export default function Events() {
         }
       `}</style>
 
-      <section className="section-base bg-[var(--ink)] relative overflow-hidden" id="events">
+      <section className="section-base bg-[#020817] relative overflow-hidden" id="events">
         <div className="section-container relative z-10">
           <RevealOnScroll>
             <div className="flex justify-between items-end mb-16 max-lg:flex-col max-lg:items-start max-lg:gap-6">
