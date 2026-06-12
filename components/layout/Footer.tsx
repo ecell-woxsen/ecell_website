@@ -72,9 +72,14 @@ export default function Footer() {
           <span className="font-mono text-[10px] tracking-[0.1em] text-white/[0.18]">
             © {currentYear} {siteConfig.shortName} — {siteConfig.university}
           </span>
-          <span className="font-mono text-[10px] tracking-[0.1em] text-white/[0.18]">
-            {siteConfig.university} · Hyderabad, India
-          </span>
+          <div className="flex items-center gap-5">
+            <Link href="/submit-idea" className="font-mono text-[10px] tracking-[0.1em] text-[var(--green-lt)] opacity-50 hover:opacity-100 no-underline transition-opacity duration-200">
+              Submit an Idea
+            </Link>
+            <span className="font-mono text-[10px] tracking-[0.1em] text-white/[0.18]">
+              {siteConfig.university} · Hyderabad, India
+            </span>
+          </div>
         </div>
       </div>
     </footer>

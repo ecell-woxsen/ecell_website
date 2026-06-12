@@ -56,11 +56,11 @@ export default function Hero() {
 
         {/* Buttons */}
         <div className="flex items-center gap-4 animate-fade-up delay-4 max-sm:flex-col max-sm:items-start">
-          <Button href="/#events" variant="primary">
+          <Button href="/events" variant="primary">
             Explore Events
           </Button>
 
-          <Button href="/#contact" variant="outline">
+          <Button href="/submit-idea" variant="outline">
             Submit Your Idea
           </Button>
         </div>

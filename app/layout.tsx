@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Space_Mono } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 
@@ -47,9 +48,11 @@ export default function RootLayout({
         />
       </head>
       <body className={dmSans.className}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <ConvexClientProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ConvexClientProvider>
       </body>
     </html>
   );

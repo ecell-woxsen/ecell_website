@@ -14,7 +14,7 @@ export default function Navbar() {
 
   // Intersection Observer for scroll spy active section highlighting
   useEffect(() => {
-    const sectionIds = ["about", "events", "initiatives", "team", "community", "affiliations", "contact"];
+    const sectionIds = ["about", "initiatives", "community", "affiliations", "contact", "newsletter"];
     
     const observerOptions = {
       root: null,
@@ -67,7 +67,13 @@ export default function Navbar() {
 
   // Helper to determine if link is active
   const isLinkActive = (href: string) => {
+    // Exact page routes
+    if (!href.startsWith("/#") && !href.startsWith("#") && href !== "/") {
+      return pathname === href || pathname.startsWith(href + "/");
+    }
+    // Homepage section anchors
     if (href.startsWith("/#")) {
+      if (pathname !== "/") return false;
       return activeSection === href.substring(2);
     }
     if (href.startsWith("#")) {

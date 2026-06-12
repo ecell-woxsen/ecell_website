@@ -6,23 +6,22 @@ export interface NavLink {
 
 export const navLinks: NavLink[] = [
   { label: "About", href: "/#about" },
-  { label: "Events", href: "/#events" },
+  { label: "Events", href: "/events" },
   { label: "Initiatives", href: "/#initiatives" },
-  { label: "Team", href: "/#team" },
+  { label: "Team", href: "/team" },
   { label: "Community", href: "/#community" },
-  { label: "Network", href: "/#affiliations" },
-  { label: "Submit Idea →", href: "/#contact", isCTA: true },
+  { label: "Submit Idea →", href: "/submit-idea", isCTA: true },
 ];
 
 export const footerLinks = {
   quickLinks: [
     { label: "About Us", href: "/#about" },
-    { label: "Events", href: "/#events" },
+    { label: "Events", href: "/events" },
     { label: "Initiatives", href: "/#initiatives" },
-    { label: "Team", href: "/#team" },
+    { label: "Team", href: "/team" },
   ],
   resources: [
-    { label: "Startup Toolkit", href: "#" },
+    { label: "Submit Your Idea", href: "/submit-idea" },
     { label: "Founder Playbook", href: "#" },
     { label: "Pitch Guidelines", href: "#" },
     { label: "Mentor Network", href: "#" },
@@ -31,6 +30,6 @@ export const footerLinks = {
     { label: "Contact Us", href: "/#contact" },
     { label: "Community", href: "/#community" },
     { label: "Affiliations", href: "/#affiliations" },
-    { label: "Newsletter", href: "#" },
+    { label: "Newsletter", href: "#newsletter" },
   ],
 };
