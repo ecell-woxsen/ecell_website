@@ -12,17 +12,17 @@ interface ButtonProps {
 
 const variantStyles: Record<string, string> = {
   primary:
-    "bg-[var(--green)] text-[var(--white)] border border-[var(--green)] hover:bg-[var(--green-mid)] hover:-translate-y-0.5",
+    "bg-[var(--green)] text-[var(--white)] border border-[var(--green)] hover:bg-[var(--green-mid)] hover:-translate-y-0.5 shadow-sm hover:shadow",
   outline:
-    "text-[var(--white)] border border-white/20 hover:border-[var(--green-lt)] hover:text-[var(--green-lt)] hover:-translate-y-0.5",
+    "text-[var(--white)] border border-white/30 bg-transparent hover:border-[var(--green-lt)] hover:text-[var(--green-lt)] hover:-translate-y-0.5",
   form:
-    "w-full bg-[var(--navy)] text-white border-none hover:bg-[var(--navy-mid)]",
+    "w-full bg-[var(--navy)] text-white border-none hover:bg-[var(--navy-mid)] active:scale-[0.99]",
   "nav-cta":
-    "bg-[var(--green)] text-[var(--white)] border border-[var(--green)] hover:bg-transparent hover:text-[var(--green-lt)]",
+    "bg-[var(--green)] text-[var(--white)] border border-[var(--green)] hover:bg-transparent hover:text-[var(--green-lt)] hover:border-[var(--green-lt)]",
 };
 
 const baseStyle =
-  "inline-flex items-center gap-2.5 px-8 py-3.5 font-mono text-[11px] tracking-[0.1em] uppercase transition-all duration-200 no-underline rounded-lg";
+  "inline-flex items-center justify-center gap-2 px-7 py-3 min-h-[44px] min-w-[200px] font-mono text-[13px] font-medium tracking-[0.08em] uppercase transition-all duration-200 no-underline rounded-lg whitespace-nowrap";
 
 export default function Button({
   children,

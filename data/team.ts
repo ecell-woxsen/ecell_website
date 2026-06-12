@@ -24,7 +24,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     id: "harshith-c",
-    name: "Harshith Chakravarth",
+    name: "Harshith Chakravarthy",
     role: "Advisor",
     department: "BBA · Class of 2028",
     initials: "HC",

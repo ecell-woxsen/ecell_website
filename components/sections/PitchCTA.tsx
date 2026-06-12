@@ -18,11 +18,13 @@ export default function PitchCTA() {
             We&apos;ll Help You Ship It.
           </h2>
 
-          <p className="text-[15px] text-white/[0.42] font-light leading-[1.85] max-w-[480px] mx-auto mb-12">
+        <div className="flex items-center justify-center max-sm:flex-col max-sm:text-center">
+          <p className="text-[15px] text-white/[0.42] font-light leading-[1.85] max-w-[480px] text-center">
             Whether it&apos;s a napkin sketch or a working prototype — if
             you&apos;ve got the grit, we&apos;ve got the network, capital, and
             community to back you.
           </p>
+        </div>
 
           <div className="flex gap-4 justify-center max-sm:flex-col max-sm:items-center">
             <Button href="/#contact" variant="primary">
