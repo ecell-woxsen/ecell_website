@@ -18,8 +18,8 @@ export default function Affiliations() {
 
         <div className="grid grid-cols-5 gap-3 mt-14 max-lg:grid-cols-3 max-sm:grid-cols-2">
           {affiliations.map((a) => (
-            <RevealOnScroll key={a.id}>
-              <div className="card-pad bg-white/[0.02] border border-white/[0.06] rounded-xl min-h-[100px] flex items-center justify-center font-['Bebas_Neue',sans-serif] text-[17px] tracking-[0.12em] text-white/35 transition-all duration-300 text-center leading-[1.3] hover:bg-white/[0.05] hover:text-white/80 hover:border-[var(--green-lt)]/35">
+            <RevealOnScroll key={a.id} className="h-full">
+              <div className="h-full card-pad bg-white/[0.02] border border-white/[0.06] rounded-xl min-h-[100px] flex items-center justify-center font-['Bebas_Neue',sans-serif] text-[17px] tracking-[0.12em] text-white/35 transition-all duration-300 text-center leading-[1.3] hover:bg-white/[0.05] hover:text-white/80 hover:border-[var(--green-lt)]/35">
                 {a.name}
               </div>
             </RevealOnScroll>
