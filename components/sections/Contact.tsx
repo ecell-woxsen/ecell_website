@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
+import Button from "@/components/ui/Button";
 import { siteConfig } from "@/data/site";
 
 export default function Contact() {
@@ -116,12 +117,13 @@ export default function Contact() {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   />
                 </div>
-                <button
+                <Button
                   type="submit"
-                  className="w-full bg-[var(--green)] hover:bg-[var(--green-mid)] text-white py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 mt-2 cursor-pointer"
+                  variant="primary"
+                  className="w-full min-w-0 mt-2"
                 >
                   Send Message
-                </button>
+                </Button>
               </form>
             </div>
           </RevealOnScroll>

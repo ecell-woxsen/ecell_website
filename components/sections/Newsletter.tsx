@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
+import Button from "@/components/ui/Button";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -68,13 +69,14 @@ export default function Newsletter() {
                   className="form-input flex-1 text-center max-sm:text-left"
                   disabled={status === "loading"}
                 />
-                <button
+                <Button
                   type="submit"
+                  variant="primary"
                   disabled={status === "loading"}
-                  className="bg-[var(--green)] hover:bg-[var(--green-mid)] text-white px-7 py-3 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 cursor-pointer whitespace-nowrap disabled:opacity-50"
+                  className="min-w-0 px-7 py-3"
                 >
                   {status === "loading" ? "..." : "Subscribe →"}
-                </button>
+                </Button>
               </form>
             )}
 

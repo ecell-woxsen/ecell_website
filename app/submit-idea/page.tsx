@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
+import Button from "@/components/ui/Button";
 
 type Stage = "idea" | "prototype" | "mvp" | "revenue";
 type Domain =
@@ -106,12 +107,13 @@ function SuccessScreen({ name }: { name: string }) {
         ))}
       </div>
 
-      <a
+      <Button
         href="/"
-        className="mt-12 font-mono text-[10px] tracking-[0.16em] uppercase text-white/30 hover:text-white transition-colors duration-200 no-underline"
+        variant="ghost"
+        className="mt-12 min-w-0 px-0 text-white/30 hover:text-white border-none"
       >
         ← Back to Home
-      </a>
+      </Button>
     </div>
   );
 }
@@ -296,13 +298,14 @@ export default function SubmitIdeaPage() {
                   </div>
 
                   <div className="pt-6">
-                    <button
+                    <Button
                       onClick={() => setStep(2)}
                       disabled={!canProceedStep1}
-                      className="bg-[var(--green)] hover:bg-[var(--green-mid)] disabled:opacity-30 disabled:cursor-not-allowed text-white px-8 py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 cursor-pointer"
+                      variant="primary"
+                      className="min-w-0"
                     >
                       Next: Your Idea →
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}
@@ -420,19 +423,21 @@ export default function SubmitIdeaPage() {
                   </div>
 
                   <div className="flex gap-3 pt-4">
-                    <button
+                    <Button
                       onClick={() => setStep(1)}
-                      className="text-white/40 hover:text-white px-5 py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border border-white/[0.08] hover:border-white/20 rounded-lg transition-all duration-200 cursor-pointer bg-transparent"
+                      variant="ghost"
+                      className="min-w-0"
                     >
                       ← Back
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={() => setStep(3)}
                       disabled={!canProceedStep2}
-                      className="bg-[var(--green)] hover:bg-[var(--green-mid)] disabled:opacity-30 disabled:cursor-not-allowed text-white px-8 py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 cursor-pointer"
+                      variant="primary"
+                      className="min-w-0"
                     >
                       Review →
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}
@@ -476,20 +481,22 @@ export default function SubmitIdeaPage() {
                   )}
 
                   <div className="flex gap-3">
-                    <button
+                    <Button
                       onClick={() => setStep(2)}
-                      className="text-white/40 hover:text-white px-5 py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border border-white/[0.08] hover:border-white/20 rounded-lg transition-all duration-200 cursor-pointer bg-transparent"
+                      variant="ghost"
+                      className="min-w-0"
                     >
                       ← Edit
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={handleSubmit}
                       disabled={submitting}
-                      className="bg-[var(--green)] hover:bg-[var(--green-mid)] disabled:opacity-50 text-white px-9 py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 cursor-pointer"
+                      variant="primary"
+                      className="min-w-0"
                       id="submit-idea-button"
                     >
                       {submitting ? "Submitting..." : "Submit My Idea →"}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}
