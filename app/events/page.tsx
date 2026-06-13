@@ -6,6 +6,7 @@ import { events } from "@/data/events";
 import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
+import Tag from "@/components/ui/Tag";
 
 const tagColors: Record<string, { bg: string; text: string; border: string }> = {
   upcoming: {
@@ -52,17 +53,13 @@ function EventCard({ ev }: { ev: EventItem }) {
           {/* Top bar */}
           <div className="flex items-center justify-between gap-4 mb-7">
             <div className="flex items-center gap-3">
-              <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 font-mono text-[10px] tracking-wider uppercase text-white/80 font-medium">
-                {ev.date}
-              </div>
-              <span className={`font-mono text-[9px] tracking-[0.16em] uppercase px-2.5 py-1.5 border rounded-md ${colors.text} ${colors.bg} ${colors.border} font-medium`}>
+              <Tag variant="date">{ev.date}</Tag>
+              <Tag variant="category" className={`${colors.text} ${colors.bg} ${colors.border}`}>
                 {ev.tag}
-              </span>
+              </Tag>
             </div>
             {ev.featured && (
-              <span className="font-mono text-[8px] tracking-[0.2em] uppercase bg-[var(--green)]/20 text-[var(--green-lt)] border border-[var(--green)]/30 px-2.5 py-1 rounded font-medium">
-                Featured Event
-              </span>
+              <Tag variant="featured">Featured Event</Tag>
             )}
           </div>
 

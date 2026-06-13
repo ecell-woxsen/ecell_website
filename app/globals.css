@@ -458,6 +458,12 @@ body::after {
   background: var(--green-lt);
 }
 
+/* ===== TAG COMPONENT ===== */
+.tag {
+  padding: 4px 8px;
+  margin: 3px;
+}
+
 /* ===== FILTER TABS ===== */
 .filter-tab {
   font-family: "Space Mono", monospace;
