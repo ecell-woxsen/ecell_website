@@ -26,7 +26,7 @@ const variantStyles: Record<string, string> = {
 };
 
 const baseStyle =
-  "inline-flex items-center justify-center gap-2 px-7 py-3 min-h-[44px] min-w-[200px] font-mono text-[13px] font-medium tracking-[0.08em] uppercase transition-all duration-200 no-underline rounded-lg whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none";
+  "btn-base inline-flex items-center justify-center gap-2 px-8 py-3.5 min-h-[48px] min-w-[200px] font-mono text-[13px] font-medium tracking-[0.08em] uppercase transition-all duration-200 no-underline rounded-lg whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none";
 
 export default function Button({
   children,

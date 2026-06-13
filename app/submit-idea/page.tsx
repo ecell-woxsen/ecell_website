@@ -376,7 +376,7 @@ export default function SubmitIdeaPage() {
                           key={s.value}
                           type="button"
                           onClick={() => update("stage", s.value)}
-                          className={`text-left px-4 py-3.5 rounded-lg border transition-all duration-200 cursor-pointer ${
+                          className={`btn-base text-left px-5 py-4 rounded-lg border transition-all duration-200 cursor-pointer ${
                             formData.stage === s.value
                               ? "border-[var(--green-lt)] bg-[rgba(76,175,98,0.08)] "
                               : "border-white/[0.07] bg-white/[0.02] hover:border-white/15"

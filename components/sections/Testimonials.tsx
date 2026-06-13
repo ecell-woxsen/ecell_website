@@ -79,7 +79,7 @@ export default function Testimonials() {
             </div>
 
             {/* Dots */}
-            <div className="flex items-center justify-center gap-3 mt-9">
+            <div className="flex items-center justify-center gap-3 mt-10 py-2">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
@@ -88,7 +88,7 @@ export default function Testimonials() {
                     goTo(i);
                     startInterval();
                   }}
-                  className={`transition-all duration-300 rounded-full cursor-pointer border-none ${
+                  className={`btn-base transition-all duration-300 rounded-full cursor-pointer border-none px-1 py-2 ${
                     i === active
                       ? "w-6 h-1.5 bg-[var(--green-lt)]"
                       : "w-1.5 h-1.5 bg-white/20 hover:bg-white/40"

@@ -464,7 +464,9 @@ body::after {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 8px 16px;
+  padding: 10px 20px;
+  margin-right: 12px;
+  margin-bottom: 12px;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(245, 248, 255, 0.5);
@@ -482,6 +484,12 @@ body::after {
   border-color: var(--green-lt);
   color: var(--green-lt);
   background: rgba(76, 175, 98, 0.1);
+}
+
+/* ===== BUTTON MARGIN ===== */
+/* Applied to all action buttons site-wide via Button.tsx baseStyle */
+.btn-base {
+  margin: .75rem 0.25rem;
 }
 
 /* ===== IMPACT BANNER ===== */
