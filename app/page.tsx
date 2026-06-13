@@ -5,7 +5,6 @@ import ImpactBanner from "@/components/sections/ImpactBanner";
 import Events from "@/components/sections/Events";
 import Initiatives from "@/components/sections/Initiatives";
 import Team from "@/components/sections/Team";
-import Testimonials from "@/components/sections/Testimonials";
 import PitchCTA from "@/components/sections/PitchCTA";
 import Affiliations from "@/components/sections/Affiliations";
 import Community from "@/components/sections/Community";
@@ -22,7 +21,6 @@ export default function Home() {
       <Events />
       <Initiatives />
       <Team />
-      <Testimonials />
       <PitchCTA />
       <Affiliations />
       <Community />
