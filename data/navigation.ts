@@ -30,6 +30,5 @@ export const footerLinks = {
     { label: "Contact Us", href: "/#contact" },
     { label: "Community", href: "/#community" },
     { label: "Affiliations", href: "/#affiliations" },
-    { label: "Newsletter", href: "#newsletter" },
   ],
 };

@@ -8,7 +8,6 @@ import Team from "@/components/sections/Team";
 import PitchCTA from "@/components/sections/PitchCTA";
 import Affiliations from "@/components/sections/Affiliations";
 import Community from "@/components/sections/Community";
-import Newsletter from "@/components/sections/Newsletter";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
@@ -24,7 +23,6 @@ export default function Home() {
       <PitchCTA />
       <Affiliations />
       <Community />
-      <Newsletter />
       <Contact />
     </>
   );
