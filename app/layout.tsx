@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { DM_Sans, Space_Mono } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
+import ConvexClientProvider from "./ConvexClientProvider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
