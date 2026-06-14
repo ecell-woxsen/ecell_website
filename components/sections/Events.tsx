@@ -101,9 +101,9 @@ export default function Events() {
                   className={`event-card flex flex-col ${ev.featured ? "col-span-2 max-lg:col-span-1" : ""}`}
                 >
                   <div
-                    className={`card-pad group relative flex flex-col justify-between bg-white/[0.02] border border-white/[0.06] hover:border-[var(--green-lt)]/35 rounded-2xl text-left transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_45px_rgba(30,107,46,0.08)] flex-1 overflow-hidden ${
+                    className={`card-pad group relative flex flex-col justify-between bg-white/[0.02] backdrop-blur-md border border-white/[0.08] hover:border-[var(--green-lt)]/40 rounded-2xl text-left transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(30,107,46,0.12)] flex-1 overflow-hidden ${
                       ev.featured
-                        ? "bg-gradient-to-br from-[rgba(26,47,94,0.22)] to-white/[0.02] border-[rgba(26,47,94,0.36)] hover:border-[rgba(76,175,98,0.45)]"
+                        ? "bg-gradient-to-br from-[rgba(26,47,94,0.25)] to-white/[0.03] border-[rgba(26,47,94,0.4)] hover:border-[rgba(76,175,98,0.5)]"
                         : ""
                     }`}
                   >
