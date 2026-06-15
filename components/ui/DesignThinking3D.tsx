@@ -7,9 +7,9 @@ import { useEffect, useRef, useState } from "react";
 // Traversal: right-extreme → lower-right → ×center → upper-left → left-extreme
 //            → lower-left → ×center → upper-right → right-extreme
 
-const VW = 480, VH = 220;
-const CX = 240, CY = 110;
-const SX = 160, SY = 82; // horizontal & vertical scale
+const VW = 560, VH = 320;
+const CX = 280, CY = 160;
+const SX = 220, SY = 260; // horizontal & vertical scale
 
 function lem(t: number) {
   const d = 1 + Math.sin(t) ** 2;
@@ -34,7 +34,7 @@ const RAW_NODES = [
   { t: Math.PI / 4,        label: "Define",    sub: "Frame the problem"   },
   { t: (Math.PI * 3) / 4,  label: "Ideate",    sub: "Explore solutions"   },
   { t: (Math.PI * 5) / 4,  label: "Prototype", sub: "Build to think"      },
-  { t: (Math.PI * 7) / 4,  label: "Test",      sub: "Learn & iterate"     },
+  { t: Math.PI / 2,        label: "Test",      sub: "Learn & iterate"     },
 ];
 
 const NODES = RAW_NODES.map((n, i) => {
@@ -79,10 +79,12 @@ export default function DesignThinking3D() {
         /* ─── Wrapper ─────────────────────────────────────────── */
         .dt-wrap {
           width: 100%;
-          max-width: 560px;
+          max-width: 820px;
           margin: 0 auto;
           position: relative;
+          left: 300px;
           padding: 8px 0;
+          opacity: 0.85;
         }
 
         /* ─── Canvas (SVG + pill overlay share same space) ─────── */
@@ -117,10 +119,10 @@ export default function DesignThinking3D() {
           cursor: default;
 
           /* Pill dimensions */
-          width: 116px;
-          height: 40px;
+          width: 142px;
+          height: 48px;
           border-radius: 999px;
-          padding: 0 16px 0 12px;
+          padding: 0 18px 0 14px;
 
           display: flex;
           align-items: center;
@@ -187,7 +189,7 @@ export default function DesignThinking3D() {
         /* Pill number badge */
         .dt-pill-num {
           font-family: "Bebas Neue", sans-serif;
-          font-size: 12px;
+          font-size: 14px;
           letter-spacing: 0.12em;
           color: rgba(76, 175, 98, 0.38);
           transition: color 0.3s;
@@ -201,7 +203,7 @@ export default function DesignThinking3D() {
         /* Vertical separator */
         .dt-pill-sep {
           width: 1px;
-          height: 18px;
+          height: 22px;
           background: rgba(76, 175, 98, 0.12);
           flex-shrink: 0;
           transition: background 0.3s;
@@ -213,7 +215,7 @@ export default function DesignThinking3D() {
         /* Label */
         .dt-pill-name {
           font-family: "Bebas Neue", sans-serif;
-          font-size: 17px;
+          font-size: 20px;
           letter-spacing: 0.04em;
           color: rgba(245, 248, 255, 0.78);
           display: block;
@@ -227,7 +229,7 @@ export default function DesignThinking3D() {
         /* Sub-label — only shows when active */
         .dt-pill-sub {
           font-family: "DM Sans", sans-serif;
-          font-size: 9px;
+          font-size: 10.5px;
           font-weight: 300;
           color: rgba(245, 248, 255, 0.28);
           display: block;
@@ -239,15 +241,15 @@ export default function DesignThinking3D() {
           margin-top: 0;
         }
         .dt-pill.on .dt-pill-sub {
-          max-height: 20px;
+          max-height: 24px;
           opacity: 1;
           color: rgba(245, 248, 255, 0.45);
-          margin-top: 3px;
+          margin-top: 4px;
         }
 
         /* Expand pill height when sub-label shows */
         .dt-pill.on {
-          height: 50px;
+          height: 60px;
         }
 
         /* ─── Section label ─────────────────────────────────────── */
@@ -262,6 +264,9 @@ export default function DesignThinking3D() {
         }
 
         /* ─── Responsive ────────────────────────────────────────── */
+        @media (max-width: 1024px) {
+          .dt-wrap { left: 0; }
+        }
         @media (max-width: 640px) {
           .dt-wrap { max-width: 420px; }
           .dt-pill { width: 100px; height: 36px; padding: 0 12px 0 10px; gap: 7px; }
