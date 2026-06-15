@@ -7,7 +7,6 @@ import Initiatives from "@/components/sections/Initiatives";
 import Team from "@/components/sections/Team";
 import PitchCTA from "@/components/sections/PitchCTA";
 import Affiliations from "@/components/sections/Affiliations";
-import Community from "@/components/sections/Community";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
@@ -22,7 +21,6 @@ export default function Home() {
       <Team />
       <PitchCTA />
       <Affiliations />
-      <Community />
       <Contact />
     </>
   );
