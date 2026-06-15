@@ -5,17 +5,40 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 import { siteConfig } from "@/data/site";
+import { useAction } from "convex/react";
+import { api } from "../../convex/_generated/api";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "", email: "", type: "", message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Safely import the action. It will be available after `npx convex dev` generates the api
+  // @ts-ignore
+  const processContactForm = useAction(api.contact?.processContactForm || "contact:processContactForm");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: integrate form submission
-    alert("Thank you! We'll get back to you shortly.");
-    setFormData({ name: "", email: "", type: "", message: "" });
+    setIsSubmitting(true);
+    setStatusMessage("");
+    
+    try {
+      await processContactForm({
+        name: formData.name,
+        email: formData.email,
+        type: formData.type,
+        message: formData.message,
+      });
+      setStatusMessage("Thank you! We'll get back to you shortly.");
+      setFormData({ name: "", email: "", type: "", message: "" });
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setStatusMessage("Failed to submit form. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -88,12 +111,16 @@ export default function Contact() {
                     className="form-input"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    disabled={isSubmitting}
+                    suppressHydrationWarning
                   />
                   <input
                     type="email" placeholder="Email Address" required
                     className="form-input"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    disabled={isSubmitting}
+                    suppressHydrationWarning
                   />
                 </div>
                 <div className="mb-3">
@@ -101,6 +128,8 @@ export default function Contact() {
                     className="form-input"
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                    disabled={isSubmitting}
+                    suppressHydrationWarning
                   >
                     <option value="">Select enquiry type</option>
                     <option value="idea">Submit an Idea</option>
@@ -115,15 +144,23 @@ export default function Contact() {
                     className="form-input h-24 resize-none"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    disabled={isSubmitting}
+                    suppressHydrationWarning
                   />
                 </div>
-                <Button
+                {statusMessage && (
+                  <div className={`mb-3 text-[13px] ${statusMessage.includes("Failed") ? "text-red-500" : "text-green-600"}`}>
+                    {statusMessage}
+                  </div>
+                )}
+                <button
                   type="submit"
-                  variant="primary"
-                  className="w-full min-w-0 mt-2"
+                  disabled={isSubmitting}
+                  className={`w-full bg-[var(--navy)] text-white py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 hover:bg-[var(--navy-mid)] mt-2 cursor-pointer ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                  suppressHydrationWarning
                 >
-                  Send Message
-                </Button>
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </button>
               </form>
             </div>
           </RevealOnScroll>
@@ -132,3 +169,4 @@ export default function Contact() {
     </section>
   );
 }
+
