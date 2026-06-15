@@ -5,8 +5,6 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 import { siteConfig } from "@/data/site";
-import { useAction } from "convex/react";
-import { api } from "../../convex/_generated/api";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -15,22 +13,29 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
-  // Safely import the action. It will be available after `npx convex dev` generates the api
-  // @ts-ignore
-  const processContactForm = useAction(api.contact?.processContactForm || "contact:processContactForm");
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setStatusMessage("");
     
     try {
-      await processContactForm({
-        name: formData.name,
-        email: formData.email,
-        type: formData.type,
-        message: formData.message,
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          type: formData.type,
+          message: formData.message,
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
       setStatusMessage("Thank you! We'll get back to you shortly.");
       setFormData({ name: "", email: "", type: "", message: "" });
     } catch (error) {

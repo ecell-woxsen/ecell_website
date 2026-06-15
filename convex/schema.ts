@@ -23,4 +23,14 @@ export default defineSchema({
     email: v.string(),
     subscribedAt: v.number(),
   }),
+
+  contactSubmissions: defineTable({
+    name: v.string(),
+    email: v.string(),
+    type: v.string(),
+    message: v.string(),
+    aiSummary: v.optional(v.string()),
+    aiIntent: v.optional(v.string()),
+    createdAt: v.number(),
+  }),
 });
