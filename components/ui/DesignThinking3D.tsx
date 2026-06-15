@@ -1,86 +1,56 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
-/* ── Stage Data ─────────────────────────────────
-   Positioned organically — NOT on a grid.
-   Ideate sits center as the creative hub.
-   Coordinates are % of a square canvas. */
+// ─── Lemniscate geometry ────────────────────────────────────────────────────
+// Parametric: x = a·cos(t)/(1+sin²t),  y = a·sin(t)·cos(t)/(1+sin²t)
+// Traversal: right-extreme → lower-right → ×center → upper-left → left-extreme
+//            → lower-left → ×center → upper-right → right-extreme
 
-const STAGES = [
-  { label: "Empathize", desc: "Understand the user deeply", x: 16, y: 18 },
-  { label: "Define", desc: "Frame the right problem", x: 76, y: 14 },
-  { label: "Ideate", desc: "Explore creative solutions", x: 48, y: 48 },
-  { label: "Prototype", desc: "Build to think", x: 16, y: 80 },
-  { label: "Test", desc: "Learn and iterate", x: 82, y: 72 },
-];
+const VW = 480, VH = 220;
+const CX = 240, CY = 110;
+const SX = 160, SY = 82; // horizontal & vertical scale
 
-/* ── Connections ─────────────────────────────────
-   Main flow: sequential E→D→I→P→T
-   Feedback loops: show the messy, iterative reality
-   offset = perpendicular curve bow (positive = left of path direction) */
-
-interface Flow {
-  from: number;
-  to: number;
-  offset: number;
-  feedback?: boolean;
-  cubic?: string; // override with cubic bezier for complex curves
+function lem(t: number) {
+  const d = 1 + Math.sin(t) ** 2;
+  return {
+    x: CX + (SX * Math.cos(t)) / d,
+    y: CY + (SY * Math.sin(t) * Math.cos(t)) / d,
+  };
 }
 
-const FLOWS: Flow[] = [
-  { from: 0, to: 1, offset: -14 },
-  { from: 1, to: 2, offset: 15 },
-  { from: 2, to: 3, offset: -16 },
-  { from: 3, to: 4, offset: 18 },
-  // Feedback — design thinking loops back
-  {
-    from: 4,
-    to: 0,
-    offset: 0,
-    feedback: true,
-    cubic: "M 82 72 C 92 44 4 0 16 18",
-  },
-  { from: 4, to: 2, offset: -10, feedback: true },
-  { from: 2, to: 0, offset: 12, feedback: true },
+// Full smooth path (361 polyline points → visually smooth at display size)
+const INF_PATH = Array.from({ length: 361 }, (_, i) =>
+  lem((i / 360) * Math.PI * 2)
+)
+  .map((p, i) => `${i ? "L" : "M"} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`)
+  .join(" ") + " Z";
+
+// ─── Node data ─────────────────────────────────────────────────────────────
+// t-values land at the 4 lobe-corners + right extreme, skipping the center
+// crossing so nodes never crowd together.
+const RAW_NODES = [
+  { t: 0,                  label: "Empathize", sub: "Understand the user" },
+  { t: Math.PI / 4,        label: "Define",    sub: "Frame the problem"   },
+  { t: (Math.PI * 3) / 4,  label: "Ideate",    sub: "Explore solutions"   },
+  { t: (Math.PI * 5) / 4,  label: "Prototype", sub: "Build to think"      },
+  { t: (Math.PI * 7) / 4,  label: "Test",      sub: "Learn & iterate"     },
 ];
 
-/* ── Quadratic Bezier path with perpendicular offset ── */
+const NODES = RAW_NODES.map((n, i) => {
+  const { x, y } = lem(n.t);
+  return { ...n, i, px: (x / VW) * 100, py: (y / VH) * 100 };
+});
 
-function qPath(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  off: number
-): string {
-  const mx = (x1 + x2) / 2;
-  const my = (y1 + y2) / 2;
-  const dx = x2 - x1;
-  const dy = y2 - y1;
-  const len = Math.hypot(dx, dy) || 1;
-  const cx = mx + (-dy / len) * off;
-  const cy = my + (dx / len) * off;
-  return `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`;
-}
-
-/* ── Component ──────────────────────────────────── */
-
+// ─── Component ──────────────────────────────────────────────────────────────
 export default function DesignThinking3D() {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const dotsRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const nodesRef = useRef<HTMLDivElement>(null);
-  const mouse = useRef({ x: 0, y: 0 });
-  const smooth = useRef({ x: 0, y: 0 });
-  const rafId = useRef(0);
-  const paused = useRef(false);
-
   const [active, setActive] = useState<number | null>(null);
   const [pulse, setPulse] = useState(0);
   const [inView, setInView] = useState(false);
+  const paused = useRef(false);
 
-  /* ── Visibility ── */
+  // Only animate when visible
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -92,7 +62,7 @@ export default function DesignThinking3D() {
     return () => obs.disconnect();
   }, []);
 
-  /* ── Auto-cycle through stages ── */
+  // Auto-cycle
   useEffect(() => {
     if (!inView) return;
     const id = setInterval(() => {
@@ -101,386 +71,325 @@ export default function DesignThinking3D() {
     return () => clearInterval(id);
   }, [inView]);
 
-  /* ── Parallax depth layers (RAF for smoothness) ── */
-  useEffect(() => {
-    if (!inView) return;
-    const tick = () => {
-      smooth.current.x += (mouse.current.x - smooth.current.x) * 0.06;
-      smooth.current.y += (mouse.current.y - smooth.current.y) * 0.06;
-      const { x, y } = smooth.current;
-
-      // Three depth layers — dots(near), paths(mid), nodes(far)
-      if (dotsRef.current)
-        dotsRef.current.style.transform = `translate(${x * 3}px, ${y * 3}px)`;
-      if (svgRef.current)
-        svgRef.current.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
-      if (nodesRef.current)
-        nodesRef.current.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-
-      rafId.current = requestAnimationFrame(tick);
-    };
-    rafId.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId.current);
-  }, [inView]);
-
-  /* ── Mouse tracking ── */
-  const onMove = useCallback((e: React.MouseEvent) => {
-    if (!wrapRef.current) return;
-    const r = wrapRef.current.getBoundingClientRect();
-    mouse.current.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
-    mouse.current.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
-  }, []);
-
-  const onLeave = useCallback(() => {
-    mouse.current = { x: 0, y: 0 };
-  }, []);
-
-  /* ── Derived state ── */
   const hi = active ?? pulse;
 
-  const pathD = FLOWS.map((f) =>
-    f.cubic
-      ? f.cubic
-      : qPath(
-          STAGES[f.from].x,
-          STAGES[f.from].y,
-          STAGES[f.to].x,
-          STAGES[f.to].y,
-          f.offset
-        )
-  );
-
   return (
-    <div
-      ref={wrapRef}
-      className="dtv-wrap"
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-    >
+    <div ref={wrapRef} className="dt-wrap">
       <style>{`
-        /* ── Container ── */
-        .dtv-wrap {
+        /* ─── Wrapper ─────────────────────────────────────────── */
+        .dt-wrap {
           width: 100%;
-          max-width: 540px;
+          max-width: 560px;
           margin: 0 auto;
           position: relative;
-          padding: 12px;
+          padding: 8px 0;
         }
 
-        .dtv-canvas {
-          width: 100%;
-          aspect-ratio: 1;
+        /* ─── Canvas (SVG + pill overlay share same space) ─────── */
+        .dt-canvas {
           position: relative;
-          overflow: visible;
+          width: 100%;
+          /* Maintain 480:220 aspect ratio */
+          padding-bottom: ${(VH / VW) * 100}%;
         }
 
-        /* ── Dot grid background (depth layer 0) ── */
-        .dtv-dots {
-          position: absolute;
-          inset: -8%;
-          background-image: radial-gradient(
-            circle,
-            rgba(76, 175, 98, 0.03) 1px,
-            transparent 1px
-          );
-          background-size: 5.5% 5.5%;
-          pointer-events: none;
-          will-change: transform;
-        }
-
-        /* ── Ambient glow behind active node ── */
-        .dtv-glow {
-          position: absolute;
-          width: 100px;
-          height: 100px;
-          transform: translate(-50%, -50%);
-          border-radius: 50%;
-          background: radial-gradient(
-            circle,
-            rgba(76, 175, 98, 0.1) 0%,
-            transparent 70%
-          );
-          filter: blur(24px);
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.6s ease;
-        }
-        .dtv-glow.on {
-          opacity: 1;
-        }
-
-        /* ── SVG connections (depth layer 1) ── */
-        .dtv-svg {
+        /* ─── SVG ───────────────────────────────────────────────── */
+        .dt-svg {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
-          pointer-events: none;
-          will-change: transform;
           overflow: visible;
         }
 
-        /* Animated flowing dashes along paths */
-        .dtv-flow {
-          stroke: rgba(76, 175, 98, 0.12);
-          stroke-dasharray: 2.5 7;
-          animation: dtvDash 2.5s linear infinite;
-          transition: stroke 0.4s;
-        }
-        .dtv-flow.on {
-          stroke: rgba(76, 175, 98, 0.48);
-        }
-        .dtv-flow.fb {
-          stroke: rgba(76, 175, 98, 0.05);
-          stroke-dasharray: 1 5;
-          animation-duration: 3.5s;
-        }
-        .dtv-flow.fb.on {
-          stroke: rgba(76, 175, 98, 0.22);
-        }
-
-        @keyframes dtvDash {
-          to {
-            stroke-dashoffset: -9.5;
-          }
-        }
-
-        /* ── Nodes layer (depth layer 2) ── */
-        .dtv-nodes {
+        /* ─── Pills overlay (absolute, fills canvas) ────────────── */
+        .dt-pills {
           position: absolute;
           inset: 0;
-          will-change: transform;
+          pointer-events: none;
         }
 
-        /* ── Individual node card ── */
-        .dtv-node {
+        /* ─── Individual pill (horizontal cylinder) ──────────────── */
+        .dt-pill {
           position: absolute;
           transform: translate(-50%, -50%);
-          width: 126px;
-          padding: 14px 14px 16px;
+          pointer-events: auto;
+          cursor: default;
+
+          /* Pill dimensions */
+          width: 116px;
+          height: 40px;
+          border-radius: 999px;
+          padding: 0 16px 0 12px;
+
+          display: flex;
+          align-items: center;
+          gap: 9px;
+
+          /* Glassmorphic cylinder base */
           background: linear-gradient(
-            145deg,
-            rgba(8, 13, 28, 0.88),
-            rgba(14, 26, 56, 0.72)
+            to bottom,
+            rgba(255, 255, 255, 0.09)  0%,
+            rgba(255, 255, 255, 0.04) 18%,
+            rgba(14, 26, 56, 0.82)    50%,
+            rgba(6,  10, 22, 0.88)   100%
           );
-          border: 1px solid rgba(76, 175, 98, 0.1);
-          border-radius: 14px;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          cursor: pointer;
-          transition: border-color 0.35s, box-shadow 0.35s, background 0.35s;
-          z-index: 2;
-        }
-        .dtv-node.on {
-          border-color: rgba(76, 175, 98, 0.38);
+          border: 1px solid rgba(76, 175, 98, 0.14);
+
+          /* Cylinder depth: top highlight + bottom shadow */
           box-shadow:
-            0 6px 28px rgba(0, 0, 0, 0.3),
-            0 0 0 1px rgba(76, 175, 98, 0.08),
-            0 0 40px rgba(76, 175, 98, 0.06);
+            inset 0  1px  0 rgba(255, 255, 255, 0.10),
+            inset 0 -1px  0 rgba(0, 0, 0, 0.30),
+            0 4px 20px rgba(0, 0, 0, 0.28);
+
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+
+          transition: border-color 0.35s, box-shadow 0.35s, background 0.35s, transform 0.25s;
+          will-change: transform;
+          z-index: 2;
+          white-space: nowrap;
+        }
+
+        /* Active / hover state */
+        .dt-pill.on {
+          border-color: rgba(76, 175, 98, 0.50);
           background: linear-gradient(
-            145deg,
-            rgba(14, 26, 56, 0.92),
-            rgba(30, 107, 46, 0.06)
+            to bottom,
+            rgba(255, 255, 255, 0.14)  0%,
+            rgba(76, 175, 98, 0.16)   28%,
+            rgba(30, 107, 46, 0.12)   65%,
+            rgba(6,  10, 22, 0.80)   100%
           );
+          box-shadow:
+            inset 0  1px  0 rgba(255, 255, 255, 0.16),
+            inset 0 -1px  0 rgba(0, 0, 0, 0.20),
+            0 0 24px rgba(76, 175, 98, 0.12),
+            0 6px 24px rgba(0, 0, 0, 0.32);
+          transform: translate(-50%, -50%) scale(1.045);
           z-index: 3;
         }
-        .dtv-node.hub {
-          width: 136px;
+
+        /* Sonar ring */
+        .dt-pill-ring {
+          position: absolute;
+          inset: -5px;
+          border-radius: 999px;
+          border: 1px solid rgba(76, 175, 98, 0.28);
+          pointer-events: none;
+          animation: dt-sonar 2s ease-out infinite;
+        }
+        @keyframes dt-sonar {
+          0%   { transform: scale(1); opacity: 0.5; }
+          100% { transform: scale(1.22); opacity: 0; }
         }
 
-        /* Node typography */
-        .dtv-num {
+        /* Pill number badge */
+        .dt-pill-num {
           font-family: "Bebas Neue", sans-serif;
           font-size: 12px;
-          letter-spacing: 0.18em;
-          color: rgba(76, 175, 98, 0.25);
-          display: block;
-          margin-bottom: 3px;
+          letter-spacing: 0.12em;
+          color: rgba(76, 175, 98, 0.38);
           transition: color 0.3s;
+          flex-shrink: 0;
+          line-height: 1;
         }
-        .dtv-node.on .dtv-num {
-          color: rgba(76, 175, 98, 0.55);
+        .dt-pill.on .dt-pill-num {
+          color: rgba(76, 175, 98, 0.72);
         }
 
-        .dtv-name {
+        /* Vertical separator */
+        .dt-pill-sep {
+          width: 1px;
+          height: 18px;
+          background: rgba(76, 175, 98, 0.12);
+          flex-shrink: 0;
+          transition: background 0.3s;
+        }
+        .dt-pill.on .dt-pill-sep {
+          background: rgba(76, 175, 98, 0.3);
+        }
+
+        /* Label */
+        .dt-pill-name {
           font-family: "Bebas Neue", sans-serif;
-          font-size: 19px;
+          font-size: 17px;
           letter-spacing: 0.04em;
-          color: rgba(245, 248, 255, 0.85);
+          color: rgba(245, 248, 255, 0.78);
           display: block;
+          line-height: 1;
           transition: color 0.3s;
         }
-        .dtv-node.on .dtv-name {
+        .dt-pill.on .dt-pill-name {
           color: #4caf62;
         }
 
-        .dtv-divider {
-          width: 18px;
-          height: 1px;
-          background: rgba(76, 175, 98, 0.18);
-          margin: 7px 0;
-          transition: width 0.35s, background 0.35s;
-        }
-        .dtv-node.on .dtv-divider {
-          width: 28px;
-          background: rgba(76, 175, 98, 0.45);
-        }
-
-        .dtv-desc {
+        /* Sub-label — only shows when active */
+        .dt-pill-sub {
           font-family: "DM Sans", sans-serif;
-          font-size: 10.5px;
-          color: rgba(245, 248, 255, 0.28);
-          line-height: 1.45;
+          font-size: 9px;
           font-weight: 300;
+          color: rgba(245, 248, 255, 0.28);
           display: block;
-          transition: color 0.3s;
+          line-height: 1;
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          transition: max-height 0.3s, opacity 0.3s, color 0.3s;
+          margin-top: 0;
         }
-        .dtv-node.on .dtv-desc {
-          color: rgba(245, 248, 255, 0.5);
-        }
-
-        /* ── Pulse ring around active node ── */
-        .dtv-ring {
-          position: absolute;
-          inset: -6px;
-          border-radius: 18px;
-          border: 1px solid rgba(76, 175, 98, 0.2);
-          pointer-events: none;
-          animation: dtvRing 2.2s ease-out infinite;
+        .dt-pill.on .dt-pill-sub {
+          max-height: 20px;
+          opacity: 1;
+          color: rgba(245, 248, 255, 0.45);
+          margin-top: 3px;
         }
 
-        @keyframes dtvRing {
-          0% {
-            transform: scale(1);
-            opacity: 0.35;
-          }
-          100% {
-            transform: scale(1.12);
-            opacity: 0;
-          }
+        /* Expand pill height when sub-label shows */
+        .dt-pill.on {
+          height: 50px;
         }
 
-        /* ── Section title ── */
-        .dtv-title {
+        /* ─── Section label ─────────────────────────────────────── */
+        .dt-label {
           font-family: "Space Mono", monospace;
           font-size: 9px;
-          letter-spacing: 0.25em;
+          letter-spacing: 0.26em;
           text-transform: uppercase;
           text-align: center;
-          color: rgba(76, 175, 98, 0.45);
-          margin-bottom: 12px;
+          color: rgba(76, 175, 98, 0.4);
+          margin-bottom: 14px;
         }
 
-        /* ── Responsive ── */
-        @media (max-width: 768px) {
-          .dtv-wrap {
-            max-width: 420px;
-          }
-          .dtv-node {
-            width: 108px;
-            padding: 11px 11px 13px;
-            border-radius: 12px;
-          }
-          .dtv-node.hub {
-            width: 118px;
-          }
-          .dtv-name {
-            font-size: 17px;
-          }
-          .dtv-desc {
-            font-size: 9.5px;
-          }
+        /* ─── Responsive ────────────────────────────────────────── */
+        @media (max-width: 640px) {
+          .dt-wrap { max-width: 420px; }
+          .dt-pill { width: 100px; height: 36px; padding: 0 12px 0 10px; gap: 7px; }
+          .dt-pill.on { height: 46px; }
+          .dt-pill-name { font-size: 15px; }
+          .dt-pill-num { font-size: 11px; }
+          .dt-pill-sub { font-size: 8.5px; }
         }
-
-        @media (max-width: 480px) {
-          .dtv-wrap {
-            max-width: 340px;
-          }
-          .dtv-node {
-            width: 94px;
-            padding: 9px 9px 11px;
-          }
-          .dtv-node.hub {
-            width: 104px;
-          }
-          .dtv-name {
-            font-size: 15px;
-          }
-          .dtv-desc {
-            font-size: 9px;
-          }
-          .dtv-num {
-            font-size: 10px;
-          }
+        @media (max-width: 420px) {
+          .dt-wrap { max-width: 340px; }
+          .dt-pill { width: 86px; height: 32px; padding: 0 10px 0 8px; gap: 6px; }
+          .dt-pill.on { height: 42px; }
+          .dt-pill-name { font-size: 13px; }
+          .dt-pill-num { font-size: 10px; }
+          .dt-pill-sub { display: none; }
         }
       `}</style>
 
-      <p className="dtv-title">Design Thinking Process</p>
+      <p className="dt-label">Design Thinking Process</p>
 
-      <div className="dtv-canvas">
-        {/* Background dot grid — moves least on parallax */}
-        <div ref={dotsRef} className="dtv-dots" />
-
-        {/* Ambient glows at each node position */}
-        {STAGES.map((s, i) => (
-          <div
-            key={`glow-${i}`}
-            className={`dtv-glow ${hi === i ? "on" : ""}`}
-            style={{ left: `${s.x}%`, top: `${s.y}%` }}
-          />
-        ))}
-
-        {/* SVG connection paths — moves at mid depth */}
+      <div className="dt-canvas">
+        {/* ── SVG layer: infinity track + particle ── */}
         <svg
-          ref={svgRef}
-          className="dtv-svg"
-          viewBox="0 0 100 100"
+          className="dt-svg"
+          viewBox={`0 0 ${VW} ${VH}`}
           fill="none"
           preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
         >
-          {FLOWS.map((f, i) => {
-            const isOn = hi === f.from || hi === f.to;
-            const baseAlpha = isOn
-              ? f.feedback
-                ? 0.08
-                : 0.16
-              : f.feedback
-                ? 0.04
-                : 0.08;
+          <defs>
+            {/* Outer glow blur */}
+            <filter id="dt-blur-sm" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3.5" />
+            </filter>
+            <filter id="dt-blur-lg" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="7" />
+            </filter>
+            {/* Animated gradient along path */}
+            <radialGradient id="dt-particle-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor="#4caf62" stopOpacity="1" />
+              <stop offset="60%"  stopColor="#4caf62" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#4caf62" stopOpacity="0" />
+            </radialGradient>
+          </defs>
 
-            return (
-              <g key={i}>
-                {/* Static track (subtle line you can always see) */}
-                <path
-                  d={pathD[i]}
-                  stroke={`rgba(76,175,98,${baseAlpha})`}
-                  strokeWidth={f.feedback ? 0.28 : 0.42}
-                  strokeDasharray={f.feedback ? "1.5 2.5" : undefined}
-                  fill="none"
-                  strokeLinecap="round"
+          {/* Track — outermost glow (very soft) */}
+          <path
+            d={INF_PATH}
+            stroke="rgba(76,175,98,0.04)"
+            strokeWidth="8"
+            filter="url(#dt-blur-lg)"
+          />
+          {/* Track — base line */}
+          <path
+            d={INF_PATH}
+            stroke="rgba(76,175,98,0.10)"
+            strokeWidth="0.8"
+            strokeLinecap="round"
+          />
+          {/* Track — animated dashes flowing along path */}
+          <path
+            d={INF_PATH}
+            stroke="rgba(76,175,98,0.22)"
+            strokeWidth="0.7"
+            strokeDasharray="2.5 9"
+            strokeLinecap="round"
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              from="0"
+              to="-11.5"
+              dur="1.4s"
+              repeatCount="indefinite"
+            />
+          </path>
+
+          {/* ─ Active node glow (rendered in SVG, behind pills) ─ */}
+          {NODES.map((n, i) =>
+            hi === i ? (
+              <g key={`g-${i}`}>
+                {/* Wide soft halo */}
+                <ellipse
+                  cx={lem(n.t).x}
+                  cy={lem(n.t).y}
+                  rx="52"
+                  ry="26"
+                  fill="rgba(76,175,98,0.06)"
+                  filter="url(#dt-blur-lg)"
                 />
-                {/* Animated flow particles */}
-                <path
-                  d={pathD[i]}
-                  className={`dtv-flow${isOn ? " on" : ""}${f.feedback ? " fb" : ""}`}
-                  strokeWidth={f.feedback ? 0.28 : 0.42}
+                {/* Tight rim glow */}
+                <ellipse
+                  cx={lem(n.t).x}
+                  cy={lem(n.t).y}
+                  rx="48"
+                  ry="22"
                   fill="none"
-                  strokeLinecap="round"
+                  stroke="rgba(76,175,98,0.18)"
+                  strokeWidth="1"
+                  filter="url(#dt-blur-sm)"
                 />
               </g>
-            );
-          })}
+            ) : null
+          )}
+
+          {/* ─ Orbiting particle ─ */}
+          {/* Glow halo */}
+          <circle r="5" fill="rgba(76,175,98,0.25)" filter="url(#dt-blur-sm)">
+            <animateMotion path={INF_PATH} dur="9s" repeatCount="indefinite" />
+          </circle>
+          {/* Core dot */}
+          <circle r="2.2" fill="#4caf62">
+            <animateMotion path={INF_PATH} dur="9s" repeatCount="indefinite" />
+          </circle>
+          {/* Specular highlight */}
+          <circle r="0.9" fill="rgba(255,255,255,0.85)">
+            <animateMotion path={INF_PATH} dur="9s" repeatCount="indefinite" />
+          </circle>
         </svg>
 
-        {/* Stage nodes — moves most on parallax */}
-        <div ref={nodesRef} className="dtv-nodes">
-          {STAGES.map((s, i) => (
+        {/* ── HTML pill nodes (absolute over SVG) ── */}
+        <div className="dt-pills">
+          {NODES.map((n) => (
             <div
-              key={s.label}
-              className={`dtv-node${hi === i ? " on" : ""}${i === 2 ? " hub" : ""}`}
-              style={{ left: `${s.x}%`, top: `${s.y}%` }}
+              key={n.label}
+              className={`dt-pill${hi === n.i ? " on" : ""}`}
+              style={{ left: `${n.px}%`, top: `${n.py}%` }}
               onMouseEnter={() => {
-                setActive(i);
+                setActive(n.i);
                 paused.current = true;
               }}
               onMouseLeave={() => {
@@ -488,11 +397,14 @@ export default function DesignThinking3D() {
                 paused.current = false;
               }}
             >
-              {hi === i && <div className="dtv-ring" />}
-              <span className="dtv-num">0{i + 1}</span>
-              <span className="dtv-name">{s.label}</span>
-              <div className="dtv-divider" />
-              <span className="dtv-desc">{s.desc}</span>
+              {hi === n.i && <div className="dt-pill-ring" />}
+
+              <span className="dt-pill-num">0{n.i + 1}</span>
+              <div className="dt-pill-sep" />
+              <div>
+                <span className="dt-pill-name">{n.label}</span>
+                <span className="dt-pill-sub">{n.sub}</span>
+              </div>
             </div>
           ))}
         </div>
