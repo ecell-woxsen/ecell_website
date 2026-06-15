@@ -19,11 +19,9 @@ type Domain =
   | "other";
 
 interface FormData {
-  // Step 1
   name: string;
   email: string;
   phone: string;
-  // Step 2
   ideaTitle: string;
   domain: Domain | "";
   stage: Stage | "";
@@ -54,25 +52,10 @@ const stages: { value: Stage; label: string; desc: string }[] = [
 function SuccessScreen({ name }: { name: string }) {
   return (
     <div className="flex flex-col items-center justify-center text-center py-20 animate-fade-up">
-      {/* Animated checkmark */}
       <div className="mb-8">
         <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-          <circle
-            cx="36"
-            cy="36"
-            r="33"
-            stroke="rgba(76,175,98,0.3)"
-            strokeWidth="1.5"
-            className="success-circle"
-          />
-          <path
-            d="M22 36l10 10 18-18"
-            stroke="#4caf62"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="success-check"
-          />
+          <circle cx="36" cy="36" r="33" stroke="rgba(76,175,98,0.3)" strokeWidth="1.5" className="success-circle" />
+          <path d="M22 36l10 10 18-18" stroke="#4caf62" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="success-check" />
         </svg>
       </div>
 
@@ -80,24 +63,19 @@ function SuccessScreen({ name }: { name: string }) {
         Idea Received
       </p>
       <h2 className="font-['Bebas_Neue',sans-serif] text-[clamp(40px,6vw,72px)] leading-[0.95] text-white mb-5">
-        We Got It,{" "}
-        <span className="text-[var(--green-lt)]">{name.split(" ")[0]}.</span>
+        We Got It, <span className="text-[var(--green-lt)]">{name.split(" ")[0]}.</span>
       </h2>
       <p className="text-[15px] text-white/45 font-light leading-[1.85] max-w-[460px] mb-12">
         Your idea is in our hands. A member of the E-Cell core team will reach out within 3–5 business days.
       </p>
 
-      {/* What happens next */}
-      <div className="grid grid-cols-3 gap-4 max-w-[680px] max-sm:grid-cols-1">
+      <div className="grid grid-cols-3 gap-4 max-w-[680px] max-sm:grid-cols-1 mb-10">
         {[
           { n: "01", title: "Review", desc: "We read every submission personally." },
           { n: "02", title: "Connect", desc: "A team lead reaches out to schedule a call." },
           { n: "03", title: "Support", desc: "You get matched with mentors, resources, and a plan." },
         ].map((step) => (
-          <div
-            key={step.n}
-            className="card-pad bg-white/[0.02] border border-white/[0.05] rounded-xl text-left"
-          >
+          <div key={step.n} className="classic-form-box !p-6 text-left !my-0">
             <span className="font-['Bebas_Neue',sans-serif] text-[28px] text-[var(--green-lt)] opacity-50 block mb-2 leading-none">
               {step.n}
             </span>
@@ -107,29 +85,215 @@ function SuccessScreen({ name }: { name: string }) {
         ))}
       </div>
 
-      <Button
-        href="/"
-        variant="ghost"
-        className="mt-12 min-w-0 px-0 text-white/30 hover:text-white border-none"
-      >
+      <Button href="/" variant="ghost" className="min-w-0 px-0 text-white/30 hover:text-white border-none">
         ← Back to Home
       </Button>
     </div>
   );
 }
 
+// ─── MODULAR FORM COMPONENTS ───
+
+function Step1({ formData, update, onNext, canProceed }: any) {
+  return (
+    <div className="space-y-2 animate-scale-in">
+      <h2 className="font-['Bebas_Neue',sans-serif] text-[32px] text-white tracking-[0.02em] mb-8 leading-none">
+        Personal Details
+      </h2>
+      
+      <div className="form-field-group">
+        <label>Full Name *</label>
+        <input
+          type="text"
+          placeholder="Aryan Mehta"
+          className="form-input"
+          value={formData.name}
+          onChange={(e) => update("name", e.target.value)}
+        />
+      </div>
+
+      <div className="form-field-group">
+        <label>Email Address *</label>
+        <input
+          type="email"
+          placeholder="aryan@woxsen.edu.in"
+          className="form-input"
+          value={formData.email}
+          onChange={(e) => update("email", e.target.value)}
+        />
+      </div>
+
+      <div className="form-field-group">
+        <label>Phone Number <span className="text-white/20 normal-case tracking-normal font-sans">(optional)</span></label>
+        <input
+          type="tel"
+          placeholder="+91 98765 43210"
+          className="form-input"
+          value={formData.phone}
+          onChange={(e) => update("phone", e.target.value)}
+        />
+      </div>
+
+      <div className="pt-6">
+        <Button onClick={onNext} disabled={!canProceed} variant="primary" className="min-w-0 w-full justify-center rounded-[4px] py-4">
+          Next: Your Idea →
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function Step2({ formData, update, onNext, onPrev, canProceed }: any) {
+  return (
+    <div className="space-y-2 animate-scale-in">
+      <h2 className="font-['Bebas_Neue',sans-serif] text-[32px] text-white tracking-[0.02em] mb-8 leading-none">
+        Idea Details
+      </h2>
+
+      <div className="form-field-group">
+        <label>Idea / Venture Name *</label>
+        <input
+          type="text"
+          placeholder="e.g. SkillStack, GreenRoot..."
+          className="form-input"
+          value={formData.ideaTitle}
+          onChange={(e) => update("ideaTitle", e.target.value)}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 mb-6">
+        <div className="form-field-group !mb-0">
+          <label>Domain *</label>
+          <select className="form-input" value={formData.domain} onChange={(e) => update("domain", e.target.value)}>
+            <option value="">Select domain</option>
+            {domains.map((d) => (
+              <option key={d.value} value={d.value}>{d.label}</option>
+            ))}
+          </select>
+        </div>
+        <div className="form-field-group !mb-0">
+          <label>Team Size</label>
+          <select className="form-input" value={formData.teamSize} onChange={(e) => update("teamSize", e.target.value)}>
+            <option value="">Just me (solo)</option>
+            <option value="2">2 people</option>
+            <option value="3-4">3–4 people</option>
+            <option value="5+">5+ people</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="form-field-group">
+        <label>Current Stage *</label>
+        <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+          {stages.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              onClick={() => update("stage", s.value)}
+              className={`text-left px-4 py-3 rounded-[4px] border transition-all duration-200 cursor-pointer ${
+                formData.stage === s.value
+                  ? "border-[var(--green-lt)] bg-[rgba(76,175,98,0.08)]"
+                  : "border-white/[0.08] bg-white/[0.01] hover:border-white/20"
+              }`}
+            >
+              <p className={`text-[13px] font-medium mb-1 ${formData.stage === s.value ? "text-[var(--green-lt)]" : "text-white/80"}`}>
+                {s.label}
+              </p>
+              <p className="text-[11px] text-white/40 font-light">{s.desc}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="form-field-group">
+        <label>Describe Your Idea * <span className="text-white/20 normal-case tracking-normal font-sans">(min 30 chars)</span></label>
+        <textarea
+          placeholder="What problem are you solving? Who's the customer? What's the insight?"
+          className="form-input h-32 resize-none"
+          value={formData.description}
+          onChange={(e) => update("description", e.target.value)}
+        />
+        <p className={`mt-2 font-mono text-[10px] tracking-wide ${formData.description.length >= 30 ? "text-[var(--green-lt)]/80" : "text-white/30"}`}>
+          {formData.description.length} / 30+ chars
+        </p>
+      </div>
+
+      <div className="form-field-group">
+        <label>Website / Deck Link <span className="text-white/20 normal-case tracking-normal font-sans">(optional)</span></label>
+        <input
+          type="url"
+          placeholder="https://..."
+          className="form-input"
+          value={formData.website}
+          onChange={(e) => update("website", e.target.value)}
+        />
+      </div>
+
+      <div className="flex gap-4 pt-4">
+        <Button onClick={onPrev} variant="ghost" className="min-w-0 px-6 border border-white/[0.1] rounded-[4px]">
+          ← Back
+        </Button>
+        <Button onClick={onNext} disabled={!canProceed} variant="primary" className="min-w-0 flex-1 justify-center rounded-[4px] py-4">
+          Review →
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function Step3({ formData, onPrev, onSubmit, submitting, error }: any) {
+  return (
+    <div className="animate-scale-in">
+      <h2 className="font-['Bebas_Neue',sans-serif] text-[32px] text-white tracking-[0.02em] mb-8 leading-none">
+        Review & Submit
+      </h2>
+
+      <div className="classic-form-box !p-6 mb-8 bg-black/20 !mt-0">
+        {[
+          { label: "Name", value: formData.name },
+          { label: "Email", value: formData.email },
+          { label: "Idea", value: formData.ideaTitle },
+          { label: "Domain", value: domains.find((d) => d.value === formData.domain)?.label ?? formData.domain },
+          { label: "Stage", value: stages.find((s) => s.value === formData.stage)?.label ?? formData.stage },
+          { label: "Description", value: formData.description },
+          ...(formData.phone ? [{ label: "Phone", value: formData.phone }] : []),
+          ...(formData.website ? [{ label: "Website", value: formData.website }] : []),
+        ].map((item) => (
+          <div key={item.label} className="flex gap-4 py-3.5 border-b border-white/[0.04] last:border-b-0">
+            <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-white/40 w-24 shrink-0 pt-0.5">
+              {item.label}
+            </span>
+            <span className="text-[13px] text-white/70 font-light leading-[1.6]">
+              {item.value}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {error && (
+        <p className="mb-6 text-red-400/80 font-mono text-[11px] tracking-[0.12em] uppercase bg-red-400/10 p-3 rounded-[4px] border border-red-400/20">
+          {error}
+        </p>
+      )}
+
+      <div className="flex gap-4">
+        <Button onClick={onPrev} variant="ghost" className="min-w-0 px-6 border border-white/[0.1] rounded-[4px]">
+          ← Edit
+        </Button>
+        <Button onClick={onSubmit} disabled={submitting} variant="primary" className="min-w-0 flex-1 justify-center rounded-[4px] py-4">
+          {submitting ? "Submitting..." : "Submit My Idea →"}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// ─── MAIN PAGE ───
+
 export default function SubmitIdeaPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    phone: "",
-    ideaTitle: "",
-    domain: "",
-    stage: "",
-    teamSize: "",
-    description: "",
-    website: "",
+    name: "", email: "", phone: "", ideaTitle: "", domain: "", stage: "", teamSize: "", description: "", website: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -137,17 +301,10 @@ export default function SubmitIdeaPage() {
 
   const submitIdea = useMutation(api.ideas.submitIdea);
 
-  const update = (field: keyof FormData, value: string) =>
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const update = (field: keyof FormData, value: string) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  const canProceedStep1 =
-    formData.name.trim() && formData.email.trim() && formData.email.includes("@");
-
-  const canProceedStep2 =
-    formData.ideaTitle.trim() &&
-    formData.domain &&
-    formData.stage &&
-    formData.description.trim().length >= 30;
+  const canProceedStep1 = formData.name.trim() && formData.email.trim() && formData.email.includes("@");
+  const canProceedStep2 = formData.ideaTitle.trim() && formData.domain && formData.stage && formData.description.trim().length >= 30;
 
   const handleSubmit = async () => {
     if (!canProceedStep2) return;
@@ -175,7 +332,7 @@ export default function SubmitIdeaPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#020817] pt-28 pb-20 px-8">
+      <div className="min-h-screen bg-[#020817] px-8 flex items-center justify-center pt-20 pb-12">
         <div className="section-container">
           <SuccessScreen name={formData.name} />
         </div>
@@ -184,47 +341,39 @@ export default function SubmitIdeaPage() {
   }
 
   return (
-    <>
-      {/* ── PAGE HERO ── */}
-      <div className="page-hero mesh-bg-submit">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(30,107,46,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(30,107,46,0.035)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
+    <div className="min-h-screen bg-[#020817] mesh-bg-submit pt-36 pb-24 px-8 flex items-center">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(30,107,46,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(30,107,46,0.035)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
 
-        <div className="section-container relative z-10">
-          <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-5 flex items-center gap-3.5 opacity-80 animate-fade-up delay-1">
-            <span className="w-7 h-px bg-[var(--green-lt)] opacity-50" />
-            Submit Your Idea
-          </p>
+      <div className="section-container relative z-10 w-full">
+        <div className="grid grid-cols-[1fr_500px] gap-20 items-center max-lg:grid-cols-1 max-lg:gap-16">
+          
+          {/* Left: Hero Text */}
+          <div className="sticky top-32">
+            <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-6 flex items-center gap-3.5 opacity-80 animate-fade-up">
+              <span className="w-8 h-px bg-[var(--green-lt)] opacity-50" />
+              Submit Your Idea
+            </p>
 
-          <h1 className="font-['Bebas_Neue',sans-serif] text-[clamp(58px,8vw,128px)] leading-[0.88] tracking-[-0.02em] text-white mb-7 animate-fade-up delay-2">
-            Got an Idea?
-            <br />
-            <span className="text-[var(--green-lt)]">We&apos;ll Back It.</span>
-          </h1>
+            <h1 className="font-['Bebas_Neue',sans-serif] text-[clamp(64px,7vw,110px)] leading-[0.9] tracking-[-0.02em] text-white mb-8 animate-fade-up delay-1">
+              Got an Idea?
+              <br />
+              <span className="text-[var(--green-lt)]">We'll Back It.</span>
+            </h1>
 
-          <p className="max-w-[500px] text-[15px] leading-[1.9] text-white/45 font-light animate-fade-up delay-3">
-            Whether it&apos;s a napkin sketch or a working MVP — if you&apos;ve got the grit, E-Cell has the network, mentors, and micro-grants to get you off the ground.
-          </p>
-        </div>
+            <p className="max-w-[480px] text-[16px] leading-[1.9] text-white/50 font-light animate-fade-up delay-2 mb-10">
+              Whether it's a napkin sketch or a working MVP — if you've got the grit, E-Cell has the network, mentors, and micro-grants to get you off the ground.
+            </p>
+          </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#020817] to-transparent pointer-events-none" />
-      </div>
-
-      {/* ── FORM ── */}
-      <section className="section-base bg-[#020817]">
-        <div className="section-container">
-          <div className="grid grid-cols-[1fr_420px] gap-16 items-start max-lg:grid-cols-1 max-lg:gap-12">
-            {/* Left: Form */}
-            <div>
+          {/* Right: Form */}
+          <RevealOnScroll delay={1}>
+            <div className="classic-form-box backdrop-blur-md">
               {/* Step indicator */}
-              <div className="flex items-center mb-12">
+              <div className="flex items-center mb-10 border-b border-white/[0.06] pb-8">
                 <div className="step-indicator gap-0 flex items-center">
                   {[1, 2, 3].map((s, i) => (
                     <div key={s} className="flex items-center">
-                      <div
-                        className={`step-dot ${
-                          step === s ? "active" : step > s ? "done" : ""
-                        }`}
-                      >
+                      <div className={`step-dot !w-8 !h-8 !text-[10px] ${step === s ? "active" : step > s ? "done" : "border-white/10 text-white/20"}`}>
                         {step > s ? (
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -233,345 +382,21 @@ export default function SubmitIdeaPage() {
                           s
                         )}
                       </div>
-                      {i < 2 && <div className={`step-line ${step > s ? "done" : ""}`} />}
+                      {i < 2 && <div className={`step-line !w-12 mx-2 ${step > s ? "done bg-[var(--green-lt)]" : "bg-white/[0.05]"}`} />}
                     </div>
                   ))}
                 </div>
-                <div className="ml-6">
-                  <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[var(--green-lt)] opacity-70">
-                    Step {step} of 3
-                  </p>
-                  <p className="text-[14px] text-white/60 font-light">
-                    {step === 1 && "About You"}
-                    {step === 2 && "Your Idea"}
-                    {step === 3 && "Review & Submit"}
-                  </p>
-                </div>
               </div>
 
-              {/* ─── STEP 1 ─── */}
-              {step === 1 && (
-                <div className="space-y-4 animate-scale-in">
-                  <h2 className="font-['Bebas_Neue',sans-serif] text-[36px] text-white tracking-[0.02em] mb-8 leading-none">
-                    First, tell us about yourself.
-                  </h2>
-
-                  <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
-                    <div>
-                      <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Aryan Mehta"
-                        className="form-input"
-                        value={formData.name}
-                        onChange={(e) => update("name", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="aryan@woxsen.edu.in"
-                        className="form-input"
-                        value={formData.email}
-                        onChange={(e) => update("email", e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                      Phone Number{" "}
-                      <span className="text-white/20 normal-case tracking-normal font-sans">(optional)</span>
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder="+91 98765 43210"
-                      className="form-input"
-                      value={formData.phone}
-                      onChange={(e) => update("phone", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="pt-6">
-                    <Button
-                      onClick={() => setStep(2)}
-                      disabled={!canProceedStep1}
-                      variant="primary"
-                      className="min-w-0"
-                    >
-                      Next: Your Idea →
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {/* ─── STEP 2 ─── */}
-              {step === 2 && (
-                <div className="space-y-5 animate-scale-in">
-                  <h2 className="font-['Bebas_Neue',sans-serif] text-[36px] text-white tracking-[0.02em] mb-8 leading-none">
-                    Tell us about the idea.
-                  </h2>
-
-                  <div>
-                    <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                      Idea / Venture Name *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. SkillStack, GreenRoot..."
-                      className="form-input"
-                      value={formData.ideaTitle}
-                      onChange={(e) => update("ideaTitle", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
-                    <div>
-                      <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                        Domain *
-                      </label>
-                      <select
-                        className="form-input"
-                        value={formData.domain}
-                        onChange={(e) => update("domain", e.target.value)}
-                      >
-                        <option value="">Select domain</option>
-                        {domains.map((d) => (
-                          <option key={d.value} value={d.value}>
-                            {d.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                        Team Size
-                      </label>
-                      <select
-                        className="form-input"
-                        value={formData.teamSize}
-                        onChange={(e) => update("teamSize", e.target.value)}
-                      >
-                        <option value="">Just me (solo)</option>
-                        <option value="2">2 people</option>
-                        <option value="3-4">3–4 people</option>
-                        <option value="5+">5+ people</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Stage selector */}
-                  <div>
-                    <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-3">
-                      Current Stage *
-                    </label>
-                    <div className="grid grid-cols-2 gap-2.5 max-sm:grid-cols-1">
-                      {stages.map((s) => (
-                        <button
-                          key={s.value}
-                          type="button"
-                          onClick={() => update("stage", s.value)}
-                          className={`btn-base text-left px-5 py-4 rounded-lg border transition-all duration-200 cursor-pointer ${
-                            formData.stage === s.value
-                              ? "border-[var(--green-lt)] bg-[rgba(76,175,98,0.08)] "
-                              : "border-white/[0.07] bg-white/[0.02] hover:border-white/15"
-                          }`}
-                          id={`stage-${s.value}`}
-                        >
-                          <p className={`text-[13px] font-medium mb-0.5 ${formData.stage === s.value ? "text-[var(--green-lt)]" : "text-white/70"}`}>
-                            {s.label}
-                          </p>
-                          <p className="text-[11px] text-white/30 font-light">{s.desc}</p>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                      Describe Your Idea *{" "}
-                      <span className="text-white/20 normal-case tracking-normal font-sans">(min 30 chars)</span>
-                    </label>
-                    <textarea
-                      placeholder="What problem are you solving? Who's the customer? What's the insight? (Be concise — we love crisp thinking)"
-                      className="form-input h-36 resize-none"
-                      value={formData.description}
-                      onChange={(e) => update("description", e.target.value)}
-                    />
-                    <p className={`mt-1.5 font-mono text-[9px] tracking-wide ${formData.description.length >= 30 ? "text-[var(--green-lt)]/60" : "text-white/20"}`}>
-                      {formData.description.length} / 30+ chars
-                    </p>
-                  </div>
-
-                  <div>
-                    <label className="block font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-2">
-                      Website / Deck Link{" "}
-                      <span className="text-white/20 normal-case tracking-normal font-sans">(optional)</span>
-                    </label>
-                    <input
-                      type="url"
-                      placeholder="https://..."
-                      className="form-input"
-                      value={formData.website}
-                      onChange={(e) => update("website", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="flex gap-3 pt-4">
-                    <Button
-                      onClick={() => setStep(1)}
-                      variant="ghost"
-                      className="min-w-0"
-                    >
-                      ← Back
-                    </Button>
-                    <Button
-                      onClick={() => setStep(3)}
-                      disabled={!canProceedStep2}
-                      variant="primary"
-                      className="min-w-0"
-                    >
-                      Review →
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {/* ─── STEP 3 ─── */}
-              {step === 3 && (
-                <div className="animate-scale-in">
-                  <h2 className="font-['Bebas_Neue',sans-serif] text-[36px] text-white tracking-[0.02em] mb-8 leading-none">
-                    Review & Submit.
-                  </h2>
-
-                  <div className="space-y-3 mb-8">
-                    {[
-                      { label: "Name", value: formData.name },
-                      { label: "Email", value: formData.email },
-                      { label: "Idea", value: formData.ideaTitle },
-                      { label: "Domain", value: domains.find((d) => d.value === formData.domain)?.label ?? formData.domain },
-                      { label: "Stage", value: stages.find((s) => s.value === formData.stage)?.label ?? formData.stage },
-                      { label: "Description", value: formData.description },
-                      ...(formData.phone ? [{ label: "Phone", value: formData.phone }] : []),
-                      ...(formData.website ? [{ label: "Website", value: formData.website }] : []),
-                    ].map((item) => (
-                      <div
-                        key={item.label}
-                        className="flex gap-4 py-3.5 border-b border-white/[0.04] last:border-b-0"
-                      >
-                        <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-white/30 w-20 shrink-0 pt-0.5">
-                          {item.label}
-                        </span>
-                        <span className="text-[13px] text-white/65 font-light leading-[1.6]">
-                          {item.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {error && (
-                    <p className="mb-4 text-red-400/70 font-mono text-[10px] tracking-[0.12em] uppercase">
-                      {error}
-                    </p>
-                  )}
-
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={() => setStep(2)}
-                      variant="ghost"
-                      className="min-w-0"
-                    >
-                      ← Edit
-                    </Button>
-                    <Button
-                      onClick={handleSubmit}
-                      disabled={submitting}
-                      variant="primary"
-                      className="min-w-0"
-                      id="submit-idea-button"
-                    >
-                      {submitting ? "Submitting..." : "Submit My Idea →"}
-                    </Button>
-                  </div>
-                </div>
-              )}
+              {step === 1 && <Step1 formData={formData} update={update} onNext={() => setStep(2)} canProceed={canProceedStep1} />}
+              {step === 2 && <Step2 formData={formData} update={update} onNext={() => setStep(3)} onPrev={() => setStep(1)} canProceed={canProceedStep2} />}
+              {step === 3 && <Step3 formData={formData} onPrev={() => setStep(2)} onSubmit={handleSubmit} submitting={submitting} error={error} />}
             </div>
+          </RevealOnScroll>
 
-            {/* Right: Context */}
-            <RevealOnScroll delay={2} className="max-lg:order-first">
-              <div className="sticky top-28 space-y-4">
-                {/* What we offer */}
-                <div className="card-pad bg-white/[0.02] border border-white/[0.06] rounded-2xl">
-                  <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-[var(--green-lt)] mb-5 opacity-70">
-                    What You Get
-                  </p>
-                  <div className="space-y-5">
-                    {[
-                      {
-                        icon: "🎯",
-                        title: "1:1 Mentorship",
-                        desc: "Matched with a founder or operator who's been there.",
-                      },
-                      {
-                        icon: "💰",
-                        title: "Micro-Grants",
-                        desc: "₹50K–2L in equity-free grants for qualifying ideas.",
-                      },
-                      {
-                        icon: "🌐",
-                        title: "Network Access",
-                        desc: "Tap into our 40+ mentor network and VC connections.",
-                      },
-                      {
-                        icon: "🛠",
-                        title: "Resources & Tools",
-                        desc: "Legal help, cloud credits, workspace access, and more.",
-                      },
-                    ].map((item) => (
-                      <div key={item.title} className="flex items-start gap-3.5">
-                        <span className="text-xl shrink-0">{item.icon}</span>
-                        <div>
-                          <p className="text-[13px] font-medium text-white mb-1">{item.title}</p>
-                          <p className="text-[12px] text-white/40 font-light leading-[1.6]">{item.desc}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Social proof */}
-                <div className="card-pad bg-[rgba(30,107,46,0.05)] border border-[rgba(30,107,46,0.15)] rounded-2xl">
-                  <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-[var(--green-lt)] mb-4 opacity-70">
-                    By the Numbers
-                  </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { v: "24+", l: "Startups Backed" },
-                      { v: "₹18L+", l: "Grants Given" },
-                      { v: "7", l: "Revenue-Positive" },
-                      { v: "48h", l: "Response Time" },
-                    ].map((s) => (
-                      <div key={s.l}>
-                        <div className="font-['Bebas_Neue',sans-serif] text-[28px] text-[var(--green-lt)] leading-none mb-1">
-                          {s.v}
-                        </div>
-                        <div className="font-mono text-[9px] tracking-[0.12em] uppercase text-white/30">
-                          {s.l}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </RevealOnScroll>
-          </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 }
+

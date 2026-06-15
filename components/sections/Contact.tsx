@@ -101,39 +101,48 @@ export default function Contact() {
             </div>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={2}>
-            <div className="card-pad bg-white/[0.02] border border-white/[0.06] rounded-2xl text-center">
-              <h3 className="font-['Bebas_Neue',sans-serif] text-4xl text-white mb-2.5 tracking-[0.03em]">
+          <RevealOnScroll delay={1}>
+            <div className="classic-form-box backdrop-blur-md !mt-0">
+              <h3 className="font-['Bebas_Neue',sans-serif] text-[32px] text-white tracking-[0.02em] mb-3 leading-none text-center">
                 Send Us a Message
               </h3>
-              <p className="text-[13px] text-white/45 font-light leading-[1.7] mb-6.5">
+              <p className="text-[13px] text-white/50 font-light leading-[1.7] mb-8 text-center">
                 Tell us about your idea, project, or how you want to get involved.
               </p>
-              <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-2 gap-3 mb-3 max-sm:grid-cols-1">
-                  <input
-                    type="text" placeholder="Your Name" required
-                    className="form-input"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    disabled={isSubmitting}
-                    suppressHydrationWarning
-                  />
-                  <input
-                    type="email" placeholder="Email Address" required
-                    className="form-input"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    disabled={isSubmitting}
-                    suppressHydrationWarning
-                  />
+              <form onSubmit={handleSubmit} className="text-left">
+                <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 mb-2">
+                  <div className="form-field-group !mb-0">
+                    <label>Your Name *</label>
+                    <input
+                      type="text" placeholder="John Doe" required
+                      className="form-input"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      disabled={isSubmitting}
+                      suppressHydrationWarning
+                    />
+                  </div>
+                  <div className="form-field-group !mb-0">
+                    <label>Email Address *</label>
+                    <input
+                      type="email" placeholder="john@example.com" required
+                      className="form-input"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      disabled={isSubmitting}
+                      suppressHydrationWarning
+                    />
+                  </div>
                 </div>
-                <div className="mb-3">
+
+                <div className="form-field-group mt-4">
+                  <label>Select Enquiry Type *</label>
                   <select
                     className="form-input"
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                     disabled={isSubmitting}
+                    required
                     suppressHydrationWarning
                   >
                     <option value="">Select enquiry type</option>
@@ -143,29 +152,35 @@ export default function Contact() {
                     <option value="other">Other</option>
                   </select>
                 </div>
-                <div className="mb-3">
+
+                <div className="form-field-group">
+                  <label>Your Message *</label>
                   <textarea
-                    placeholder="Your message..."
-                    className="form-input h-24 resize-none"
+                    placeholder="How can we help?" required
+                    className="form-input h-28 resize-none"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     disabled={isSubmitting}
                     suppressHydrationWarning
                   />
                 </div>
+
                 {statusMessage && (
-                  <div className={`mb-3 text-[13px] ${statusMessage.includes("Failed") ? "text-red-500" : "text-green-600"}`}>
+                  <p className={`mb-6 font-mono text-[11px] tracking-[0.12em] uppercase p-3 rounded-[4px] border ${statusMessage.includes("Failed") ? "bg-red-400/10 text-red-400/80 border-red-400/20" : "bg-[var(--green-lt)]/10 text-[var(--green-lt)] border-[var(--green-lt)]/20"}`}>
                     {statusMessage}
-                  </div>
+                  </p>
                 )}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full bg-[var(--navy)] text-white py-3.5 font-mono text-[11px] tracking-[0.12em] uppercase border-none rounded-lg transition-colors duration-200 hover:bg-[var(--navy-mid)] mt-2 cursor-pointer ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
-                  suppressHydrationWarning
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </button>
+
+                <div className="pt-2">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    variant="primary"
+                    className="min-w-0 w-full justify-center rounded-[4px] py-4"
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message →"}
+                  </Button>
+                </div>
               </form>
             </div>
           </RevealOnScroll>
