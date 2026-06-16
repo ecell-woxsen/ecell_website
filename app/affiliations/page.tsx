@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Affiliations from "@/components/sections/Affiliations";
+import Affiliations from "@/components/archive/Affiliations";
 
 export const metadata: Metadata = {
   title: "Affiliations & Partners — E-Cell Woxsen",
