@@ -36,6 +36,8 @@ const DEFAULT_CONFIG: BlobConfig = {
   thresholds: [0.18, 0.20, 0.23], // Thresholds for large, medium, small layers
   edgeWidths: [0.07, 0.07, 0.07], // Soft outer boundaries
   bgGlowIntensity: 0.18,
+  orbitStrength: 0.18, // Subtle rotation acceleration
+  orbitPullStrength: 0.12, // Gentle centering force towards logo
 };
 
 interface SimulationPlaneProps {
@@ -47,6 +49,7 @@ interface SimulationPlaneProps {
   initBlobs: (aspect: number) => void;
   initBgGlows: (aspect: number) => void;
   mousePosRef: React.MutableRefObject<{ x: number; y: number; vx: number; vy: number; active: boolean }>;
+  logoPosRef: React.MutableRefObject<{ px: number; py: number; active: boolean }>;
   reducedMotion: boolean;
 }
 
@@ -59,6 +62,7 @@ function SimulationPlane({
   initBlobs,
   initBgGlows,
   mousePosRef,
+  logoPosRef,
   reducedMotion,
 }: SimulationPlaneProps) {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
@@ -105,6 +109,11 @@ function SimulationPlane({
     const blobs = blobsRef.current;
     const bgGlows = bgGlowsRef.current;
 
+    // Retrieve logo coordinates (in normalized [0, 1] container space) and scale X by aspect
+    const logo = logoPosRef.current;
+    const cx = logo.active ? logo.px * aspect : aspect * 0.78;
+    const cy = logo.active ? logo.py : 0.5;
+
     // Reduced motion modifiers (accessibility scaling)
     const motionScale = reducedMotion ? 0.12 : 1.0;
     const deformScale = reducedMotion ? 0.04 : 1.0;
@@ -149,6 +158,32 @@ function SimulationPlane({
 
       let ax = Math.cos(angle) * config.wanderStrength * motionScale;
       let ay = Math.sin(angle) * config.wanderStrength * motionScale;
+
+      // 4a. Orbit/revolving forces around the logo center (cx, cy)
+      const dx = cx - b.x;
+      const dy = cy - b.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist > 0.01) {
+        const dirX = dx / dist;
+        const dirY = dy / dist;
+
+        // Tangent vector for counter-clockwise revolution: (-dirY, dirX)
+        const tanX = -dirY;
+        const tanY = dirX;
+
+        const orbitStrength = config.orbitStrength ?? 0.18;
+        const orbitPullStrength = config.orbitPullStrength ?? 0.12;
+
+        // Gentle centripetal pull towards the logo
+        ax += dirX * orbitPullStrength * motionScale;
+
+        // Slow, subtle tangential force to make them orbit
+        // Scale down orbit speed when very close to center to prevent high-frequency spinning
+        const proximityFactor = Math.min(dist / 0.1, 1.0);
+        ax += tanX * orbitStrength * proximityFactor * motionScale;
+        ay += tanY * orbitStrength * proximityFactor * motionScale;
+      }
 
       // boundary repulsion (keep inside [0, aspect] x [0, 1])
       const padX = b.radius * 0.85;
@@ -327,6 +362,48 @@ export default function LiquidBlobField() {
 
   const mousePosRef = useRef({ x: 0, y: 0, vx: 0, vy: 0, active: false });
   const lastTimeRef = useRef(0);
+  const logoPosRef = useRef({ px: 0.78, py: 0.5, active: false });
+
+  // Track logo coordinates in container coordinates for dynamic orbiting
+  useEffect(() => {
+    if (!mounted) return;
+
+    const updateLogoPosition = () => {
+      const logoEl = document.getElementById("hero-logo");
+      const containerEl = containerRef.current;
+      if (logoEl && containerEl) {
+        const logoRect = logoEl.getBoundingClientRect();
+        const containerRect = containerEl.getBoundingClientRect();
+
+        const px = (logoRect.left + logoRect.width / 2 - containerRect.left) / containerRect.width;
+        const py = 1.0 - (logoRect.top + logoRect.height / 2 - containerRect.top) / containerRect.height;
+
+        logoPosRef.current = {
+          px,
+          py,
+          active: true,
+        };
+      } else {
+        // Fallback: Default to center/right area of container
+        logoPosRef.current = {
+          px: 0.78,
+          py: 0.5,
+          active: false,
+        };
+      }
+    };
+
+    updateLogoPosition();
+    window.addEventListener("resize", updateLogoPosition);
+
+    // Run slightly after mount/load transitions to handle fully resolved layout
+    const timer = setTimeout(updateLogoPosition, 300);
+
+    return () => {
+      window.removeEventListener("resize", updateLogoPosition);
+      clearTimeout(timer);
+    };
+  }, [mounted]);
 
   // Set mounted state and listen to prefers-reduced-motion media query
   useEffect(() => {
@@ -586,6 +663,7 @@ export default function LiquidBlobField() {
           initBlobs={initBlobs}
           initBgGlows={initBgGlows}
           mousePosRef={mousePosRef}
+          logoPosRef={logoPosRef}
           reducedMotion={reducedMotion}
         />
       </Canvas>

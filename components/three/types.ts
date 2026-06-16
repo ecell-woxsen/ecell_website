@@ -24,6 +24,10 @@ export interface BlobConfig {
   
   // Ambient background glow params
   bgGlowIntensity: number;
+
+  // Orbit parameters around a point/logo
+  orbitStrength?: number;
+  orbitPullStrength?: number;
 }
 
 export interface BlobState {
