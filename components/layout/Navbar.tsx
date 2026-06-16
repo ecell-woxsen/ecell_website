@@ -14,7 +14,7 @@ export default function Navbar() {
 
   // Intersection Observer for scroll spy active section highlighting
   useEffect(() => {
-    const sectionIds = ["about", "initiatives", "community", "affiliations", "contact", "newsletter"];
+    const sectionIds = ["about", "initiatives", "community", "contact", "newsletter"];
     
     const observerOptions = {
       root: null,

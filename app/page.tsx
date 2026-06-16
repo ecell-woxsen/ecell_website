@@ -5,7 +5,6 @@ import ImpactBanner from "@/components/sections/ImpactBanner";
 import Events from "@/components/sections/Events";
 import Initiatives from "@/components/sections/Initiatives";
 import PitchCTA from "@/components/sections/PitchCTA";
-import Affiliations from "@/components/sections/Affiliations";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
@@ -18,7 +17,6 @@ export default function Home() {
       <Events />
       <Initiatives />
       <PitchCTA />
-      <Affiliations />
       <Contact />
     </>
   );
