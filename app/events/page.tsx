@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import type { EventItem } from "@/data/events";
 import { events } from "@/data/events";
@@ -40,6 +42,21 @@ export default function EventsPage() {
           <p className="max-w-[540px] text-[15px] leading-[1.9] text-white/45 font-light animate-fade-up delay-3">
             From 54-hour startup sprints to intimate VC fireside chats — curated experiences for every stage of your founder journey.
           </p>
+
+          {/* Right Side Logo */}
+          <Link 
+            href="/"
+            className="absolute top-1/2 -translate-y-1/2 right-4 animate-fade-in delay-2 max-lg:hidden block cursor-pointer"
+          >
+            <Image
+              src="/ecell-logo.png"
+              alt="E-Cell Woxsen Logo"
+              width={280}
+              height={280}
+              className="w-[280px] h-[280px] object-contain opacity-95 hover:opacity-100 transition-all duration-500 hover:scale-105"
+              priority
+            />
+          </Link>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#020817] to-transparent pointer-events-none" />

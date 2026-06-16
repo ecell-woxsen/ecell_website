@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
@@ -37,6 +38,21 @@ export default function TeamPage() {
           <p className="max-w-[520px] text-[15px] leading-[1.9] text-white/45 font-light animate-fade-up delay-3">
             A tight-knit team of student founders, operators, and creatives — obsessed with building things that matter.
           </p>
+
+          {/* Right Side Logo */}
+          <Link 
+            href="/"
+            className="absolute top-1/2 -translate-y-1/2 right-4 animate-fade-in delay-2 max-lg:hidden block cursor-pointer"
+          >
+            <Image
+              src="/ecell-logo.png"
+              alt="E-Cell Woxsen Logo"
+              width={280}
+              height={280}
+              className="w-[280px] h-[280px] object-contain opacity-95 hover:opacity-100 transition-all duration-500 hover:scale-105"
+              priority
+            />
+          </Link>
         </div>
 
         {/* Bottom fade */}
