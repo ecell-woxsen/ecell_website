@@ -22,17 +22,17 @@ if (typeof window !== "undefined") {
 }
 
 const DEFAULT_CONFIG: BlobConfig = {
-  friction: 0.96,
-  wanderStrength: 0.045,
-  boundaryForceStrength: 1.3,
-  attractionStrength: 0.12,
-  repulsionStrength: 0.22,
-  mouseRadius: 0.35,
-  mousePushStrength: 0.16,
-  mouseDragStrength: 0.24,
-  springK: 22.0,
-  damperC: 3.5, // Under-damped spring constant for wobble
-  deformIntensity: 1.8,
+  friction: 0.86, // Highly viscous friction (damps speeds rapidly to prevent chaotic acceleration buildup)
+  wanderStrength: 0.002, // Minimal wandering force for slow, glassy drift
+  boundaryForceStrength: 0.3, // Gentle boundary padding
+  attractionStrength: 0.0, // Removed attraction to prevent locking blobs in merged state
+  repulsionStrength: 0.18, // Increased repulsion to push merged blobs apart dynamically
+  mouseRadius: 0.45, // Wide mouse influence radius
+  mousePushStrength: 0.08, // Very gentle, expensive-feeling push away from cursor
+  mouseDragStrength: 0.18, // Smooth velocity drag
+  springK: 6.0, // Very low spring stiffness for a smooth, lazy visual lag
+  damperC: 4.8, // Critically damped visual tracking to completely eliminate wobbly oscillations
+  deformIntensity: 1.4, // Graceful deformation amount
   thresholds: [0.18, 0.20, 0.23], // Thresholds for large, medium, small layers
   edgeWidths: [0.07, 0.07, 0.07], // Soft outer boundaries
   bgGlowIntensity: 0.18,
@@ -137,11 +137,11 @@ function SimulationPlane({
 
     // 4. Run physics simulation for liquid blobs (Layers 2, 3, and 4)
     blobs.forEach((b, i) => {
-      // wandering path force
+      // wandering path force with extremely low frequencies to avoid quick wiggles
       const wanderTime = wanderTimeRef.current;
       const angle =
-        Math.sin(wanderTime * 0.42 + b.id * 3.1) *
-        Math.cos(wanderTime * 0.22 + b.id * 7.7) *
+        Math.sin(wanderTime * 0.06 + b.id * 3.1) *
+        Math.cos(wanderTime * 0.03 + b.id * 7.7) *
         Math.PI * 2.0;
 
       let fx = Math.cos(angle) * config.wanderStrength * motionScale;
@@ -162,7 +162,8 @@ function SimulationPlane({
         fy -= (b.y - (1.0 - padY)) * config.boundaryForceStrength;
       }
 
-      // surface tension: attraction & repulsion between same-layer blobs
+      // Same-layer repulsion (no attraction force) to prevent excessive merging
+      // If blobs drift together, they will temporarily merge visually, but physics will gently push them apart to unmerge
       for (let j = 0; j < blobs.length; j++) {
         if (i === j) continue;
         const other = blobs[j];
@@ -174,17 +175,8 @@ function SimulationPlane({
         if (dist < 0.001) continue;
 
         const rSum = b.radius + other.radius;
-
-        // Attraction pulling nearby same-layer blobs together for merging
-        const mergeRange = rSum * 1.45;
-        if (dist < mergeRange && dist > rSum * 0.4) {
-          const pull = config.attractionStrength * (1.0 - dist / mergeRange) * motionScale;
-          fx += (dx / dist) * pull;
-          fy += (dy / dist) * pull;
-        }
-
-        // Repulsion preventing complete overlapping/coalescing
-        const repelRange = rSum * 0.65;
+        const repelRange = rSum * 1.15; // Repel range begins when they start to merge visually
+        
         if (dist < repelRange) {
           const push = config.repulsionStrength * (1.0 - dist / repelRange) * motionScale;
           fx -= (dx / dist) * push;
@@ -353,36 +345,28 @@ export default function LiquidBlobField() {
   const initBlobs = (aspect: number) => {
     const list: BlobState[] = [];
     
-    // Large Blobs (Layer 2) - 70% blue, 20% green, 10% white split
+    // Large Blobs (Layer 2) - 3 blobs (3 blue)
     const largeParams: Array<{ radius: number; color: [number, number, number] }> = [
-      { radius: 0.12, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.13, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.11, color: [0.0902, 0.2392, 0.5608] }, // Blue
       { radius: 0.14, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.125, color: [0.2471, 0.7490, 0.3725] }, // Green
+      { radius: 0.15, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.13, color: [0.0902, 0.2392, 0.5608] }, // Blue
     ];
 
-    // Medium Blobs (Layer 3)
+    // Medium Blobs (Layer 3) - 4 blobs (3 blue, 1 green)
     const mediumParams: Array<{ radius: number; color: [number, number, number] }> = [
-      { radius: 0.08, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.085, color: [0.0902, 0.2392, 0.5608] }, // Blue
       { radius: 0.09, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.075, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.088, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.082, color: [0.2471, 0.7490, 0.3725] }, // Green
-      { radius: 0.078, color: [1.0, 1.0, 1.0] }, // White
+      { radius: 0.095, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.085, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.08, color: [0.2471, 0.7490, 0.3725] }, // Green
     ];
 
-    // Small Blobs (Layer 4)
+    // Small Blobs (Layer 4) - 5 blobs (2 blue, 2 green, 1 white)
     const smallParams: Array<{ radius: number; color: [number, number, number] }> = [
-      { radius: 0.05, color: [0.0902, 0.2392, 0.5608] }, // Blue
       { radius: 0.055, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.048, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.045, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.052, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.058, color: [0.2471, 0.7490, 0.3725] }, // Green
-      { radius: 0.042, color: [0.2471, 0.7490, 0.3725] }, // Green
-      { radius: 0.047, color: [1.0, 1.0, 1.0] }, // White
+      { radius: 0.06, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.05, color: [0.2471, 0.7490, 0.3725] }, // Green
+      { radius: 0.045, color: [0.2471, 0.7490, 0.3725] }, // Green
+      { radius: 0.048, color: [1.0, 1.0, 1.0] }, // White
     ];
 
     let id = 0;
@@ -392,7 +376,7 @@ export default function LiquidBlobField() {
         const y = Math.random() * (1.0 - p.radius * 2.2) + p.radius * 1.1;
 
         const angle = Math.random() * Math.PI * 2;
-        const speed = 0.008 + Math.random() * 0.012; // slow organic baseline drift
+        const speed = 0.002 + Math.random() * 0.003; // Slow, premium baseline drift
         const vx = Math.cos(angle) * speed;
         const vy = Math.sin(angle) * speed;
         const mass = p.radius * p.radius; // physical scaling
@@ -418,6 +402,25 @@ export default function LiquidBlobField() {
     addBlobs(largeParams, 2);
     addBlobs(mediumParams, 3);
     addBlobs(smallParams, 4);
+
+    // Pad the remaining 8 slots with invisible dummy blobs to satisfy GLSL uniform constraints
+    while (list.length < 20) {
+      list.push({
+        id: id++,
+        x: 0.0,
+        y: 0.0,
+        vx: 0.0,
+        vy: 0.0,
+        radius: 0.0, // Size 0 makes it completely invisible in shader evaluations
+        mass: 1.0,
+        layer: 2,
+        color: [0, 0, 0],
+        visualX: 0.0,
+        visualY: 0.0,
+        visualVx: 0.0,
+        visualVy: 0.0,
+      });
+    }
 
     blobsRef.current = list;
     isInitialized.current = true;
@@ -484,47 +487,64 @@ export default function LiquidBlobField() {
     };
   }, []);
 
-  // Compute container-relative mouse coordinates & velocities
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = 1.0 - (e.clientY - rect.top) / rect.height; // WebGL is Y-up
+  // Register global window pointer listeners to bypass z-index pointer event blocking from absolute/relative text content overlays
+  useEffect(() => {
+    if (!mounted) return;
 
-    const now = performance.now();
-    const dt = (now - lastTimeRef.current) / 1000;
+    const handleGlobalPointerMove = (e: PointerEvent) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = 1.0 - (e.clientY - rect.top) / rect.height; // WebGL is Y-up
 
-    const aspect = lastAspect.current;
-    const targetMx = px * aspect;
-    const targetMy = py;
+      const now = performance.now();
+      const dt = (now - lastTimeRef.current) / 1000;
 
-    let vx = 0;
-    let vy = 0;
-    if (dt > 0.001) {
-      vx = (targetMx - mousePosRef.current.x) / dt;
-      vy = (targetMy - mousePosRef.current.y) / dt;
-    }
+      // Check if cursor is actually inside the container boundaries
+      const isInside = px >= 0.0 && px <= 1.0 && py >= 0.0 && py <= 1.0;
 
-    mousePosRef.current = {
-      x: targetMx,
-      y: targetMy,
-      vx: THREE.MathUtils.clamp(vx, -4, 4), // Clamp to prevent visual jitter
-      vy: THREE.MathUtils.clamp(vy, -4, 4),
-      active: true,
+      if (isInside) {
+        const aspect = lastAspect.current;
+        const targetMx = px * aspect;
+        const targetMy = py;
+
+        let vx = 0;
+        let vy = 0;
+        if (dt > 0.001) {
+          vx = (targetMx - mousePosRef.current.x) / dt;
+          vy = (targetMy - mousePosRef.current.y) / dt;
+        }
+
+        mousePosRef.current = {
+          x: targetMx,
+          y: targetMy,
+          vx: THREE.MathUtils.clamp(vx, -4, 4),
+          vy: THREE.MathUtils.clamp(vy, -4, 4),
+          active: true,
+        };
+        lastTimeRef.current = now;
+      } else {
+        mousePosRef.current.active = false;
+        mousePosRef.current.vx = 0;
+        mousePosRef.current.vy = 0;
+      }
     };
-    lastTimeRef.current = now;
-  };
 
-  const handlePointerLeave = () => {
-    mousePosRef.current.active = false;
-    mousePosRef.current.vx = 0;
-    mousePosRef.current.vy = 0;
-  };
+    const handleGlobalPointerLeave = () => {
+      mousePosRef.current.active = false;
+      mousePosRef.current.vx = 0;
+      mousePosRef.current.vy = 0;
+    };
 
-  const handlePointerEnter = () => {
-    mousePosRef.current.active = true;
-    lastTimeRef.current = performance.now();
-  };
+    window.addEventListener("pointermove", handleGlobalPointerMove);
+    document.addEventListener("pointerleave", handleGlobalPointerLeave);
+
+    return () => {
+      window.removeEventListener("pointermove", handleGlobalPointerMove);
+      document.removeEventListener("pointerleave", handleGlobalPointerLeave);
+    };
+  }, [mounted]);
 
   // SSR Fallback matches standard branding colors and glow layouts
   if (!mounted) {
@@ -544,9 +564,6 @@ export default function LiquidBlobField() {
   return (
     <div
       ref={containerRef}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      onPointerEnter={handlePointerEnter}
       className="absolute inset-0 z-0 pointer-events-auto"
     >
       <Canvas
