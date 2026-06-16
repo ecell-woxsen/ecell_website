@@ -190,7 +190,7 @@ function InitiativesPageContent() {
       </div>
 
       {/* ── INTERACTIVE TAB SELECTOR ── */}
-      <section className="bg-[#020817] py-6 border-b border-white/[0.04] sticky top-[68px] z-50 backdrop-blur-md bg-[#020817]/80">
+      <section className="bg-[#020817] py-6 border-b border-white/[0.04]">
         <div className="section-container px-4 sm:px-6">
           <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none justify-start lg:justify-center max-w-full">
             {initiativesDetails.map((init) => (
