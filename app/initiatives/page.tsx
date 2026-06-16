@@ -88,24 +88,6 @@ function getAccentBorderClass(id: string) {
   }
 }
 
-// Dynamic active state border / bg mapping for tabs
-function getActiveTabClasses(id: string, activeId: string) {
-  if (id !== activeId) {
-    return "border-white/[0.06] bg-white/[0.01] text-white/50 hover:text-white hover:border-white/20";
-  }
-  switch (id) {
-    case "launchpad":
-      return "border-[var(--green-lt)]/40 bg-[rgba(30,107,46,0.08)] text-white shadow-[0_0_20px_rgba(76,175,98,0.08)]";
-    case "founder-lab":
-      return "border-cyan-400/40 bg-cyan-950/20 text-white shadow-[0_0_20px_rgba(6,182,212,0.08)]";
-    case "speaker-circuit":
-      return "border-indigo-400/40 bg-indigo-950/20 text-white shadow-[0_0_20px_rgba(99,102,241,0.08)]";
-    case "community-fund":
-      return "border-emerald-400/40 bg-emerald-950/20 text-white shadow-[0_0_20px_rgba(16,185,129,0.08)]";
-    default:
-      return "border-[var(--green-lt)]/40 bg-[rgba(30,107,46,0.08)] text-white";
-  }
-}
 
 function InitiativesPageContent() {
   const searchParams = useSearchParams();
@@ -194,20 +176,15 @@ function InitiativesPageContent() {
       {/* ── INTERACTIVE TAB SELECTOR ── */}
       <section className="bg-[#020817] py-6 border-b border-white/[0.04] sticky top-[68px] z-50 backdrop-blur-md bg-[#020817]/80">
         <div className="section-container px-4 sm:px-6">
-          <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none justify-start lg:justify-between max-w-full">
+          <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none justify-start lg:justify-center max-w-full">
             {initiativesDetails.map((init) => (
-              <button
+              <Button
                 key={init.id}
                 onClick={() => handleTabChange(init.id)}
-                className={`flex items-center gap-3.5 px-6 py-4 rounded-xl border font-mono text-[11px] uppercase tracking-[0.12em] transition-all duration-300 min-w-[200px] cursor-pointer ${getActiveTabClasses(
-                  init.id,
-                  selectedInitiative.id
-                )}`}
+                variant={selectedInitiative.id === init.id ? "primary" : "ghost"}
               >
-                <span className="text-[10px] opacity-40 font-bold">{init.number}</span>
-                <span className="flex-1 text-left font-medium">{init.title}</span>
-                {getIconForInitiative(init.id, "w-4 h-4 opacity-75")}
-              </button>
+                {init.title}
+              </Button>
             ))}
           </div>
         </div>
