@@ -15,13 +15,13 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
       {/* Top Right Badge */}
-      <div className="absolute top-[130px] right-[72px] flex flex-col items-center gap-3 animate-fade-in max-lg:hidden">
+      <div className="absolute top-1/2 -translate-y-1/2 right-[72px] flex flex-col items-center gap-3 animate-fade-in max-lg:hidden">
         <Image
           src="/ecell-logo.png"
           alt="E-Cell Woxsen"
-          width={100}
-          height={100}
-          className="w-[240px] h-[240px] object-contain"
+          width={480}
+          height={480}
+          className="w-[480px] h-[480px] object-contain"
           priority
         />
 
