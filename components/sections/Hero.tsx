@@ -1,21 +1,22 @@
 import Image from "next/image";
 import { siteConfig } from "@/data/site";
 import Button from "@/components/ui/Button";
+import LiquidBlobField from "@/components/three/LiquidBlobField";
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen overflow-hidden bg-[#020817] px-16 pb-[90px] pt-36 flex flex-col justify-center max-lg:px-8 max-lg:pb-20"
+      className="relative min-h-screen overflow-hidden bg-[#020B22] px-16 pb-[90px] pt-36 flex flex-col justify-center max-lg:px-8 max-lg:pb-20"
     >
-      {/* Background Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(22,163,74,0.08),transparent_35%)]" />
+      {/* Dynamic Liquid Blob Field */}
+      <LiquidBlobField />
 
       {/* Noise Overlay */}
-      <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/20 pointer-events-none z-1" />
 
       {/* Top Right Badge */}
-      <div className="absolute top-1/2 -translate-y-1/2 right-[72px] flex flex-col items-center gap-3 animate-fade-in max-lg:hidden">
+      <div className="absolute top-1/2 -translate-y-1/2 right-[72px] flex flex-col items-center gap-3 animate-fade-in z-10 max-lg:hidden">
         <Image
           src="/ecell-logo.png"
           alt="E-Cell Woxsen"
@@ -31,7 +32,7 @@ export default function Hero() {
       </div>
 
       {/* Navbar Spacer Line */}
-      <div className="absolute top-[90px] left-0 w-full h-px bg-white/[0.06]" />
+      <div className="absolute top-[90px] left-0 w-full h-px bg-white/[0.06] z-10" />
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-[760px]" style={{ marginLeft: "clamp(40px, 18%, 50px)" }}>
@@ -67,7 +68,7 @@ export default function Hero() {
       </div>
 
       {/* Stats */}
-      <div className="absolute bottom-[95px] right-20 flex gap-14 animate-fade-up delay-5 max-xl:hidden">
+      <div className="absolute bottom-[95px] right-20 flex gap-14 animate-fade-up delay-5 z-10 max-xl:hidden">
         {Object.values(siteConfig.stats).map((stat) => (
           <div key={stat.label} className="text-right">
             <div className="font-['Bebas_Neue',sans-serif] text-[46px] leading-none text-[var(--green-lt)]">
