@@ -22,14 +22,14 @@ if (typeof window !== "undefined") {
 }
 
 const DEFAULT_CONFIG: BlobConfig = {
-  friction: 0.86, // Highly viscous friction (damps speeds rapidly to prevent chaotic acceleration buildup)
-  wanderStrength: 0.002, // Minimal wandering force for slow, glassy drift
-  boundaryForceStrength: 0.3, // Gentle boundary padding
+  friction: 0.90, // Smooth viscous friction for elegant continuous drift
+  wanderStrength: 0.035, // Coordinated drift acceleration to prevent stationary clustering
+  boundaryForceStrength: 1.2, // Firm boundary steering
   attractionStrength: 0.0, // Removed attraction to prevent locking blobs in merged state
-  repulsionStrength: 0.18, // Increased repulsion to push merged blobs apart dynamically
+  repulsionStrength: 0.22, // Decisive repulsion to push merged blobs apart
   mouseRadius: 0.45, // Wide mouse influence radius
-  mousePushStrength: 0.08, // Very gentle, expensive-feeling push away from cursor
-  mouseDragStrength: 0.18, // Smooth velocity drag
+  mousePushStrength: 0.18, // Decisive cursor push acceleration
+  mouseDragStrength: 0.28, // Decisive cursor drag acceleration
   springK: 6.0, // Very low spring stiffness for a smooth, lazy visual lag
   damperC: 4.8, // Critically damped visual tracking to completely eliminate wobbly oscillations
   deformIntensity: 1.4, // Graceful deformation amount
@@ -137,29 +137,32 @@ function SimulationPlane({
 
     // 4. Run physics simulation for liquid blobs (Layers 2, 3, and 4)
     blobs.forEach((b, i) => {
-      // wandering path force with extremely low frequencies to avoid quick wiggles
+      // Skip inactive dummy blobs
+      if (b.radius <= 0.0001) return;
+
+      // wandering path acceleration with extremely low frequencies to avoid quick wiggles
       const wanderTime = wanderTimeRef.current;
       const angle =
         Math.sin(wanderTime * 0.06 + b.id * 3.1) *
         Math.cos(wanderTime * 0.03 + b.id * 7.7) *
         Math.PI * 2.0;
 
-      let fx = Math.cos(angle) * config.wanderStrength * motionScale;
-      let fy = Math.sin(angle) * config.wanderStrength * motionScale;
+      let ax = Math.cos(angle) * config.wanderStrength * motionScale;
+      let ay = Math.sin(angle) * config.wanderStrength * motionScale;
 
       // boundary repulsion (keep inside [0, aspect] x [0, 1])
       const padX = b.radius * 0.85;
       if (b.x < padX) {
-        fx += (padX - b.x) * config.boundaryForceStrength;
+        ax += (padX - b.x) * config.boundaryForceStrength;
       } else if (b.x > aspect - padX) {
-        fx -= (b.x - (aspect - padX)) * config.boundaryForceStrength;
+        ax -= (b.x - (aspect - padX)) * config.boundaryForceStrength;
       }
 
       const padY = b.radius * 0.85;
       if (b.y < padY) {
-        fy += (padY - b.y) * config.boundaryForceStrength;
+        ay += (padY - b.y) * config.boundaryForceStrength;
       } else if (b.y > 1.0 - padY) {
-        fy -= (b.y - (1.0 - padY)) * config.boundaryForceStrength;
+        ay -= (b.y - (1.0 - padY)) * config.boundaryForceStrength;
       }
 
       // Same-layer repulsion (no attraction force) to prevent excessive merging
@@ -167,6 +170,7 @@ function SimulationPlane({
       for (let j = 0; j < blobs.length; j++) {
         if (i === j) continue;
         const other = blobs[j];
+        if (other.radius <= 0.0001) continue;
         if (b.layer !== other.layer) continue;
 
         const dx = other.x - b.x;
@@ -179,8 +183,8 @@ function SimulationPlane({
         
         if (dist < repelRange) {
           const push = config.repulsionStrength * (1.0 - dist / repelRange) * motionScale;
-          fx -= (dx / dist) * push;
-          fy -= (dy / dist) * push;
+          ax -= (dx / dist) * push;
+          ay -= (dy / dist) * push;
         }
       }
 
@@ -196,21 +200,18 @@ function SimulationPlane({
           // radial push force
           const push = config.mousePushStrength * ratio * motionScale;
           if (mDist > 0.001) {
-            fx += (mdx / mDist) * push;
-            fy += (mdy / mDist) * push;
+            ax += (mdx / mDist) * push;
+            ay += (mdy / mDist) * push;
           }
 
           // viscous drag coupling
           const drag = config.mouseDragStrength * ratio * motionScale;
-          fx += mvx * drag;
-          fy += mvy * drag;
+          ax += mvx * drag;
+          ay += mvy * drag;
         }
       }
 
-      // integrate forces
-      const ax = fx / b.mass;
-      const ay = fy / b.mass;
-
+      // integrate accelerations directly into velocity and position
       b.vx = (b.vx + ax * dt) * config.friction;
       b.vy = (b.vy + ay * dt) * config.friction;
 
