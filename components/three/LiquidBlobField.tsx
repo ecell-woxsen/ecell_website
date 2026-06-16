@@ -23,13 +23,13 @@ if (typeof window !== "undefined") {
 
 const DEFAULT_CONFIG: BlobConfig = {
   friction: 0.90, // Smooth viscous friction for elegant continuous drift
-  wanderStrength: 0.035, // Coordinated drift acceleration to prevent stationary clustering
-  boundaryForceStrength: 1.2, // Firm boundary steering
+  wanderStrength: 0.22, // Coordinated drift acceleration to prevent stationary clustering
+  boundaryForceStrength: 5.0, // Firm boundary steering
   attractionStrength: 0.0, // Removed attraction to prevent locking blobs in merged state
-  repulsionStrength: 0.22, // Decisive repulsion to push merged blobs apart
+  repulsionStrength: 2.8, // Decisive repulsion to push merged blobs apart
   mouseRadius: 0.45, // Wide mouse influence radius
-  mousePushStrength: 0.18, // Decisive cursor push acceleration
-  mouseDragStrength: 0.28, // Decisive cursor drag acceleration
+  mousePushStrength: 6.0, // Strong responsive cursor push acceleration
+  mouseDragStrength: 2.5, // Responsive cursor drag velocity coupling acceleration
   springK: 6.0, // Very low spring stiffness for a smooth, lazy visual lag
   damperC: 4.8, // Critically damped visual tracking to completely eliminate wobbly oscillations
   deformIntensity: 1.4, // Graceful deformation amount
