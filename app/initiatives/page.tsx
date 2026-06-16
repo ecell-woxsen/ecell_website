@@ -88,6 +88,22 @@ function getAccentBorderClass(id: string) {
   }
 }
 
+// Dynamic active tab color override utility
+function getActiveTabColorClass(id: string, activeId: string) {
+  if (id !== activeId) return "";
+  switch (id) {
+    case "launchpad":
+      return "!bg-[var(--green)] !border-[var(--green)] hover:!bg-[var(--green-mid)] shadow-[0_0_15px_rgba(76,175,98,0.2)]";
+    case "founder-lab":
+      return "!bg-cyan-600 !border-cyan-600 hover:!bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.2)]";
+    case "speaker-circuit":
+      return "!bg-indigo-600 !border-indigo-600 hover:!bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.2)]";
+    case "community-fund":
+      return "!bg-emerald-600 !border-emerald-600 hover:!bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]";
+    default:
+      return "";
+  }
+}
 
 function InitiativesPageContent() {
   const searchParams = useSearchParams();
@@ -182,6 +198,7 @@ function InitiativesPageContent() {
                 key={init.id}
                 onClick={() => handleTabChange(init.id)}
                 variant={selectedInitiative.id === init.id ? "primary" : "ghost"}
+                className={getActiveTabColorClass(init.id, selectedInitiative.id)}
               >
                 {init.title}
               </Button>
