@@ -40,7 +40,10 @@ export default defineSchema({
     email: v.string(),
     name: v.string(),
     phone: v.string(),
-    college: v.string(),
+    // legacy field — kept for backward compat with existing documents
+    college: v.optional(v.string()),
+    school: v.optional(v.string()),
+    course: v.optional(v.string()),
     year: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
@@ -52,7 +55,10 @@ export default defineSchema({
     eventTitle: v.string(),
     name: v.string(),
     phone: v.string(),
-    college: v.string(),
+    // legacy field — kept for backward compat with existing documents
+    college: v.optional(v.string()),
+    school: v.optional(v.string()),
+    course: v.optional(v.string()),
     year: v.optional(v.string()),
     registeredAt: v.number(),
   })

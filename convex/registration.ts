@@ -45,7 +45,8 @@ export const registerForEvent = mutation({
     email: v.string(),
     name: v.string(),
     phone: v.string(),
-    college: v.string(),
+    school: v.optional(v.string()),
+    course: v.optional(v.string()),
     year: v.optional(v.string()),
     eventId: v.string(),
     eventTitle: v.string(),
@@ -54,11 +55,12 @@ export const registerForEvent = mutation({
     const email = args.email.trim().toLowerCase();
     const name = args.name.trim();
     const phone = args.phone.trim();
-    const college = args.college.trim();
+    const school = args.school?.trim() || "";
+    const course = args.course?.trim() || undefined;
     const year = args.year?.trim() || undefined;
 
     // Validate required fields
-    if (!email || !name || !phone || !college) {
+    if (!email || !name || !phone || !school) {
       throw new Error("All required fields must be filled.");
     }
     if (!email.includes("@")) {
@@ -90,7 +92,8 @@ export const registerForEvent = mutation({
       await ctx.db.patch(existingProfile._id, {
         name,
         phone,
-        college,
+        school,
+        course,
         year,
         updatedAt: now,
       });
@@ -100,7 +103,8 @@ export const registerForEvent = mutation({
         email,
         name,
         phone,
-        college,
+        school,
+        course,
         year,
         createdAt: now,
         updatedAt: now,
@@ -114,14 +118,15 @@ export const registerForEvent = mutation({
       eventTitle: args.eventTitle,
       name,
       phone,
-      college,
+      school,
+      course,
       year,
       registeredAt: now,
     });
 
     return {
       registrationId,
-      profile: { email, name, phone, college, year },
+      profile: { email, name, phone, school, course, year },
     };
   },
 });

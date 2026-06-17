@@ -14,7 +14,8 @@ interface StoredProfile {
   email: string;
   name: string;
   phone: string;
-  college: string;
+  school: string;
+  course: string;
   year: string;
 }
 
@@ -46,11 +47,12 @@ interface FormData {
   email: string;
   name: string;
   phone: string;
-  college: string;
+  school: string;
+  course: string;
   year: string;
 }
 
-const emptyForm: FormData = { email: "", name: "", phone: "", college: "", year: "" };
+const emptyForm: FormData = { email: "", name: "", phone: "", school: "", course: "", year: "" };
 
 // ── Validation helpers ──
 
@@ -130,7 +132,8 @@ export default function EventRegistrationModal({
         email: profile.email,
         name: profile.name,
         phone: profile.phone,
-        college: profile.college,
+        school: profile.school ?? "",
+        course: profile.course ?? "",
         year: profile.year ?? "",
       });
       setIsReturning(true);
@@ -143,7 +146,8 @@ export default function EventRegistrationModal({
           email: lookupEmail,
           name: stored.name || "",
           phone: stored.phone || "",
-          college: stored.college || "",
+          school: stored.school || "",
+          course: stored.course || "",
           year: stored.year || "",
         });
       } else {
@@ -207,8 +211,8 @@ export default function EventRegistrationModal({
       setError("Please enter a valid phone number.");
       return;
     }
-    if (!formData.college.trim()) {
-      setError("Please enter your college name.");
+    if (!formData.school.trim()) {
+      setError("Please enter your school (e.g. SOT, SOB, SOAD).");
       return;
     }
     setError("");
@@ -223,7 +227,8 @@ export default function EventRegistrationModal({
         email: formData.email.trim().toLowerCase(),
         name: formData.name.trim(),
         phone: formData.phone.trim(),
-        college: formData.college.trim(),
+        school: formData.school.trim(),
+        course: formData.course.trim() || undefined,
         year: formData.year.trim() || undefined,
         eventId: event.id,
         eventTitle: event.title,
@@ -234,7 +239,8 @@ export default function EventRegistrationModal({
         email: result.profile.email,
         name: result.profile.name,
         phone: result.profile.phone,
-        college: result.profile.college,
+        school: result.profile.school,
+        course: result.profile.course ?? "",
         year: result.profile.year ?? "",
       });
 
@@ -448,16 +454,29 @@ export default function EventRegistrationModal({
               </div>
             </div>
 
-            <div className="form-field-group mt-4">
-              <label>College / University *</label>
-              <input
-                type="text"
-                placeholder="Woxsen University"
-                className="form-input"
-                value={formData.college}
-                onChange={(e) => update("college", e.target.value)}
-                id="reg-college-input"
-              />
+            <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 mt-4 mb-1">
+              <div className="form-field-group !mb-0">
+                <label>School *</label>
+                <input
+                  type="text"
+                  placeholder="SOT, SOB, SOAD..."
+                  className="form-input"
+                  value={formData.school}
+                  onChange={(e) => update("school", e.target.value)}
+                  id="reg-school-input"
+                />
+              </div>
+              <div className="form-field-group !mb-0">
+                <label>Course <span className="text-white/20 normal-case tracking-normal font-sans">(optional)</span></label>
+                <input
+                  type="text"
+                  placeholder="CSE, MBA, AIML..."
+                  className="form-input"
+                  value={formData.course}
+                  onChange={(e) => update("course", e.target.value)}
+                  id="reg-course-input"
+                />
+              </div>
             </div>
 
             {error && <ErrorMessage message={error} />}
@@ -501,13 +520,12 @@ export default function EventRegistrationModal({
 
             <div className="reg-review-card">
               {[
-                { label: "Name", value: formData.name, field: "name" as const },
-                { label: "Email", value: formData.email, field: "email" as const },
-                { label: "Phone", value: formData.phone, field: "phone" as const },
-                { label: "College", value: formData.college, field: "college" as const },
-                ...(formData.year
-                  ? [{ label: "Year", value: formData.year, field: "year" as const }]
-                  : []),
+                { label: "Name", value: formData.name },
+                { label: "Email", value: formData.email },
+                { label: "Phone", value: formData.phone },
+                { label: "School", value: formData.school },
+                ...(formData.course ? [{ label: "Course", value: formData.course }] : []),
+                ...(formData.year ? [{ label: "Batch", value: formData.year }] : []),
               ].map((item) => (
                 <div key={item.label} className="reg-review-row">
                   <span className="reg-review-label">{item.label}</span>
