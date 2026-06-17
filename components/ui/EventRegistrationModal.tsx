@@ -52,20 +52,6 @@ interface FormData {
 
 const emptyForm: FormData = { email: "", name: "", phone: "", college: "", year: "" };
 
-// ── Year options ──
-
-const yearOptions = [
-  { value: "", label: "Select year" },
-  { value: "1st Year", label: "1st Year" },
-  { value: "2nd Year", label: "2nd Year" },
-  { value: "3rd Year", label: "3rd Year" },
-  { value: "4th Year", label: "4th Year" },
-  { value: "5th Year", label: "5th Year" },
-  { value: "Alumni", label: "Alumni" },
-  { value: "Faculty", label: "Faculty" },
-  { value: "N/A", label: "Not Applicable" },
-];
-
 // ── Validation helpers ──
 
 function isValidEmail(email: string): boolean {
@@ -450,19 +436,15 @@ export default function EventRegistrationModal({
                 />
               </div>
               <div className="form-field-group !mb-0">
-                <label>Year</label>
-                <select
+                <label>Batch <span className="text-white/20 normal-case tracking-normal font-sans">(e.g. 25-29)</span></label>
+                <input
+                  type="text"
+                  placeholder="25-29"
                   className="form-input"
                   value={formData.year}
                   onChange={(e) => update("year", e.target.value)}
                   id="reg-year-input"
-                >
-                  {yearOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
