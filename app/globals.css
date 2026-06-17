@@ -620,3 +620,147 @@ body::after {
   flex-direction: column;
   flex: 1;
 }
+
+/* ===== EVENT REGISTRATION MODAL ===== */
+.reg-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(2, 8, 23, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: regFadeIn 0.25s ease-out;
+}
+.reg-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(8, 13, 28, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(30, 107, 46, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: regSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (max-width: 640px) {
+  .reg-modal-container {
+    padding: 1.75rem 1.5rem;
+    max-height: 95vh;
+    border-radius: var(--radius-lg);
+  }
+}
+.reg-modal-container::-webkit-scrollbar { width: 4px; }
+.reg-modal-container::-webkit-scrollbar-track { background: transparent; }
+.reg-modal-container::-webkit-scrollbar-thumb { background: rgba(76, 175, 98, 0.3); border-radius: 2px; }
+
+.reg-modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 2;
+}
+.reg-modal-close:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.reg-modal-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.reg-review-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 0.25rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.reg-review-row {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  align-items: baseline;
+}
+.reg-review-row:last-child {
+  border-bottom: none;
+}
+.reg-review-label {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  width: 5.5rem;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.reg-review-value {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* Registration button on event cards */
+.reg-card-btn {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green-lt);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s;
+}
+.reg-card-btn:hover {
+  color: var(--white);
+}
+
+/* Modal animations */
+@keyframes regFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes regSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Spinner */
+.reg-spinner {
+  animation: regSpin 0.8s linear infinite;
+}
+@keyframes regSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

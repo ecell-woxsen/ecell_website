@@ -6,7 +6,8 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
-import { events } from "@/data/events";
+import EventRegistrationModal from "@/components/ui/EventRegistrationModal";
+import { events, type EventItem } from "@/data/events";
 
 const tagColors: Record<string, { bg: string; text: string; border: string }> = {
   upcoming: {
@@ -37,6 +38,7 @@ const previewEvents = events.slice(0, 3);
 export default function Events() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [registerEvent, setRegisterEvent] = useState<EventItem | null>(null);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -147,13 +149,15 @@ export default function Events() {
 
                     {/* Footer */}
                     <div className="pt-5 border-t border-white/[0.04] flex items-center justify-between group-hover:border-white/[0.08] transition-colors duration-300">
-                      <Link
-                        href="/events"
-                        className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--green-lt)] font-semibold flex items-center gap-2 group-hover:text-white transition-colors duration-300 no-underline"
+                      <button
+                        onClick={() => setRegisterEvent(ev)}
+                        className="reg-card-btn"
+                        type="button"
+                        id={`home-register-${ev.id}`}
                       >
-                        Learn More & RSVP
+                        Register Now
                         <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
-                      </Link>
+                      </button>
                       <span className="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-[var(--green-lt)] transition-colors duration-300" />
                     </div>
                   </div>
@@ -163,6 +167,15 @@ export default function Events() {
           </div>
         </div>
       </section>
+
+      {/* Registration modal shared across all cards */}
+      {registerEvent && (
+        <EventRegistrationModal
+          event={registerEvent}
+          isOpen={!!registerEvent}
+          onClose={() => setRegisterEvent(null)}
+        />
+      )}
     </>
   );
 }
