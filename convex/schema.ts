@@ -33,4 +33,30 @@ export default defineSchema({
     aiIntent: v.optional(v.string()),
     createdAt: v.number(),
   }),
+
+  // ── Event Registration System ──
+
+  profiles: defineTable({
+    email: v.string(),
+    name: v.string(),
+    phone: v.string(),
+    college: v.string(),
+    year: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index("by_email", ["email"]),
+
+  eventRegistrations: defineTable({
+    email: v.string(),
+    eventId: v.string(),
+    eventTitle: v.string(),
+    name: v.string(),
+    phone: v.string(),
+    college: v.string(),
+    year: v.optional(v.string()),
+    registeredAt: v.number(),
+  })
+    .index("by_email", ["email"])
+    .index("by_eventId", ["eventId"])
+    .index("by_email_eventId", ["email", "eventId"]),
 });
