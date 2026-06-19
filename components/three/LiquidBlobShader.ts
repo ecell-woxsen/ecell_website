@@ -112,16 +112,16 @@ export const LiquidBlobShader = {
       // 3. Compose layers back-to-front
       vec3 final_color = final_bg;
       
-      // Blend Layer 2 (Large primary blobs)
-      float alpha2 = smoothstep(u_thresholds.x - u_edge_widths.x, u_thresholds.x, field2);
+      // Blend Layer 2 (Large primary blobs - rendered as a very soft, ambient glow)
+      float alpha2 = pow(smoothstep(0.0, 1.0, field2), 1.5) * 0.22;
       final_color = mix(final_color, color2, alpha2);
       
-      // Blend Layer 3 (Medium blobs)
-      float alpha3 = smoothstep(u_thresholds.y - u_edge_widths.y, u_thresholds.y, field3);
+      // Blend Layer 3 (Medium blobs - rendered as a soft, ambient glow)
+      float alpha3 = pow(smoothstep(0.0, 0.8, field3), 1.8) * 0.16;
       final_color = mix(final_color, color3, alpha3);
       
-      // Blend Layer 4 (Small accent blobs)
-      float alpha4 = smoothstep(u_thresholds.z - u_edge_widths.z, u_thresholds.z, field4);
+      // Blend Layer 4 (Small accent particles - low opacity floating particles)
+      float alpha4 = smoothstep(0.05, 0.35, field4) * 0.12;
       final_color = mix(final_color, color4, alpha4);
       
       gl_FragColor = vec4(final_color, 1.0);

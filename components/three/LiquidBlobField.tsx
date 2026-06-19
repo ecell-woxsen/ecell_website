@@ -22,22 +22,22 @@ if (typeof window !== "undefined") {
 }
 
 const DEFAULT_CONFIG: BlobConfig = {
-  friction: 0.90, // Smooth viscous friction for elegant continuous drift
-  wanderStrength: 0.22, // Coordinated drift acceleration to prevent stationary clustering
+  friction: 0.92, // Smooth viscous friction for elegant continuous drift
+  wanderStrength: 0.10, // Coordinated drift acceleration to prevent stationary clustering
   boundaryForceStrength: 5.0, // Firm boundary steering
   attractionStrength: 0.0, // Removed attraction to prevent locking blobs in merged state
-  repulsionStrength: 2.8, // Decisive repulsion to push merged blobs apart
+  repulsionStrength: 2.0, // Decisive repulsion to push merged blobs apart
   mouseRadius: 0.45, // Wide mouse influence radius
-  mousePushStrength: 6.0, // Strong responsive cursor push acceleration
-  mouseDragStrength: 2.5, // Responsive cursor drag velocity coupling acceleration
+  mousePushStrength: 5.0, // Strong responsive cursor push acceleration
+  mouseDragStrength: 2.0, // Responsive cursor drag velocity coupling acceleration
   springK: 6.0, // Very low spring stiffness for a smooth, lazy visual lag
   damperC: 4.8, // Critically damped visual tracking to completely eliminate wobbly oscillations
   deformIntensity: 1.4, // Graceful deformation amount
   thresholds: [0.18, 0.20, 0.23], // Thresholds for large, medium, small layers
   edgeWidths: [0.07, 0.07, 0.07], // Soft outer boundaries
   bgGlowIntensity: 0.18,
-  orbitStrength: 0.18, // Subtle rotation acceleration
-  orbitPullStrength: 0.12, // Gentle centering force towards logo
+  orbitStrength: 0.10, // Subtle rotation acceleration
+  orbitPullStrength: 0.08, // Gentle centering force towards logo
 };
 
 interface SimulationPlaneProps {
@@ -423,28 +423,31 @@ export default function LiquidBlobField() {
   const initBlobs = (aspect: number) => {
     const list: BlobState[] = [];
     
-    // Large Blobs (Layer 2) - 3 blobs (3 blue)
+    // Large Blobs (Layer 2) - 3 blobs (3 blue) - sized up for soft ambient glow background
     const largeParams: Array<{ radius: number; color: [number, number, number] }> = [
-      { radius: 0.14, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.15, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.13, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.28, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.32, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.26, color: [0.0902, 0.2392, 0.5608] }, // Blue
     ];
 
-    // Medium Blobs (Layer 3) - 4 blobs (3 blue, 1 green)
+    // Medium Blobs (Layer 3) - 4 blobs (3 blue, 1 green) - sized up for ambient glows
     const mediumParams: Array<{ radius: number; color: [number, number, number] }> = [
-      { radius: 0.09, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.095, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.085, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.08, color: [0.2471, 0.7490, 0.3725] }, // Green
+      { radius: 0.16, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.18, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.15, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.14, color: [0.2471, 0.7490, 0.3725] }, // Green
     ];
 
-    // Small Blobs (Layer 4) - 5 blobs (2 blue, 2 green, 1 white)
+    // Small Blobs (Layer 4) - 8 blobs (2 blue, 4 green, 2 white) - sized down for floating dust particles
     const smallParams: Array<{ radius: number; color: [number, number, number] }> = [
-      { radius: 0.055, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.06, color: [0.0902, 0.2392, 0.5608] }, // Blue
-      { radius: 0.05, color: [0.2471, 0.7490, 0.3725] }, // Green
-      { radius: 0.045, color: [0.2471, 0.7490, 0.3725] }, // Green
-      { radius: 0.048, color: [1.0, 1.0, 1.0] }, // White
+      { radius: 0.015, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.018, color: [0.0902, 0.2392, 0.5608] }, // Blue
+      { radius: 0.012, color: [0.2471, 0.7490, 0.3725] }, // Green
+      { radius: 0.014, color: [0.2471, 0.7490, 0.3725] }, // Green
+      { radius: 0.010, color: [0.2471, 0.7490, 0.3725] }, // Green
+      { radius: 0.015, color: [1.0, 1.0, 1.0] }, // White
+      { radius: 0.009, color: [1.0, 1.0, 1.0] }, // White
+      { radius: 0.013, color: [0.2471, 0.7490, 0.3725] }, // Green
     ];
 
     let id = 0;
@@ -454,7 +457,7 @@ export default function LiquidBlobField() {
         const y = Math.random() * (1.0 - p.radius * 2.2) + p.radius * 1.1;
 
         const angle = Math.random() * Math.PI * 2;
-        const speed = 0.002 + Math.random() * 0.003; // Slow, premium baseline drift
+        const speed = 0.0008 + Math.random() * 0.0012; // Extremely slow, premium baseline drift
         const vx = Math.cos(angle) * speed;
         const vy = Math.sin(angle) * speed;
         const mass = p.radius * p.radius; // physical scaling
