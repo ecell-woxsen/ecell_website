@@ -4,6 +4,10 @@ import Button from "@/components/ui/Button";
 import LiquidBlobField from "@/components/three/LiquidBlobField";
 
 export default function Hero() {
+  const part1 = "WHERE ";
+  const part2 = "BUILDERS";
+  const part3 = " START.";
+
   return (
     <section
       id="home"
@@ -24,7 +28,7 @@ export default function Hero() {
       {/* Center Background Decorative Shield Logo */}
       <div
         id="hero-logo"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none select-none z-0 opacity-[0.05] blur-[2px] scale-[1.7] max-sm:scale-[1.2] transition-all duration-1000"
+        className="absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none select-none z-0 opacity-[0.05] blur-[2px] scale-[1.7] max-sm:scale-[1.2] transition-all duration-1000"
       >
         <div className="relative">
           {/* Subtle ambient glow behind the logo */}
@@ -62,12 +66,50 @@ export default function Hero() {
           Entrepreneurship Cell · {siteConfig.university}
         </p>
 
-        {/* Main Heading */}
+        {/* Main Heading with Staggered Character Reveal */}
         <h1
-          className="font-['Bebas_Neue',sans-serif] text-[clamp(44px,7.5vw,100px)] leading-[0.95] tracking-[-0.01em] text-white mb-8 animate-fade-up delay-2 text-center select-none"
+          className="font-['Bebas_Neue',sans-serif] text-[clamp(44px,7.5vw,100px)] leading-[0.95] tracking-[-0.01em] text-white mb-8 text-center select-none"
           style={{ textAlign: "center" }}
+          aria-label="WHERE BUILDERS START."
         >
-          WHERE <span className="text-[var(--green-lt)]">BUILDERS</span> START.
+          <span aria-hidden="true" className="inline-block">
+            {part1.split("").map((char, index) => (
+              <span
+                key={`p1-${index}`}
+                className="inline-block animate-letter-reveal"
+                style={{
+                  animationDelay: `${index * 0.04}s`,
+                  whiteSpace: char === " " ? "pre" : "normal"
+                }}
+              >
+                {char}
+              </span>
+            ))}
+            {part2.split("").map((char, index) => (
+              <span
+                key={`p2-${index}`}
+                className="inline-block text-[var(--green-lt)] animate-letter-reveal"
+                style={{
+                  animationDelay: `${(part1.length + index) * 0.04}s`,
+                  whiteSpace: char === " " ? "pre" : "normal"
+                }}
+              >
+                {char}
+              </span>
+            ))}
+            {part3.split("").map((char, index) => (
+              <span
+                key={`p3-${index}`}
+                className="inline-block animate-letter-reveal"
+                style={{
+                  animationDelay: `${(part1.length + part2.length + index) * 0.04}s`,
+                  whiteSpace: char === " " ? "pre" : "normal"
+                }}
+              >
+                {char}
+              </span>
+            ))}
+          </span>
         </h1>
 
         {/* Description */}
@@ -97,11 +139,20 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="absolute bottom-[95px] right-20 flex gap-14 animate-fade-up delay-5 z-10 max-xl:hidden">
+      {/* Center-Aligned Stats */}
+      <div
+        className="absolute bottom-[80px] left-1/2 -translate-x-1/2 flex gap-16 justify-center items-center animate-fade-up delay-5 z-10 max-sm:hidden"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          left: "50%",
+          transform: "translateX(-50%)"
+        }}
+      >
         {Object.values(siteConfig.stats).map((stat) => (
-          <div key={stat.label} className="text-right">
-            <div className="font-['Bebas_Neue',sans-serif] text-[46px] leading-none text-[var(--green-lt)]">
+          <div key={stat.label} className="text-center" style={{ textAlign: "center" }}>
+            <div className="font-['Bebas_Neue',sans-serif] text-[40px] md:text-[46px] leading-none text-[var(--green-lt)]">
               {stat.value}
             </div>
 
