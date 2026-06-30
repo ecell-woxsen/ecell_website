@@ -30,7 +30,7 @@ export default function Hero() {
       </video>
 
       {/* Noise Overlay */}
-      <div className="absolute inset-0 bg-black/20 pointer-events-none z-1" />
+      <div className="absolute inset-0 bg-black/40 pointer-events-none z-1" />
 
 
 
@@ -49,7 +49,7 @@ export default function Hero() {
       >
         {/* Subtitle */}
         <p
-          className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--green-lt)] mb-6 animate-fade-up delay-1 text-center"
+          className="font-mono text-[11px] tracking-[0.1em] uppercase text-white mb-6 animate-fade-up delay-1 text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           style={{ textAlign: "center" }}
         >
           Entrepreneurship Cell · {siteConfig.university}
@@ -57,7 +57,7 @@ export default function Hero() {
 
         {/* Main Heading with Staggered Character Reveal */}
         <h1
-          className="font-['Bebas_Neue',sans-serif] text-[clamp(44px,7.5vw,100px)] leading-[0.95] tracking-[-0.01em] text-white mb-8 text-center select-none"
+          className="font-['Bebas_Neue',sans-serif] text-[clamp(44px,7.5vw,100px)] leading-[0.95] tracking-[-0.01em] text-white mb-8 text-center select-none drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
           style={{ textAlign: "center" }}
           aria-label="WHERE BUILDERS START."
         >
@@ -103,7 +103,7 @@ export default function Hero() {
 
         {/* Description */}
         <p
-          className="max-w-[560px] text-[15px] leading-[1.8] text-white/50 font-light mb-10 animate-fade-up delay-3 text-center"
+          className="max-w-[560px] text-[15px] leading-[1.8] text-white font-light mb-10 animate-fade-up delay-3 text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           style={{ textAlign: "center", marginLeft: "auto", marginRight: "auto" }}
         >
           {siteConfig.heroSubtitle}
