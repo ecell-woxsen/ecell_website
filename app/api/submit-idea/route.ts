@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       try {
         await resend.emails.send({
           from: "E-Cell Woxsen <onboarding@resend.dev>",
-          to: "ecell@woxsen.edu.in",
+          to: "shaikimaduddin10@gmail.com",
           subject: `New Idea Submission: ${ideaTitle} by ${name}`,
           html: `
             <h2>New Idea Submission</h2>
