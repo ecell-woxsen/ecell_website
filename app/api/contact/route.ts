@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import Groq from "groq-sdk";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
+import { Resend } from "resend";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: Request) {
   try {
@@ -62,6 +64,33 @@ Output ONLY valid JSON.
       aiSummary,
       aiIntent,
     });
+
+    // Send email using Resend
+    if (resend) {
+      try {
+        await resend.emails.send({
+          from: "E-Cell Woxsen <onboarding@resend.dev>",
+          to: "shaikimaduddin10@gmail.com",
+          subject: `New Contact Submission: ${aiIntent || type} from ${name}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Type:</strong> ${type}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message}</p>
+            <hr />
+            <p><strong>AI Summary:</strong> ${aiSummary || "N/A"}</p>
+            <p><strong>AI Intent:</strong> ${aiIntent || "N/A"}</p>
+          `,
+          replyTo: email,
+        });
+      } catch (error) {
+        console.error("Failed to send email via Resend:", error);
+      }
+    } else {
+      console.warn("RESEND_API_KEY not found. Skipping email notification.");
+    }
 
     return NextResponse.json({ success: true, id });
   } catch (error) {

@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 
@@ -299,8 +297,6 @@ export default function SubmitIdeaPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  const submitIdea = useMutation(api.ideas.submitIdea);
-
   const update = (field: keyof FormData, value: string) => setFormData((prev) => ({ ...prev, [field]: value }));
 
   const canProceedStep1 = formData.name.trim() && formData.email.trim() && formData.email.includes("@");
@@ -311,17 +307,28 @@ export default function SubmitIdeaPage() {
     setSubmitting(true);
     setError("");
     try {
-      await submitIdea({
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim() || undefined,
-        ideaTitle: formData.ideaTitle.trim(),
-        domain: formData.domain,
-        stage: formData.stage,
-        description: formData.description.trim(),
-        teamSize: formData.teamSize || undefined,
-        website: formData.website.trim() || undefined,
+      const response = await fetch("/api/submit-idea", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || undefined,
+          ideaTitle: formData.ideaTitle.trim(),
+          domain: formData.domain,
+          stage: formData.stage,
+          description: formData.description.trim(),
+          teamSize: formData.teamSize || undefined,
+          website: formData.website.trim() || undefined,
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit idea");
+      }
+
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");
