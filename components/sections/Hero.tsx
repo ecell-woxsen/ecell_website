@@ -30,11 +30,7 @@ export default function Hero() {
       </video>
 
       {/* Noise Overlay */}
-      <div className="absolute inset-0 bg-black/40 pointer-events-none z-1" />
-
-
-
-
+      <div className="absolute inset-0 bg-black/50 pointer-events-none z-1" />
 
       {/* Hero Content */}
       <div
@@ -77,7 +73,7 @@ export default function Hero() {
             {part2.split("").map((char, index) => (
               <span
                 key={`p2-${index}`}
-                className="inline-block text-[var(--green-lt)] animate-letter-reveal"
+                className="inline-block text-[var(--green-lt)] animate-letter-reveal text-[1.25em]"
                 style={{
                   animationDelay: `${(part1.length + index) * 0.04}s`,
                   whiteSpace: char === " " ? "pre" : "normal"
@@ -145,7 +141,7 @@ export default function Hero() {
               {stat.value}
             </div>
 
-            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30 mt-1">
+            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mt-1">
               {stat.label}
             </div>
           </div>
