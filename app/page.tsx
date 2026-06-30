@@ -10,6 +10,17 @@ import Contact from "@/components/sections/Contact";
 export default function Home() {
   return (
     <>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+          body::-webkit-scrollbar {
+            display: none;
+          }
+        `
+      }} />
       <Hero />
       <Marquee />
       <About />

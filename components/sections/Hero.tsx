@@ -1,7 +1,6 @@
-import Image from "next/image";
+
 import { siteConfig } from "@/data/site";
 import Button from "@/components/ui/Button";
-import LiquidBlobField from "@/components/three/LiquidBlobField";
 
 export default function Hero() {
   const part1 = "WHERE ";
@@ -19,33 +18,23 @@ export default function Hero() {
         alignItems: "center"
       }}
     >
-      {/* Dynamic Liquid Blob Field */}
-      <LiquidBlobField />
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/campus-tour.mp4" type="video/mp4" />
+      </video>
 
       {/* Noise Overlay */}
       <div className="absolute inset-0 bg-black/20 pointer-events-none z-1" />
 
-      {/* Center Background Decorative Shield Logo */}
-      <div
-        id="hero-logo"
-        className="absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none select-none z-0 opacity-[0.05] blur-[2px] scale-[1.7] max-sm:scale-[1.2] transition-all duration-1000"
-      >
-        <div className="relative">
-          {/* Subtle ambient glow behind the logo */}
-          <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-[120px] scale-[1.5]" />
-          <Image
-            src="/ecell-logo.png"
-            alt="E-Cell Woxsen Decorative Background Shield"
-            width={640}
-            height={640}
-            className="w-[600px] h-[600px] md:w-[640px] md:h-[640px] object-contain mix-blend-screen"
-            priority
-          />
-        </div>
-      </div>
 
-      {/* Navbar Spacer Line */}
-      <div className="absolute top-[90px] left-0 w-full h-px bg-white/[0.06] z-10" />
+
+
 
       {/* Hero Content */}
       <div

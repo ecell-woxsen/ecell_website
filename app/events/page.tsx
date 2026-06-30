@@ -137,8 +137,8 @@ export default function EventsPage() {
       {/* ── CTA ── */}
       <section className="section-base bg-[#020817] pt-0 pb-[100px]">
         <div className="section-container">
-          <RevealOnScroll>
-            <div className="card-pad bg-[rgba(30,107,46,0.05)] border border-[rgba(30,107,46,0.18)] rounded-2xl text-center max-w-[720px] mx-auto">
+          <RevealOnScroll className="w-full flex justify-center">
+            <div className="card-pad w-full bg-[rgba(30,107,46,0.05)] border border-[rgba(30,107,46,0.18)] rounded-2xl text-center max-w-[720px] mx-auto">
               <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-4 opacity-70">
                 Don&apos;t miss out
               </p>
