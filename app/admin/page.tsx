@@ -6,7 +6,7 @@ import { api } from "@/convex/_generated/api";
 export default function AdminDashboard() {
   const stats = useQuery(api.admin.getDashboardStats);
 
-  if (stats === undefined) {
+  if (stats === undefined || stats === null) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="font-mono text-[11px] tracking-[0.2em] text-white/30 uppercase">

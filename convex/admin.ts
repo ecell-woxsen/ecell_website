@@ -26,6 +26,22 @@ export async function verifyAdmin(ctx: any) {
   return admin;
 }
 
+export async function verifyAdminQuery(ctx: any) {
+  try {
+    const user = await authComponent.safeGetAuthUser(ctx);
+    if (!user) return null;
+    const admin = await ctx.db
+      .query("adminUsers")
+      .withIndex("by_userId", (q: any) => q.eq("userId", user._id))
+      .unique();
+    if (!admin || !admin.isActive) return null;
+    return admin;
+  } catch (e) {
+    return null;
+  }
+}
+
+
 export const getCurrentAdmin = query({
   args: {},
   handler: async (ctx) => {
@@ -54,7 +70,10 @@ export const getCurrentAdmin = query({
 export const getDashboardStats = query({
   args: {},
   handler: async (ctx) => {
-    await verifyAdmin(ctx);
+    const admin = await verifyAdminQuery(ctx);
+    if (!admin) {
+      return null;
+    }
 
     const [events, team, registrations, ideas, contacts, newsletters] = await Promise.all([
       ctx.db.query("events").collect(),
@@ -99,7 +118,10 @@ export const getDashboardStats = query({
 export const getAllRegistrations = query({
   args: {},
   handler: async (ctx) => {
-    await verifyAdmin(ctx);
+    const admin = await verifyAdminQuery(ctx);
+    if (!admin) {
+      return [];
+    }
     const regs = await ctx.db.query("eventRegistrations").collect();
     return regs.sort((a, b) => b.registeredAt - a.registeredAt);
   },
@@ -108,7 +130,10 @@ export const getAllRegistrations = query({
 export const getRegistrationsForEvent = query({
   args: { eventId: v.string() },
   handler: async (ctx, args) => {
-    await verifyAdmin(ctx);
+    const admin = await verifyAdminQuery(ctx);
+    if (!admin) {
+      return [];
+    }
     const regs = await ctx.db
       .query("eventRegistrations")
       .withIndex("by_eventId", (q) => q.eq("eventId", args.eventId))
@@ -120,14 +145,15 @@ export const getRegistrationsForEvent = query({
 export const listAdminUsers = query({
   args: {},
   handler: async (ctx) => {
-    const requester = await verifyAdmin(ctx);
-    if (requester.role !== "president") {
-      throw new ConvexError("Unauthorized: President role required");
+    const requester = await verifyAdminQuery(ctx);
+    if (!requester || requester.role !== "president") {
+      return [];
     }
     const admins = await ctx.db.query("adminUsers").collect();
     return admins.sort((a, b) => b.createdAt - a.createdAt);
   },
 });
+
 
 export const createAdminUser = mutation({
   args: {
