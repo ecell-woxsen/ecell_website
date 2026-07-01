@@ -1,6 +1,75 @@
 
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { siteConfig } from "@/data/site";
 import Button from "@/components/ui/Button";
+
+const VIDEO_URL = "https://062alqwuulaxifxv.public.blob.vercel-storage.com/campus-tour.mp4";
+
+function HeroBackgroundVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.readyState >= 3) {
+      setIsLoaded(true);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <>
+      {/* Resource hint for instant browser preloading and caching */}
+      <link rel="preload" href={VIDEO_URL} as="video" type="video/mp4" />
+
+      {/* Smooth dark gradient placeholder while buffering */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-br from-[#020B22] via-[#061230] to-[#020B22] transition-opacity duration-700 z-0 ${
+          isLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      />
+
+      {/* Optimized Background Video with instant load & lazy playback */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        onCanPlay={() => setIsLoaded(true)}
+        onLoadedData={() => setIsLoaded(true)}
+        className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <source src={VIDEO_URL} type="video/mp4" />
+      </video>
+    </>
+  );
+}
 
 export default function Hero() {
   const part1 = "WHERE ";
@@ -18,16 +87,8 @@ export default function Hero() {
         alignItems: "center"
       }}
     >
-      {/* Background Video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source src="https://062alqwuulaxifxv.public.blob.vercel-storage.com/campus-tour.mp4" type="video/mp4" />
-      </video>
+      {/* Optimized Background Video with Lazy Playback & Preloading */}
+      <HeroBackgroundVideo />
 
       {/* Noise Overlay */}
       <div className="absolute inset-0 bg-black/50 pointer-events-none z-1" />
