@@ -107,7 +107,7 @@ export default function TeamPage() {
         <div className="section-container">
           <div className="h-px bg-gradient-to-r from-transparent via-[rgba(30,107,46,0.25)] to-transparent mb-20" />
 
-          <RevealOnScroll>
+          <RevealOnScroll className="w-full flex flex-col items-center justify-center">
             <div className="text-center max-w-[640px] mx-auto">
               <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-4 opacity-70">
                 We&apos;re Growing
