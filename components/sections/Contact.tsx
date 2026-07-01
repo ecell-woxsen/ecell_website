@@ -49,7 +49,7 @@ export default function Contact() {
   return (
     <section className="section-base bg-[#020817] text-white py-[110px]" id="contact">
       <div className="section-container">
-        <div className="grid grid-cols-2 gap-20 items-start max-lg:grid-cols-1 max-lg:gap-12">
+        <div className="grid grid-cols-2 gap-20 items-center max-lg:grid-cols-1 max-lg:gap-12">
           <RevealOnScroll>
             <SectionHeader label="Get in Touch" title="Let's Talk" />
             <p className="text-[15px] text-white/45 font-light leading-[1.85] mb-8">
