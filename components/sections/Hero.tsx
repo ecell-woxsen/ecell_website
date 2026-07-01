@@ -26,7 +26,7 @@ export default function Hero() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
       >
-        <source src="/campus-tour.mp4" type="video/mp4" />
+        <source src="https://062alqwuulaxifxv.public.blob.vercel-storage.com/campus-tour.mp4" type="video/mp4" />
       </video>
 
       {/* Noise Overlay */}
