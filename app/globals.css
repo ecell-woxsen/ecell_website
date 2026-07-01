@@ -59,10 +59,7 @@ body::after {
   mix-blend-mode: overlay;
 }
 
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--ink); }
-::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeUp {

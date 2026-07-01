@@ -384,11 +384,11 @@ function InitiativesPageContent() {
       {/* ── BACK TO HOME BANNER ── */}
       <section className="section-base bg-[#020817] border-t border-white/[0.03] py-20 text-center">
         <div className="section-container">
-          <RevealOnScroll>
+          <RevealOnScroll className="w-full flex flex-col items-center justify-center">
             <h2 className="font-['Bebas_Neue',sans-serif] text-[clamp(36px,5vw,60px)] leading-[0.95] text-white mb-6">
               Need Help With Another Stage?
             </h2>
-            <p className="text-[14px] text-white/40 font-light leading-[1.85] mb-8 max-w-[480px] mx-auto">
+            <p className="text-center text-[14px] text-white/40 font-light leading-[1.85] mb-8 max-w-[860px] mx-auto">
               Our initiatives span validation to venture funding. Browse other programs or contact E-Cell directly to get custom resources.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">

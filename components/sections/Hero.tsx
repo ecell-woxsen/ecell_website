@@ -1,7 +1,75 @@
-import Image from "next/image";
+
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { siteConfig } from "@/data/site";
 import Button from "@/components/ui/Button";
-import LiquidBlobField from "@/components/three/LiquidBlobField";
+
+const VIDEO_URL = "https://062alqwuulaxifxv.public.blob.vercel-storage.com/campus-tour.mp4";
+
+function HeroBackgroundVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.readyState >= 3) {
+      setIsLoaded(true);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <>
+      {/* Resource hint for instant browser preloading and caching */}
+      <link rel="preload" href={VIDEO_URL} as="video" type="video/mp4" />
+
+      {/* Smooth dark gradient placeholder while buffering */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-br from-[#020B22] via-[#061230] to-[#020B22] transition-opacity duration-700 z-0 ${
+          isLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      />
+
+      {/* Optimized Background Video with instant load & lazy playback */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        onCanPlay={() => setIsLoaded(true)}
+        onLoadedData={() => setIsLoaded(true)}
+        className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <source src={VIDEO_URL} type="video/mp4" />
+      </video>
+    </>
+  );
+}
 
 export default function Hero() {
   const part1 = "WHERE ";
@@ -19,33 +87,11 @@ export default function Hero() {
         alignItems: "center"
       }}
     >
-      {/* Dynamic Liquid Blob Field */}
-      <LiquidBlobField />
+      {/* Optimized Background Video with Lazy Playback & Preloading */}
+      <HeroBackgroundVideo />
 
       {/* Noise Overlay */}
-      <div className="absolute inset-0 bg-black/20 pointer-events-none z-1" />
-
-      {/* Center Background Decorative Shield Logo */}
-      <div
-        id="hero-logo"
-        className="absolute top-[58%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none select-none z-0 opacity-[0.05] blur-[2px] scale-[1.7] max-sm:scale-[1.2] transition-all duration-1000"
-      >
-        <div className="relative">
-          {/* Subtle ambient glow behind the logo */}
-          <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-[120px] scale-[1.5]" />
-          <Image
-            src="/ecell-logo.png"
-            alt="E-Cell Woxsen Decorative Background Shield"
-            width={640}
-            height={640}
-            className="w-[600px] h-[600px] md:w-[640px] md:h-[640px] object-contain mix-blend-screen"
-            priority
-          />
-        </div>
-      </div>
-
-      {/* Navbar Spacer Line */}
-      <div className="absolute top-[90px] left-0 w-full h-px bg-white/[0.06] z-10" />
+      <div className="absolute inset-0 bg-black/50 pointer-events-none z-1" />
 
       {/* Hero Content */}
       <div
@@ -60,7 +106,7 @@ export default function Hero() {
       >
         {/* Subtitle */}
         <p
-          className="font-mono text-[11px] tracking-[0.1em] uppercase text-[var(--green-lt)] mb-6 animate-fade-up delay-1 text-center"
+          className="font-mono text-[11px] tracking-[0.1em] uppercase text-white mb-6 animate-fade-up delay-1 text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           style={{ textAlign: "center" }}
         >
           Entrepreneurship Cell · {siteConfig.university}
@@ -68,7 +114,7 @@ export default function Hero() {
 
         {/* Main Heading with Staggered Character Reveal */}
         <h1
-          className="font-['Bebas_Neue',sans-serif] text-[clamp(44px,7.5vw,100px)] leading-[0.95] tracking-[-0.01em] text-white mb-8 text-center select-none"
+          className="font-['Bebas_Neue',sans-serif] text-[clamp(44px,7.5vw,100px)] leading-[0.95] tracking-[-0.01em] text-white mb-8 text-center select-none drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]"
           style={{ textAlign: "center" }}
           aria-label="WHERE BUILDERS START."
         >
@@ -88,7 +134,7 @@ export default function Hero() {
             {part2.split("").map((char, index) => (
               <span
                 key={`p2-${index}`}
-                className="inline-block text-[var(--green-lt)] animate-letter-reveal"
+                className="inline-block text-[var(--green-lt)] animate-letter-reveal text-[1.25em]"
                 style={{
                   animationDelay: `${(part1.length + index) * 0.04}s`,
                   whiteSpace: char === " " ? "pre" : "normal"
@@ -114,7 +160,7 @@ export default function Hero() {
 
         {/* Description */}
         <p
-          className="max-w-[560px] text-[15px] leading-[1.8] text-white/50 font-light mb-10 animate-fade-up delay-3 text-center"
+          className="max-w-[560px] text-[15px] leading-[1.8] text-white font-light mb-10 animate-fade-up delay-3 text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           style={{ textAlign: "center", marginLeft: "auto", marginRight: "auto" }}
         >
           {siteConfig.heroSubtitle}
@@ -156,7 +202,7 @@ export default function Hero() {
               {stat.value}
             </div>
 
-            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30 mt-1">
+            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mt-1">
               {stat.label}
             </div>
           </div>
