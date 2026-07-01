@@ -5,6 +5,8 @@ import Footer from "@/components/layout/Footer";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 import ConvexClientProvider from "./ConvexClientProvider";
+import { AdminSessionProvider } from "@/components/admin/AdminSessionProvider";
+import EditModeToggle from "@/components/admin/EditModeToggle";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -49,11 +51,15 @@ export default function RootLayout({
       </head>
       <body className={dmSans.className}>
         <ConvexClientProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <AdminSessionProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <EditModeToggle />
+          </AdminSessionProvider>
         </ConvexClientProvider>
       </body>
     </html>
   );
 }
+

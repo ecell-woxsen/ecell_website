@@ -2,22 +2,103 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { EventItem } from "@/data/events";
 import SectionHeader from "@/components/ui/SectionHeader";
-
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 import EventCard from "@/components/ui/EventCard";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useAdminSession } from "@/components/admin/AdminSessionProvider";
+import SortableItem from "@/components/admin/SortableItem";
+import EventFormDrawer from "@/components/admin/EventFormDrawer";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const filters = ["All", "Upcoming", "Workshop", "Competition", "Talk"] as const;
 type Filter = (typeof filters)[number];
 
 export default function EventsPage() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
+  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
+  const [localEvents, setLocalEvents] = useState<EventItem[]>([]);
+  
+  const { editMode } = useAdminSession();
   const dbEvents = useQuery(api.events.list);
+  const reorderEvents = useMutation(api.events.reorder);
+
+  useEffect(() => {
+    if (dbEvents) {
+      setLocalEvents(dbEvents.map((e) => ({
+        id: e.slug,
+        title: e.title,
+        date: e.date,
+        meta: e.meta,
+        description: e.description,
+        tag: e.tag,
+        tagType: e.tagType as any,
+        featured: e.featured,
+        _id: e._id, // Keep database ID for operations
+      })));
+    }
+  }, [dbEvents]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Triggers drag only after moving 8px, allows clickable items
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = localEvents.findIndex((item) => item.id === active.id);
+    const newIndex = localEvents.findIndex((item) => item.id === over.id);
+
+    const reordered = arrayMove(localEvents, oldIndex, newIndex);
+    setLocalEvents(reordered);
+
+    try {
+      const ids = reordered.map((item) => (item as any)._id);
+      await reorderEvents({ ids });
+    } catch (err) {
+      console.error("Failed to save reorder", err);
+      // Revert to db state on error
+      if (dbEvents) {
+        setLocalEvents(dbEvents.map((e) => ({
+          id: e.slug,
+          title: e.title,
+          date: e.date,
+          meta: e.meta,
+          description: e.description,
+          tag: e.tag,
+          tagType: e.tagType as any,
+          featured: e.featured,
+          _id: e._id,
+        })));
+      }
+    }
+  };
 
   if (dbEvents === undefined) {
     return (
@@ -29,20 +110,10 @@ export default function EventsPage() {
     );
   }
 
-  const events: EventItem[] = dbEvents.map((e) => ({
-    id: e.slug,
-    title: e.title,
-    date: e.date,
-    meta: e.meta,
-    description: e.description,
-    tag: e.tag,
-    tagType: e.tagType as any,
-    featured: e.featured,
-  }));
-
   const filtered = activeFilter === "All"
-    ? events
-    : events.filter((e) => e.tag.toLowerCase() === activeFilter.toLowerCase());
+    ? localEvents
+    : localEvents.filter((e) => e.tag.toLowerCase() === activeFilter.toLowerCase());
+
 
 
   return (
@@ -109,12 +180,47 @@ export default function EventsPage() {
             </div>
           </RevealOnScroll>
 
-          {filtered.length > 0 ? (
-            <div className="grid grid-cols-2 gap-6 max-lg:grid-cols-1">
-              {filtered.map((ev) => (
-                <EventCard key={ev.id} ev={ev} />
-              ))}
-            </div>
+          {filtered.length > 0 || (editMode && activeFilter === "All") ? (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <div className="grid grid-cols-2 gap-6 max-lg:grid-cols-1">
+                <SortableContext
+                  items={filtered.map((ev) => ev.id)}
+                  strategy={rectSortingStrategy}
+                >
+                  {filtered.map((ev) => (
+                    <SortableItem
+                      key={ev.id}
+                      id={ev.id}
+                      disabled={activeFilter !== "All" || !editMode}
+                    >
+                      <EventCard ev={ev} />
+                    </SortableItem>
+                  ))}
+                </SortableContext>
+
+                {/* Add Event Card */}
+                {editMode && activeFilter === "All" && (
+                  <div className="flex flex-col">
+                    <button
+                      type="button"
+                      onClick={() => setIsCreateDrawerOpen(true)}
+                      className="card-pad min-h-[250px] border-2 border-dashed border-white/10 hover:border-[var(--green-lt)]/35 bg-white/[0.01] hover:bg-white/[0.02] rounded-2xl flex flex-col items-center justify-center gap-3 group transition-all duration-300 cursor-pointer h-full"
+                    >
+                      <div className="w-12 h-12 rounded-full border border-white/15 group-hover:border-[var(--green-lt)]/40 flex items-center justify-center text-white/50 group-hover:text-white transition-all text-xl font-light">
+                        +
+                      </div>
+                      <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-white/40 group-hover:text-white transition-colors">
+                        Add New Event
+                      </span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </DndContext>
           ) : (
             <div className="text-center py-20">
               <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-white/30">
@@ -122,6 +228,7 @@ export default function EventsPage() {
               </p>
             </div>
           )}
+
         </div>
       </section>
 
@@ -178,6 +285,12 @@ export default function EventsPage() {
           </RevealOnScroll>
         </div>
       </section>
+
+      <EventFormDrawer
+        isOpen={isCreateDrawerOpen}
+        onClose={() => setIsCreateDrawerOpen(false)}
+      />
     </>
   );
 }
+

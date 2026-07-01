@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
+
 import Tag from "@/components/ui/Tag";
 import EventRegistrationModal from "@/components/ui/EventRegistrationModal";
 import type { EventItem } from "@/data/events";
+import { useAdminSession } from "@/components/admin/AdminSessionProvider";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import EventFormDrawer from "@/components/admin/EventFormDrawer";
 
 const tagColors: Record<string, { bg: string; text: string; border: string }> = {
   upcoming: {
@@ -30,7 +35,13 @@ const tagColors: Record<string, { bg: string; text: string; border: string }> = 
 
 export default function EventCard({ ev }: { ev: EventItem }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  
+  const { editMode } = useAdminSession();
+  const deleteEvent = useMutation(api.events.remove);
+
   const colors = tagColors[ev.tagType] || tagColors.upcoming;
+
 
   return (
     <>
@@ -44,6 +55,39 @@ export default function EventCard({ ev }: { ev: EventItem }) {
         >
           {/* Sweep */}
           <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:animate-sweep pointer-events-none" />
+
+          {/* Edit/Delete Overlay */}
+          {editMode && (
+            <div className="absolute top-4 right-4 z-20 flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDrawerOpen(true);
+                }}
+                className="p-2 bg-[#080d1c]/80 hover:bg-[var(--green)] hover:text-white text-white/70 rounded-lg border border-white/10 hover:border-[var(--green-lt)]/30 transition-all cursor-pointer shadow-md"
+                title="Edit Event"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </button>
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  if (confirm(`Are you sure you want to delete "${ev.title}"? This cannot be undone.`)) {
+                    await deleteEvent({ id: (ev as any)._id });
+                  }
+                }}
+                className="p-2 bg-[#080d1c]/80 hover:bg-red-950 hover:text-white text-white/70 rounded-lg border border-white/10 hover:border-red-500/30 transition-all cursor-pointer shadow-md"
+                title="Delete Event"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          )}
+
 
           <div>
             {/* Top bar */}
@@ -103,6 +147,13 @@ export default function EventCard({ ev }: { ev: EventItem }) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+
+      <EventFormDrawer
+        eventToEdit={ev}
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
     </>
+
   );
 }

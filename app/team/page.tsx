@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import TeamCard from "@/components/ui/TeamCard";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
+import TeamGridClient from "@/components/sections/TeamGridClient";
 
 export const dynamic = "force-dynamic";
 
@@ -31,12 +32,8 @@ export default async function TeamPage() {
     isLeadership: m.isLeadership,
   }));
 
-  const leadershipMembers = members.filter((m) => m.isLeadership);
-  const coreTeamMembers = members.filter((m) => !m.isLeadership);
-
   return (
     <>
-
       {/* ── PAGE HERO ── */}
       <div className="page-hero mesh-bg-team">
         {/* Animated grid overlay */}
@@ -80,48 +77,9 @@ export default async function TeamPage() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#020817] to-transparent pointer-events-none" />
       </div>
 
-      {/* ── LEADERSHIP ── */}
-      <section className="section-base bg-[#020817]">
-        <div className="section-container">
-          <RevealOnScroll>
-            <SectionHeader label="At the Helm" title="Leadership" />
-            <p className="text-[15px] text-white/40 font-light max-w-[500px] leading-[1.85] mb-16 -mt-2">
-              The three people who set the vision, hold the culture, and make the hard calls every day.
-            </p>
-          </RevealOnScroll>
+      {/* ── MEMBERS GRID (CLIENT INTERACTIVE) ── */}
+      <TeamGridClient initialMembers={members} />
 
-          <div className="grid grid-cols-3 gap-6 max-lg:grid-cols-1">
-            {leadershipMembers.map((member, i) => (
-              <RevealOnScroll key={member.id} delay={Math.min(i + 1, 3) as 1 | 2 | 3} className="flex flex-col">
-                <TeamCard member={member} variant="leadership" />
-              </RevealOnScroll>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CORE TEAM ── */}
-      <section className="section-base bg-[#020817] pt-0">
-        <div className="section-container">
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-[rgba(30,107,46,0.25)] to-transparent mb-20" />
-
-          <RevealOnScroll>
-            <SectionHeader label="Core Team" title="The Engine Room" />
-            <p className="text-[15px] text-white/40 font-light max-w-[480px] leading-[1.85] mb-14 -mt-2">
-              The specialists who make every event, campaign, and partnership happen.
-            </p>
-          </RevealOnScroll>
-
-          <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
-            {coreTeamMembers.map((member, i) => (
-              <RevealOnScroll key={member.id} delay={Math.min((i % 4) + 1, 4) as 1 | 2 | 3 | 4} className="flex flex-col">
-                <TeamCard member={member} variant="core" />
-              </RevealOnScroll>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── JOIN CTA ── */}
       <section className="section-base bg-[#020817] pt-0 pb-[120px]">
