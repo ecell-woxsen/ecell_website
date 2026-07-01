@@ -145,7 +145,7 @@ export default function EventsPage() {
               <h2 className="font-['Bebas_Neue',sans-serif] text-[clamp(36px,5vw,64px)] leading-[0.95] text-white mb-5">
                 Want to host an event with us?
               </h2>
-              <p className="text-[14px] text-white/40 font-light leading-[1.85] mb-8 max-w-[460px] mx-auto">
+              <p className="text-center text-[14px] text-white/40 font-light leading-[1.85] mb-8 max-w-[860px] mx-auto">
                 Partner with E-Cell to run workshops, panels, or hackathons. We bring the community — you bring the expertise.
               </p>
               <Button href="/#contact" variant="primary">Reach Out →</Button>
