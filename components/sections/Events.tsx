@@ -57,7 +57,7 @@ export default function Events() {
 
     observer.observe(grid);
     return () => observer.disconnect();
-  }, []);
+  }, [dbEvents]);
 
   if (dbEvents === undefined) {
     return null; // Silent load during SSR/hydration
