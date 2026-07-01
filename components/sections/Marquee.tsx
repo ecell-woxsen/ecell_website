@@ -1,7 +1,17 @@
-import { marqueeItems } from "@/data/events";
+"use client";
+
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export default function Marquee() {
-  const doubled = [...marqueeItems, ...marqueeItems];
+  const events = useQuery(api.events.list);
+  
+  if (!events) {
+    return <div className="marquee-wrap bg-gradient-to-r from-[var(--navy-deep)] via-[var(--navy)] to-[var(--navy-deep)] border-t border-b border-[var(--border-g)] py-3.5 h-[50px]"></div>;
+  }
+
+  const titles = events.map((e) => e.title);
+  const doubled = [...titles, ...titles];
 
   return (
     <div className="marquee-wrap bg-gradient-to-r from-[var(--navy-deep)] via-[var(--navy)] to-[var(--navy-deep)] border-t border-b border-[var(--border-g)] py-3.5 overflow-hidden whitespace-nowrap">
@@ -18,3 +28,4 @@ export default function Marquee() {
     </div>
   );
 }
+

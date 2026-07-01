@@ -65,4 +65,53 @@ export default defineSchema({
     .index("by_email", ["email"])
     .index("by_eventId", ["eventId"])
     .index("by_email_eventId", ["email", "eventId"]),
+
+  adminUsers: defineTable({
+    userId: v.string(),
+    username: v.string(),
+    name: v.string(),
+    role: v.union(v.literal("president"), v.literal("department_head")),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+    isActive: v.boolean(),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_username", ["username"]),
+
+  events: defineTable({
+    title: v.string(),
+    slug: v.string(),
+    description: v.string(),
+    date: v.string(),
+    meta: v.string(),
+    tag: v.string(),
+    tagType: v.union(v.literal("upcoming"), v.literal("workshop"), v.literal("competition"), v.literal("talk")),
+    featured: v.optional(v.boolean()),
+    registrationOpen: v.boolean(),
+    order: v.number(),
+    imageUrl: v.optional(v.string()),
+    location: v.optional(v.string()),
+    time: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_order", ["order"])
+    .index("by_slug", ["slug"]),
+
+  teamMembers: defineTable({
+    name: v.string(),
+    role: v.string(),
+    department: v.string(),
+    initials: v.string(),
+    image: v.optional(v.string()),
+    bio: v.optional(v.string()),
+    linkedin: v.optional(v.string()),
+    instagram: v.optional(v.string()),
+    order: v.number(),
+    isActive: v.boolean(),
+    isLeadership: v.boolean(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index("by_order", ["order"]),
 });
+

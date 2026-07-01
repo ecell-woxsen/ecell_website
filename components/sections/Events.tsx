@@ -7,7 +7,9 @@ import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
 import EventRegistrationModal from "@/components/ui/EventRegistrationModal";
-import { events, type EventItem } from "@/data/events";
+import { type EventItem } from "@/data/events";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const tagColors: Record<string, { bg: string; text: string; border: string }> = {
   upcoming: {
@@ -32,13 +34,12 @@ const tagColors: Record<string, { bg: string; text: string; border: string }> = 
   },
 };
 
-// Show only the 3 most notable events as preview on the homepage
-const previewEvents = events.slice(0, 3);
-
 export default function Events() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [registerEvent, setRegisterEvent] = useState<EventItem | null>(null);
+
+  const dbEvents = useQuery(api.events.listFeatured);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -57,6 +58,22 @@ export default function Events() {
     observer.observe(grid);
     return () => observer.disconnect();
   }, []);
+
+  if (dbEvents === undefined) {
+    return null; // Silent load during SSR/hydration
+  }
+
+  const previewEvents: EventItem[] = dbEvents.slice(0, 3).map((e) => ({
+    id: e.slug,
+    title: e.title,
+    date: e.date,
+    meta: e.meta,
+    description: e.description,
+    tag: e.tag,
+    tagType: e.tagType as any,
+    featured: e.featured,
+  }));
+
 
   return (
     <>

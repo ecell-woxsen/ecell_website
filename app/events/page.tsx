@@ -4,21 +4,46 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { EventItem } from "@/data/events";
-import { events } from "@/data/events";
 import SectionHeader from "@/components/ui/SectionHeader";
+
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 import EventCard from "@/components/ui/EventCard";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const filters = ["All", "Upcoming", "Workshop", "Competition", "Talk"] as const;
 type Filter = (typeof filters)[number];
 
 export default function EventsPage() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
+  const dbEvents = useQuery(api.events.list);
+
+  if (dbEvents === undefined) {
+    return (
+      <div className="min-h-screen bg-[#020817] flex items-center justify-center">
+        <div className="font-mono text-[11px] tracking-[0.2em] text-white/30 uppercase">
+          Loading events...
+        </div>
+      </div>
+    );
+  }
+
+  const events: EventItem[] = dbEvents.map((e) => ({
+    id: e.slug,
+    title: e.title,
+    date: e.date,
+    meta: e.meta,
+    description: e.description,
+    tag: e.tag,
+    tagType: e.tagType as any,
+    featured: e.featured,
+  }));
 
   const filtered = activeFilter === "All"
     ? events
     : events.filter((e) => e.tag.toLowerCase() === activeFilter.toLowerCase());
+
 
   return (
     <>

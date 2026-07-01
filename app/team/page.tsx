@@ -5,7 +5,10 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Button from "@/components/ui/Button";
 import TeamCard from "@/components/ui/TeamCard";
-import { leadershipMembers, coreTeamMembers } from "@/data/team";
+import { fetchQuery } from "convex/nextjs";
+import { api } from "@/convex/_generated/api";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Meet the Team — E-Cell Woxsen",
@@ -13,9 +16,27 @@ export const metadata: Metadata = {
     "The builders behind E-Cell Woxsen. Meet our leadership, core team, and the people driving entrepreneurship at Woxsen University.",
 };
 
-export default function TeamPage() {
+export default async function TeamPage() {
+  const dbMembers = await fetchQuery(api.team.listActive);
+  
+  const members = dbMembers.map((m) => ({
+    id: m._id, // map database ID to component expects
+    name: m.name,
+    role: m.role,
+    department: m.department,
+    initials: m.initials,
+    image: m.image,
+    bio: m.bio,
+    linkedin: m.linkedin,
+    isLeadership: m.isLeadership,
+  }));
+
+  const leadershipMembers = members.filter((m) => m.isLeadership);
+  const coreTeamMembers = members.filter((m) => !m.isLeadership);
+
   return (
     <>
+
       {/* ── PAGE HERO ── */}
       <div className="page-hero mesh-bg-team">
         {/* Animated grid overlay */}
