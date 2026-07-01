@@ -16,9 +16,11 @@ type Filter = (typeof filters)[number];
 export default function EventsPage() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
 
-  const filtered = activeFilter === "All"
-    ? events
-    : events.filter((e) => e.tag.toLowerCase() === activeFilter.toLowerCase());
+  const filtered = (
+    activeFilter === "All"
+      ? [...events]
+      : events.filter((e) => e.tag.toLowerCase() === activeFilter.toLowerCase())
+  ).sort((a, b) => a.priority - b.priority);
 
   return (
     <>

@@ -32,8 +32,8 @@ const tagColors: Record<string, { bg: string; text: string; border: string }> = 
   },
 };
 
-// Show only the 3 most notable events as preview on the homepage
-const previewEvents = events.slice(0, 3);
+// Show only the 3 highest priority events as preview on the homepage
+const previewEvents = [...events].sort((a, b) => a.priority - b.priority).slice(0, 3);
 
 export default function Events() {
   const gridRef = useRef<HTMLDivElement>(null);
