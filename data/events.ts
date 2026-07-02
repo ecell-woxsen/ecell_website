@@ -7,9 +7,10 @@ export interface EventItem {
   tag: string;
   tagType: "upcoming" | "workshop" | "competition" | "talk";
   featured?: boolean;
+  priority: number;
 }
 
-export const events: EventItem[] = [
+const rawEvents: EventItem[] = [
   {
     id: "failures-to-fixes",
     title: "Failures to Fixes",
@@ -19,6 +20,7 @@ export const events: EventItem[] = [
     tag: "Talk Series",
     tagType: "talk",
     featured: true,
+    priority: 1,
   },
   {
     id: "million-dollar-idea-board",
@@ -28,6 +30,7 @@ export const events: EventItem[] = [
     description: "Large boards in the cafeteria, oval, and library entrance where students can anonymously pin ideas. Best ideas showcased online.",
     tag: "Campus Activation",
     tagType: "upcoming",
+    priority: 2,
   },
   {
     id: "shark-tank-parody",
@@ -37,6 +40,7 @@ export const events: EventItem[] = [
     description: "Parody videos mimicking Shark Tank with professors and senior students as 'sharks'. High engagement and viral potential.",
     tag: "Content Series",
     tagType: "talk",
+    priority: 3,
   },
   {
     id: "pitch-competition",
@@ -47,6 +51,7 @@ export const events: EventItem[] = [
     tag: "Competition",
     tagType: "competition",
     featured: true,
+    priority: 4,
   },
   {
     id: "design-rebrand-challenge",
@@ -56,6 +61,7 @@ export const events: EventItem[] = [
     description: "Students brand or rebrand a startup from scratch (logos, colour palettes, visual identity) for cross-pollination between design and entrepreneurship.",
     tag: "Workshop",
     tagType: "workshop",
+    priority: 5,
   },
   {
     id: "pitch-me-this-pen",
@@ -65,6 +71,7 @@ export const events: EventItem[] = [
     description: "Participants pitch random everyday objects as absurd startup ideas. Judged on creativity, humour, and confidence.",
     tag: "Competition",
     tagType: "competition",
+    priority: 6,
   },
   {
     id: "startup-website-hackathon",
@@ -74,6 +81,7 @@ export const events: EventItem[] = [
     description: "Students build a website/app prototype for a startup idea focused on UI/UX. Best projects exhibited at E-Cell demo days.",
     tag: "Hackathon",
     tagType: "competition",
+    priority: 7,
   },
   {
     id: "debate-series",
@@ -83,8 +91,11 @@ export const events: EventItem[] = [
     description: "Regular debates on business/startup topics like 'Startups vs. Corporate' or 'Is VC funding overrated?' to sharpen critical thinking.",
     tag: "Talk",
     tagType: "talk",
+    priority: 8,
   }
 ];
+
+export const events: EventItem[] = rawEvents.sort((a, b) => a.priority - b.priority);
 
 export const marqueeItems = [
   "Failures to Fixes",

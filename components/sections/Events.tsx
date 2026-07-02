@@ -32,8 +32,8 @@ const tagColors: Record<string, { bg: string; text: string; border: string }> = 
   },
 };
 
-// Show only the 3 most notable events as preview on the homepage
-const previewEvents = events.slice(0, 3);
+// Show only the 3 highest priority events as preview on the homepage
+const previewEvents = [...events].sort((a, b) => a.priority - b.priority).slice(0, 3);
 
 export default function Events() {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -97,6 +97,7 @@ export default function Events() {
           <div ref={gridRef} className="events-grid grid grid-cols-3 gap-5 max-lg:grid-cols-1">
             {previewEvents.map((ev) => {
               const colors = tagColors[ev.tagType] || tagColors.upcoming;
+              const isOtherHovered = Boolean(hovered && hovered !== ev.id);
 
               return (
                 <div
@@ -107,6 +108,8 @@ export default function Events() {
                 >
                   <div
                     className={`card-pad group relative flex flex-col justify-between bg-white/[0.02] backdrop-blur-md border border-white/[0.08] hover:border-[var(--green-lt)]/40 rounded-2xl text-left transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(30,107,46,0.12)] flex-1 overflow-hidden ${
+                      isOtherHovered ? "translate-y-1.5 scale-[0.98] opacity-75 hover:opacity-100 hover:scale-100 hover:translate-y-0" : ""
+                    } ${
                       ev.featured
                         ? "bg-gradient-to-br from-[rgba(26,47,94,0.25)] to-white/[0.03] border-[rgba(26,47,94,0.4)] hover:border-[rgba(76,175,98,0.5)]"
                         : ""

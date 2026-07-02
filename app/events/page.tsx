@@ -15,10 +15,14 @@ type Filter = (typeof filters)[number];
 
 export default function EventsPage() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const [hoveredPastTitle, setHoveredPastTitle] = useState<string | null>(null);
 
-  const filtered = activeFilter === "All"
-    ? events
-    : events.filter((e) => e.tag.toLowerCase() === activeFilter.toLowerCase());
+  const filtered = (
+    activeFilter === "All"
+      ? [...events]
+      : events.filter((e) => e.tag.toLowerCase() === activeFilter.toLowerCase())
+  ).sort((a, b) => a.priority - b.priority);
 
   return (
     <>
@@ -67,7 +71,11 @@ export default function EventsPage() {
         <div className="section-container">
           {/* Filter tabs */}
           <RevealOnScroll>
-            <div className="flex items-center gap-2.5 mb-14 flex-wrap">
+            <div
+              className={`flex items-center gap-2.5 mb-14 flex-wrap transition-transform duration-500 ${
+                hoveredCardId ? "-translate-y-2" : ""
+              }`}
+            >
               {filters.map((f) => (
                 <button
                   key={f}
@@ -87,7 +95,16 @@ export default function EventsPage() {
           {filtered.length > 0 ? (
             <div className="grid grid-cols-2 gap-6 max-lg:grid-cols-1">
               {filtered.map((ev) => (
-                <EventCard key={ev.id} ev={ev} />
+                <EventCard
+                  key={ev.id}
+                  ev={ev}
+                  isOtherHovered={Boolean(hoveredCardId && hoveredCardId !== ev.id)}
+                  onHoverChange={(isHovered) => {
+                    setHoveredCardId((prev) =>
+                      isHovered ? ev.id : prev === ev.id ? null : prev
+                    );
+                  }}
+                />
               ))}
             </div>
           ) : (
@@ -122,7 +139,15 @@ export default function EventsPage() {
               { title: "Pitch Battle Season 3", date: "Jun 2024", tag: "Competition" },
             ].map((pe, i) => (
               <RevealOnScroll key={pe.title} delay={Math.min((i % 3) + 1, 3) as 1 | 2 | 3}>
-                <div className="card-pad bg-white/[0.01] border border-white/[0.04] rounded-xl hover:border-white/[0.08] transition-all duration-300 opacity-60 hover:opacity-100">
+                <div
+                  onMouseEnter={() => setHoveredPastTitle(pe.title)}
+                  onMouseLeave={() => setHoveredPastTitle(null)}
+                  className={`card-pad bg-white/[0.01] border border-white/[0.04] rounded-xl hover:border-white/[0.08] transition-all duration-300 ${
+                    hoveredPastTitle && hoveredPastTitle !== pe.title
+                      ? "translate-y-1 scale-[0.98] opacity-40"
+                      : "opacity-60 hover:opacity-100 hover:-translate-y-1"
+                  }`}
+                >
                   <p className="font-mono text-[9px] tracking-[0.16em] uppercase text-white/30 mb-3">
                     {pe.date} · {pe.tag}
                   </p>
