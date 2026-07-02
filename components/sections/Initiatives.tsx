@@ -54,16 +54,19 @@ export default function Initiatives() {
             <RevealOnScroll key={init.id} delay={Math.min(i + 1, 4) as 1 | 2 | 3 | 4} className="flex flex-col">
               <Link href={`/initiatives?active=${init.id}`} className="flex flex-col flex-1 group">
                 <div
-                  className="card-pad ipillar bg-white/[0.02] border border-white/[0.06] rounded-2xl transition-all duration-300 relative overflow-hidden hover:border-[var(--green-lt)]/35 hover:-translate-y-1.5 text-center flex-1 flex flex-col justify-start"
+                  className="card-pad ipillar initiative-card-hover bg-white/[0.02] border border-white/[0.06] rounded-2xl transition-all duration-350 relative overflow-hidden hover:border-[var(--green-lt)]/40 hover:-translate-y-2 text-center flex-1 flex flex-col justify-start"
                   data-n={init.number}
                 >
-                  <div className="w-12 h-12 border border-[var(--border-g)] rounded-xl flex items-center justify-center mb-7 transition-all duration-300 group-hover:bg-[var(--green)] group-hover:border-[var(--green)] mx-auto">
+                  {/* Top accent line on hover */}
+                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--green-lt)] to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
+
+                  <div className="w-12 h-12 border border-[var(--border-g)] rounded-xl flex items-center justify-center mb-7 transition-all duration-300 group-hover:bg-[var(--green)] group-hover:border-[var(--green)] group-hover:shadow-[0_0_20px_rgba(30,107,46,0.35)] group-hover:rotate-6 mx-auto">
                     {getInitiativeIcon(init.id)}
                   </div>
-                  <h3 className="font-['Bebas_Neue',sans-serif] text-[26px] tracking-[0.03em] text-white mb-3 transition-colors duration-300 group-hover:text-white">
+                  <h3 className="font-['Bebas_Neue',sans-serif] text-[26px] tracking-[0.03em] text-white mb-3 transition-colors duration-300 group-hover:text-[var(--green-lt)]">
                     {init.title}
                   </h3>
-                  <p className="text-xs text-white/45 leading-[1.7] font-light transition-colors duration-300 group-hover:text-white/[0.48] mb-6">
+                  <p className="text-xs text-white/45 leading-[1.7] font-light transition-colors duration-300 group-hover:text-white/[0.58] mb-6">
                     {init.description}
                   </p>
                   <div className="mt-auto pt-4 flex items-center justify-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--green-lt)] opacity-70 group-hover:opacity-100 transition-all duration-300">

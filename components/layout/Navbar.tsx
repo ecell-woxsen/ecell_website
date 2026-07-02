@@ -9,6 +9,7 @@ import { navLinks } from "@/data/navigation";
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const navRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +52,19 @@ export default function Navbar() {
       observer.disconnect();
       window.removeEventListener("scroll", handleScroll);
     };
+  }, []);
+
+  // Reset active section when pathname changes (navigating away from homepage)
+  useEffect(() => {
+    setActiveSection("");
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // Track scroll for island border brightening
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Close menu on outside click
@@ -310,7 +324,7 @@ export default function Navbar() {
 
       <div
         ref={navRef}
-        className={`nav-island ${mobileOpen ? "menu-open" : ""}`}
+        className={`nav-island ${mobileOpen ? "menu-open" : ""} ${isScrolled ? "scrolled" : ""}`}
       >
         <div className="nav-inner">
           {/* Logo */}
@@ -394,6 +408,20 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Top-Right Woxsen University Logo Overlay (only on subpages, since the home page has it baked into the video) */}
+      {pathname !== "/" && (
+        <div className="fixed top-6 right-12 z-[900] pointer-events-none select-none max-lg:hidden">
+          <Image
+            src="/wou-logo.png"
+            alt="Woxsen University Logo"
+            width={180}
+            height={55}
+            className="h-12 w-auto object-contain opacity-80"
+            priority
+          />
+        </div>
+      )}
     </>
   );
 }

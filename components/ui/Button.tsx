@@ -14,7 +14,7 @@ interface ButtonProps {
 
 const variantStyles: Record<string, string> = {
   primary:
-    "bg-[var(--green)] text-[var(--white)] border border-[var(--green)] hover:bg-[var(--green-mid)] hover:-translate-y-0.5 shadow-sm hover:shadow",
+    "bg-[var(--green)] text-[var(--white)] border border-[var(--green)] hover:bg-[var(--green-mid)] hover:-translate-y-0.5 shadow-sm hover:shadow btn-sweep",
   outline:
     "text-[var(--white)] border border-white/30 bg-transparent hover:border-[var(--green-lt)] hover:text-[var(--green-lt)] hover:-translate-y-0.5",
   ghost:

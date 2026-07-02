@@ -43,6 +43,11 @@ body {
   font-size: 16px;
   line-height: 1.6;
   overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* ===== GRAIN TEXTURE OVERLAY ===== */
@@ -218,12 +223,16 @@ body::after {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: var(--radius-xl);
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
 }
 .glass-card:hover {
-  border-color: rgba(76, 175, 98, 0.35);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(30, 107, 46, 0.06);
+  border-color: rgba(76, 175, 98, 0.4);
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(76, 175, 98, 0.12),
+    0 0 60px rgba(30, 107, 46, 0.08);
 }
 
 /* ===== LEADERSHIP CARD ===== */
@@ -239,17 +248,21 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at top, rgba(76, 175, 98, 0.06), transparent 60%);
+  background: radial-gradient(ellipse at top, rgba(76, 175, 98, 0.08), transparent 60%);
   pointer-events: none;
+  opacity: 0;
   transition: opacity 0.4s;
 }
 .leadership-card:hover {
-  border-color: rgba(76, 175, 98, 0.42);
+  border-color: rgba(76, 175, 98, 0.5);
   transform: translateY(-6px);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35), 0 0 48px rgba(30, 107, 46, 0.1);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(76, 175, 98, 0.12),
+    0 0 48px rgba(30, 107, 46, 0.1);
 }
 .leadership-card:hover::before {
-  opacity: 1.5;
+  opacity: 1;
 }
 
 /* ===== GRADIENT TEXT ===== */
@@ -428,7 +441,7 @@ body::after {
 }
 @media (max-width: 640px) {
   .classic-form-box {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
   }
 }
 
@@ -460,6 +473,185 @@ body::after {
   .hero-title-responsive {
     font-size: 58px !important;
   }
+}
+
+/* ===== MARQUEE EDGE FADE ===== */
+.marquee-wrap {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+/* ===== FOCUS ACCENT ===== */
+.form-input:focus {
+  border-left: 2px solid var(--green-lt) !important;
+  border-color: var(--green-lt);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 2px rgba(76, 175, 98, 0.15);
+}
+
+/* ===== STAT CARD HOVER ===== */
+.stat-hover {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.stat-hover:hover {
+  transform: translateY(-4px);
+}
+
+/* ===== ANIMATED GREEN LINE ===== */
+@keyframes lineGrow {
+  from { width: 0; opacity: 0; }
+  to   { width: 28px; opacity: 1; }
+}
+.label-line-anim::before {
+  animation: lineGrow 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ===== IMPACT ACCENT LINE ===== */
+.impact-accent-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--green-lt), transparent);
+  animation: shimmer 3s linear infinite;
+  background-size: 200% auto;
+  opacity: 0.35;
+}
+
+/* ===== CARD GLOW ON HOVER ===== */
+.card-glow-hover {
+  position: relative;
+}
+.card-glow-hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at 50% 0%, rgba(76, 175, 98, 0.12), transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.card-glow-hover:hover::after {
+  opacity: 1;
+}
+
+/* ===== SCROLL INDICATOR ===== */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(6px); opacity: 1; }
+}
+.scroll-indicator {
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+
+/* ===== BUTTON PRIMARY SWEEP ===== */
+.btn-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sweep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 0s;
+}
+.btn-sweep:hover::before {
+  animation: sweep 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ===== INITIATIVE CARD HOVER GLOW ===== */
+.initiative-card-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.initiative-card-hover:hover {
+  box-shadow:
+    0 0 0 1px rgba(76, 175, 98, 0.28),
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    inset 0 0 60px rgba(76, 175, 98, 0.04);
+  background: rgba(76, 175, 98, 0.04) !important;
+}
+
+/* ===== FOOTER SOCIAL ICON ===== */
+.social-icon-link {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-g);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(245,248,255,0.42);
+  text-decoration: none;
+  transition: all 0.22s ease;
+  background: transparent;
+}
+.social-icon-link:hover {
+  border-color: var(--green-lt);
+  color: var(--green-lt);
+  background: rgba(30, 107, 46, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(30, 107, 46, 0.15);
+}
+
+/* ===== VALUE CARD HOVER ACCENT ===== */
+.value-row-hover {
+  position: relative;
+  padding-left: 0;
+  transition: padding-left 0.3s ease;
+}
+.value-row-hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: var(--green-lt);
+  border-radius: 2px;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.value-row-hover:hover::before {
+  transform: scaleY(1);
+}
+
+/* ===== CONTACT INFO ICON HOVER ===== */
+.contact-icon-box {
+  transition: all 0.25s ease;
+}
+.contact-icon-box:hover {
+  border-color: var(--green-lt);
+  background: rgba(76, 175, 98, 0.08);
+  box-shadow: 0 0 16px rgba(76, 175, 98, 0.12);
+}
+
+/* ===== NAVBAR SCROLLED STATE ===== */
+.nav-island.scrolled {
+  border-color: rgba(30, 107, 46, 0.42);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(30, 107, 46, 0.14);
+}
+
+/* ===== REG CARD BUTTON UNDERLINE ===== */
+.reg-card-btn {
+  position: relative;
+}
+.reg-card-btn::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--green-lt);
+  transition: width 0.3s ease;
+}
+.reg-card-btn:hover::after {
+  width: 100%;
 }
 
 /* ===== STEP INDICATOR ===== */

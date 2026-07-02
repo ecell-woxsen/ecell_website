@@ -159,7 +159,7 @@ function Step2({ formData, update, onNext, onPrev, canProceed }: any) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 mb-6">
+      <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1 mb-6">
         <div className="form-field-group !mb-0">
           <label>Domain *</label>
           <select className="form-input" value={formData.domain} onChange={(e) => update("domain", e.target.value)}>
@@ -182,7 +182,7 @@ function Step2({ formData, update, onNext, onPrev, canProceed }: any) {
 
       <div className="form-field-group">
         <label>Current Stage *</label>
-        <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+        <div className="grid grid-cols-2 gap-3 max-md:grid-cols-1">
           {stages.map((s) => (
             <button
               key={s.value}
@@ -339,7 +339,7 @@ export default function SubmitIdeaPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#020817] px-8 flex items-center justify-center pt-20 pb-12">
+      <div className="min-h-screen bg-[#020817] px-4 sm:px-8 flex items-center justify-center pt-20 pb-12">
         <div className="section-container">
           <SuccessScreen name={formData.name} />
         </div>
@@ -348,26 +348,26 @@ export default function SubmitIdeaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#020817] mesh-bg-submit pt-36 pb-24 px-8 flex items-center">
+    <div className="min-h-screen bg-[#020817] mesh-bg-submit pt-36 pb-24 px-4 sm:px-8 flex items-center">
       <div className="absolute inset-0 bg-[linear-gradient(rgba(30,107,46,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(30,107,46,0.035)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
 
       <div className="section-container relative z-10 w-full">
-        <div className="grid grid-cols-[1fr_500px] gap-20 items-center max-lg:grid-cols-1 max-lg:gap-16">
+        <div className="grid grid-cols-[1.15fr_0.85fr] gap-12 xl:gap-20 items-center max-lg:grid-cols-1 max-lg:gap-16">
           
           {/* Left: Hero Text */}
-          <div className="sticky top-32">
+          <div className="sticky top-32 lg:pr-8">
             <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-6 flex items-center gap-3.5 opacity-80 animate-fade-up">
               <span className="w-8 h-px bg-[var(--green-lt)] opacity-50" />
               Submit Your Idea
             </p>
 
-            <h1 className="font-['Bebas_Neue',sans-serif] text-[clamp(64px,7vw,110px)] leading-[0.9] tracking-[-0.02em] text-white mb-8 animate-fade-up delay-1">
+            <h1 className="font-['Bebas_Neue',sans-serif] text-[clamp(42px,5.5vw,90px)] leading-[0.9] tracking-[-0.02em] text-white mb-8 animate-fade-up delay-1">
               Got an Idea?
               <br />
               <span className="text-[var(--green-lt)]">We'll Back It.</span>
             </h1>
 
-            <p className="max-w-[480px] text-[16px] leading-[1.9] text-white/50 font-light animate-fade-up delay-2 mb-10">
+            <p className="max-w-[480px] text-[15px] leading-[1.85] text-white/50 font-light animate-fade-up delay-2 mb-10">
               Whether it's a napkin sketch or a working MVP — if you've got the grit, E-Cell has the network, mentors, and micro-grants to get you off the ground.
             </p>
           </div>

@@ -41,6 +41,9 @@ export default function About() {
       className="section-base bg-[#020817] relative overflow-hidden about-sec"
       id="about"
     >
+      {/* Background depth glow on right side (behind values list) */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(76,175,98,0.05),transparent_70%)] pointer-events-none" />
+
       <div className="section-container">
         <div className="grid grid-cols-2 gap-20 items-center max-lg:grid-cols-1 max-lg:gap-12">
           {/* Left */}
@@ -55,9 +58,9 @@ export default function About() {
               {miniPillars.map((p) => (
                 <div
                   key={p.id}
-                  className="card-pad bg-[rgba(30,107,46,0.07)] border border-[var(--border-g)] rounded-xl transition-all duration-300 hover:bg-[rgba(26,47,94,0.3)] hover:border-[rgba(26,47,94,0.5)] text-center"
+                  className="card-pad card-glow-hover bg-[rgba(30,107,46,0.07)] border border-[var(--border-g)] rounded-xl transition-all duration-300 hover:bg-[rgba(26,47,94,0.3)] hover:border-[rgba(26,47,94,0.5)] hover:shadow-[0_0_24px_rgba(76,175,98,0.08)] text-center"
                 >
-                  <div className="font-['Bebas_Neue',sans-serif] text-[34px] text-[var(--green-lt)] leading-none mb-1.5">
+                  <div className="font-['Bebas_Neue',sans-serif] text-[34px] text-[var(--green-lt)] leading-none mb-1.5 drop-shadow-[0_0_12px_rgba(76,175,98,0.3)]">
                     {p.number}
                   </div>
                   <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-white/[0.45]">
@@ -77,7 +80,7 @@ export default function About() {
               {values.map((v, i) => (
                 <div
                   key={v.id}
-                  className="group relative flex flex-col gap-3 py-8 border-b border-[var(--border-g)] transition-all duration-300 hover:pl-4 cursor-default"
+                  className="value-row-hover group relative flex flex-col gap-3 py-8 border-b border-[var(--border-g)] transition-all duration-300 hover:pl-5 cursor-default"
                 >
                   {/* Large background index number */}
                   <span className="absolute right-0 top-4 font-['Bebas_Neue',sans-serif] text-[80px] leading-none text-white/[0.03] group-hover:text-white/[0.06] transition-colors duration-300 select-none pointer-events-none">
@@ -86,7 +89,7 @@ export default function About() {
 
                   {/* Icon + Title row */}
                   <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 border border-[var(--border-g)] rounded-xl flex items-center justify-center text-xl shrink-0 transition-all duration-300 group-hover:border-[var(--green-lt)] group-hover:bg-[rgba(30,107,46,0.14)]">
+                    <div className="w-11 h-11 border border-[var(--border-g)] rounded-xl flex items-center justify-center text-xl shrink-0 transition-all duration-300 group-hover:border-[var(--green-lt)] group-hover:bg-[rgba(30,107,46,0.14)] group-hover:shadow-[0_0_14px_rgba(76,175,98,0.15)]">
                       {getValueIcon(v.id)}
                     </div>
                     <h4 className="font-['Bebas_Neue',sans-serif] text-[28px] tracking-[0.03em] leading-none text-white group-hover:text-[var(--green-lt)] transition-colors duration-300">

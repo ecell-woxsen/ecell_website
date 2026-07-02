@@ -10,6 +10,28 @@ export default function PitchCTA() {
       {/* Decorative grid lines */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(30,107,46,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(30,107,46,0.03)_1px,transparent_1px)] bg-[size:80px_80px] pointer-events-none opacity-60" />
 
+      {/* Decorative dot cluster — top right */}
+      <div className="absolute top-16 right-16 grid grid-cols-5 gap-2.5 pointer-events-none max-lg:hidden" aria-hidden="true">
+        {Array.from({ length: 25 }).map((_, i) => (
+          <div
+            key={i}
+            className="w-1 h-1 rounded-full bg-[var(--green-lt)]"
+            style={{ opacity: Math.random() * 0.18 + 0.04 }}
+          />
+        ))}
+      </div>
+
+      {/* Decorative dot cluster — bottom left */}
+      <div className="absolute bottom-16 left-16 grid grid-cols-4 gap-2.5 pointer-events-none max-lg:hidden" aria-hidden="true">
+        {Array.from({ length: 16 }).map((_, i) => (
+          <div
+            key={i}
+            className="w-1 h-1 rounded-full bg-[var(--navy-mid)]"
+            style={{ opacity: Math.random() * 0.25 + 0.08 }}
+          />
+        ))}
+      </div>
+
       <div className="relative z-10 max-w-[1200px] mx-auto">
         <div className="grid grid-cols-[0.85fr_1.15fr] gap-12 items-center max-lg:grid-cols-1 max-lg:gap-12">
           {/* Left: Text Content */}
@@ -21,7 +43,8 @@ export default function PitchCTA() {
               </p>
 
               <h2 className="font-['Bebas_Neue',sans-serif] text-[clamp(52px,7vw,110px)] leading-[0.9] mb-7">
-                Got an <span className="text-[var(--green-lt)]">Idea</span>?
+                Got an{" "}
+                <span className="text-shimmer">Idea</span>?
                 <br />
                 We&apos;ll Help You Ship It.
               </h2>
@@ -35,7 +58,7 @@ export default function PitchCTA() {
               </div>
 
               <div className="flex gap-4 max-sm:flex-col max-sm:items-start">
-                <Button href="/submit-idea" variant="primary">
+                <Button href="/submit-idea" variant="primary" className="btn-sweep">
                   Submit Your Idea →
                 </Button>
                 <Button href="/#community" variant="outline">

@@ -18,7 +18,7 @@ export default function SectionHeader({
   return (
     <div>
       <p
-        className={`font-mono text-[10px] tracking-[0.3em] uppercase ${labelColor} mb-4.5 flex items-center gap-3.5 before:content-[''] before:w-7 before:h-px ${lineColor}`}
+        className={`font-mono text-[10px] tracking-[0.3em] uppercase ${labelColor} mb-4.5 flex items-center gap-3.5 before:content-[''] before:w-7 before:h-px ${lineColor} before:transition-all before:duration-500`}
       >
         {label}
       </p>

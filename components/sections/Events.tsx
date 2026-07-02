@@ -106,8 +106,8 @@ export default function Events() {
                   onMouseEnter={() => setHovered(ev.id)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <div
-                    className={`card-pad group relative flex flex-col justify-between bg-white/[0.02] backdrop-blur-md border border-white/[0.08] hover:border-[var(--green-lt)]/40 rounded-2xl text-left transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(30,107,46,0.12)] flex-1 overflow-hidden ${
+                <div
+                    className={`card-pad card-glow-hover group relative flex flex-col justify-between bg-white/[0.02] backdrop-blur-md border border-white/[0.08] hover:border-[var(--green-lt)]/40 rounded-2xl text-left transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(30,107,46,0.14)] flex-1 overflow-hidden ${
                       isOtherHovered ? "translate-y-1.5 scale-[0.98] opacity-75 hover:opacity-100 hover:scale-100 hover:translate-y-0" : ""
                     } ${
                       ev.featured
@@ -117,6 +117,11 @@ export default function Events() {
                   >
                     {/* Hover Reflection Sweep Effect */}
                     <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:animate-sweep pointer-events-none" />
+
+                    {/* Featured top accent glow line */}
+                    {ev.featured && (
+                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--green-lt)] to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                    )}
 
                     <div>
                       {/* Top Bar */}

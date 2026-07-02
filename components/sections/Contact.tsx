@@ -89,7 +89,7 @@ export default function Contact() {
                 },
               ].map((info) => (
                 <div key={info.label} className="flex gap-3.5 items-start">
-                  <div className="w-9 h-9 border border-[var(--border-g)] rounded-lg flex items-center justify-center shrink-0">
+                  <div className="contact-icon-box w-9 h-9 border border-[var(--border-g)] rounded-lg flex items-center justify-center shrink-0">
                     {info.icon}
                   </div>
                   <div className="text-[13px] text-white/50 leading-[1.6]">
@@ -176,7 +176,7 @@ export default function Contact() {
                     type="submit"
                     disabled={isSubmitting}
                     variant="primary"
-                    className="min-w-0 w-full justify-center rounded-[4px] py-4"
+                    className="min-w-0 w-full justify-center rounded-[4px] py-4 btn-sweep"
                   >
                     {isSubmitting ? "Sending..." : "Send Message →"}
                   </Button>
