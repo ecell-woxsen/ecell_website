@@ -15,6 +15,7 @@ type Filter = (typeof filters)[number];
 
 export default function EventsPage() {
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
 
   const filtered = (
     activeFilter === "All"
@@ -69,7 +70,11 @@ export default function EventsPage() {
         <div className="section-container">
           {/* Filter tabs */}
           <RevealOnScroll>
-            <div className="flex items-center gap-2.5 mb-14 flex-wrap">
+            <div
+              className={`flex items-center gap-2.5 mb-14 flex-wrap transition-transform duration-500 ${
+                hoveredCardId ? "-translate-y-2" : ""
+              }`}
+            >
               {filters.map((f) => (
                 <button
                   key={f}
@@ -89,7 +94,15 @@ export default function EventsPage() {
           {filtered.length > 0 ? (
             <div className="grid grid-cols-2 gap-6 max-lg:grid-cols-1">
               {filtered.map((ev) => (
-                <EventCard key={ev.id} ev={ev} />
+                <EventCard
+                  key={ev.id}
+                  ev={ev}
+                  onHoverChange={(isHovered) => {
+                    setHoveredCardId((prev) =>
+                      isHovered ? ev.id : prev === ev.id ? null : prev
+                    );
+                  }}
+                />
               ))}
             </div>
           ) : (
