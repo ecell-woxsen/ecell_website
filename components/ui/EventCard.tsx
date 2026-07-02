@@ -31,9 +31,11 @@ const tagColors: Record<string, { bg: string; text: string; border: string }> = 
 export default function EventCard({
   ev,
   onHoverChange,
+  isOtherHovered = false,
 }: {
   ev: EventItem;
   onHoverChange?: (isHovered: boolean) => void;
+  isOtherHovered?: boolean;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const colors = tagColors[ev.tagType] || tagColors.upcoming;
@@ -45,6 +47,8 @@ export default function EventCard({
           onMouseEnter={() => onHoverChange?.(true)}
           onMouseLeave={() => onHoverChange?.(false)}
           className={`card-pad group relative flex flex-col justify-between bg-white/[0.02] border border-white/[0.06] hover:border-[var(--green-lt)]/35 rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_45px_rgba(30,107,46,0.08)] flex-1 overflow-hidden ${
+            isOtherHovered ? "translate-y-1.5 scale-[0.98] opacity-75" : ""
+          } ${
             ev.featured
               ? "bg-gradient-to-br from-[rgba(26,47,94,0.22)] to-white/[0.02] border-[rgba(26,47,94,0.36)] hover:border-[rgba(76,175,98,0.45)]"
               : ""
