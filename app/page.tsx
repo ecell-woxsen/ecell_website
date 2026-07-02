@@ -1,5 +1,4 @@
 import Hero from "@/components/sections/Hero";
-import Marquee from "@/components/sections/Marquee";
 import About from "@/components/sections/About";
 import ImpactBanner from "@/components/sections/ImpactBanner";
 import Events from "@/components/sections/Events";
@@ -11,7 +10,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Marquee />
       <About />
       <ImpactBanner />
       <Events />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Space_Mono } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import SplashIntro from "@/components/ui/SplashIntro";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 import ConvexClientProvider from "./ConvexClientProvider";
@@ -49,9 +50,12 @@ export default function RootLayout({
       </head>
       <body className={dmSans.className}>
         <ConvexClientProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <SplashIntro />
+          <div className="page-content-wrapper">
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </div>
         </ConvexClientProvider>
       </body>
     </html>
