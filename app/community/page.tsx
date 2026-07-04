@@ -61,8 +61,8 @@ export default function CommunityPage() {
         `
       }} />
 
-      {/* ── PAGE HERO ── */}
-      <div className="page-hero mesh-bg-community pb-16">
+      {/* ── PAGE HERO (UNIFIED WITH CARDS) ── */}
+      <div className="page-hero mesh-bg-community pb-24 !pt-32 md:!pt-40">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(26,47,94,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(26,47,94,0.035)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
 
         <div className="section-container relative z-10">
@@ -78,33 +78,12 @@ export default function CommunityPage() {
             <span className="text-[var(--green-lt)]">Builders.</span>
           </h1>
 
-          <p className="max-w-[560px] text-[15px] leading-[1.9] text-white/45 font-light animate-fade-up delay-3">
+          <p className="max-w-[560px] text-[15px] leading-[1.9] text-white/45 font-light animate-fade-up delay-3 mb-14">
             E-Cell is more than an incubator — it is a vibrant network of over 1,200 student founders, developers, designers, and operators collaborating to turn audacious ideas into scaling ventures.
           </p>
 
-          {/* Right Side Logo */}
-          <Link 
-            href="/"
-            className="absolute top-1/2 -translate-y-1/2 right-4 animate-fade-in delay-2 max-lg:hidden block cursor-pointer"
-          >
-            <Image
-              src="/ecell-logo.png"
-              alt="E-Cell Woxsen Logo"
-              width={280}
-              height={280}
-              className="w-[280px] h-[280px] object-contain opacity-95 hover:opacity-100 transition-all duration-500 hover:scale-105"
-              priority
-            />
-          </Link>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#020817] to-transparent pointer-events-none" />
-      </div>
-
-      {/* ── CHANNELS SECTION ── */}
-      <section className="section-base bg-[#020817] pt-0">
-        <div className="section-container">
-          <div className="grid grid-cols-2 gap-8 max-md:grid-cols-1">
+          {/* Cards Grid embedded directly inside the hero for above-the-fold visibility */}
+          <div className="grid grid-cols-2 gap-8 max-md:grid-cols-1 mt-12 relative z-10">
             
             {/* WhatsApp Card */}
             <RevealOnScroll>
@@ -175,10 +154,25 @@ export default function CommunityPage() {
             </RevealOnScroll>
 
           </div>
+
+          {/* Right Side Logo aligned relative to new top padding */}
+          <Link 
+            href="/"
+            className="absolute top-[120px] md:top-[150px] right-4 animate-fade-in delay-2 max-lg:hidden block cursor-pointer"
+          >
+            <Image
+              src="/ecell-logo.png"
+              alt="E-Cell Woxsen Logo"
+              width={280}
+              height={280}
+              className="w-[280px] h-[280px] object-contain opacity-95 hover:opacity-100 transition-all duration-500 hover:scale-105"
+              priority
+            />
+          </Link>
         </div>
-      </section>
 
-
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#020817] to-transparent pointer-events-none" />
+      </div>
     </>
   );
 }
