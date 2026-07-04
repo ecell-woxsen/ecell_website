@@ -175,9 +175,15 @@ export default function Hero() {
             alignItems: "center"
           }}
         >
+          {/* 
+            * TO RESTORE THE EVENTS PAGE BUTTON:
+            * Uncomment the Button component below.
+            */}
+          {/*
           <Button href="/events" variant="primary" className="max-sm:w-full">
             Explore Events
           </Button>
+          */}
 
           <Button href="/submit-idea" variant="outline" className="max-sm:w-full">
             Submit Your Idea

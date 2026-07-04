@@ -2,8 +2,13 @@ import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/sections/Marquee";
 import About from "@/components/sections/About";
 import ImpactBanner from "@/components/sections/ImpactBanner";
-import Events from "@/components/sections/Events";
-import Initiatives from "@/components/sections/Initiatives";
+/*
+ * RESTORING EVENTS & INITIATIVES SECTIONS:
+ * 1. Uncomment the imports below (referencing the archived locations, or move the files back to components/sections).
+ * 2. Uncomment the <Events /> and <Initiatives /> JSX components inside the Home function below.
+ */
+// import Events from "@/components/archive/Events";
+// import Initiatives from "@/components/archive/Initiatives";
 import PitchCTA from "@/components/sections/PitchCTA";
 import Contact from "@/components/sections/Contact";
 
@@ -25,8 +30,12 @@ export default function Home() {
       <Marquee />
       <About />
       <ImpactBanner />
-      <Events />
-      <Initiatives />
+      {/* 
+        * RESTORING EVENTS & INITIATIVES SECTIONS:
+        * Uncomment the tags below to render them again.
+        */}
+      {/* <Events /> */}
+      {/* <Initiatives /> */}
       <PitchCTA />
       <Contact />
     </>
