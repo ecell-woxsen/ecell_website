@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/data/site";
-import { communitySteps } from "@/data/community";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
@@ -180,50 +179,6 @@ export default function CommunityPage() {
       </section>
 
 
-      {/* ── TIMELINE/STEPS SECTION ── */}
-      <section className="section-base bg-[#020817] pt-0 pb-28">
-        <div className="section-container">
-          <div className="grid grid-cols-[380px_1fr] gap-20 max-lg:grid-cols-1 max-lg:gap-12">
-            
-            {/* Left Header */}
-            <div>
-              <RevealOnScroll>
-                <SectionHeader label="Onboarding" title="How to Join" />
-                <p className="text-[15px] text-white/40 font-light leading-[1.85] -mt-2">
-                  Four simple steps to plug yourself into Woxsen University's largest active entrepreneurship and building network.
-                </p>
-              </RevealOnScroll>
-            </div>
-
-            {/* Right Steps */}
-            <div>
-              <RevealOnScroll delay={2}>
-                <div className="flex flex-col">
-                  {communitySteps.map((step) => (
-                    <div 
-                      key={step.id} 
-                      className="flex items-start gap-6 py-6 border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.005] px-4 rounded-xl transition-colors duration-200"
-                    >
-                      <span className="font-['Bebas_Neue',sans-serif] text-[32px] text-[var(--green-lt)] leading-none w-10 shrink-0">
-                        {step.number}
-                      </span>
-                      <div>
-                        <h4 className="text-[15px] font-medium text-white/90 mb-1">
-                          {step.title}
-                        </h4>
-                        <p className="text-[13px] text-white/40 leading-[1.75] font-light">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </RevealOnScroll>
-            </div>
-
-          </div>
-        </div>
-      </section>
     </>
   );
 }
