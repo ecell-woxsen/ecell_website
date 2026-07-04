@@ -1,5 +1,5 @@
 import Hero from "@/components/sections/Hero";
-import Marquee from "@/components/sections/Marquee";
+// import Marquee from "@/components/archive/Marquee";
 import About from "@/components/sections/About";
 import ImpactBanner from "@/components/sections/ImpactBanner";
 /*
@@ -27,7 +27,11 @@ export default function Home() {
         `
       }} />
       <Hero />
-      <Marquee />
+      {/* 
+        * RESTORING MARQUEE (MOVING BAR):
+        * Uncomment the tag below to render the moving bar again.
+        */}
+      {/* <Marquee /> */}
       <About />
       <ImpactBanner />
       {/* 
