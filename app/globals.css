@@ -325,6 +325,12 @@ body::after {
     radial-gradient(ellipse 35% 45% at 90% 80%, rgba(26, 47, 94, 0.2) 0%, transparent 50%),
     #020817;
 }
+.mesh-bg-community {
+  background:
+    radial-gradient(ellipse 50% 50% at 30% 30%, rgba(88, 101, 242, 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 45% at 80% 75%, rgba(37, 211, 102, 0.12) 0%, transparent 50%),
+    #020817;
+}
 
 /* ===== SCROLL LINE ===== */
 .scroll-line {

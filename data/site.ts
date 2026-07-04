@@ -15,6 +15,8 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/company/ecell-woxsen",
     twitter: "https://twitter.com/ecell_woxsen",
     youtube: "https://youtube.com/@ecellwoxsen",
+    whatsapp: "https://chat.whatsapp.com/invite/ecell-woxsen-placeholder",
+    discord: "https://discord.gg/ecell-woxsen-placeholder",
   },
   stats: {
     startups: { value: "24+", label: "Startups Launched" },
