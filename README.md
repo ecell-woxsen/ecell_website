@@ -46,6 +46,34 @@ The official platform for **The Entrepreneurship Cell of Woxsen University**. We
 └── styles/            # Global CSS & Tailwind config
 ```
 
+## 🗄️ Restoring Temporarily Archived Features
+
+The following sections, pages, and components have been temporarily archived to streamline the current layout. Follow these steps to reactivate them on the active site:
+
+### 1. Events Section & Page
+* **Page Route**: Rename the folder `app/_events` back to `app/events` to reactivate the public `/events` page.
+* **Component Relocation**: Move `components/archive/Events.tsx` back to `components/sections/Events.tsx`.
+* **Homepage Integration**: In [app/page.tsx](app/page.tsx), uncomment the `Events` import statement and the `<Events />` component tag in the `Home` function.
+* **Hero Section Button**: In [components/sections/Hero.tsx](components/sections/Hero.tsx), uncomment the `<Button href="/events" ...>Explore Events</Button>` component.
+* **Navigation Links**: In [data/navigation.ts](data/navigation.ts), uncomment the `{ label: "Events", href: "/events" }` objects in both the `navLinks` and `footerLinks.quickLinks` arrays.
+
+### 2. Initiatives Section & Page
+* **Page Route**: Rename the folder `app/_initiatives` back to `app/initiatives` to reactivate the public `/initiatives` page.
+* **Component Relocation**: Move `components/archive/Initiatives.tsx` back to `components/sections/Initiatives.tsx`.
+* **Homepage Integration**: In [app/page.tsx](app/page.tsx), uncomment the `Initiatives` import statement and the `<Initiatives />` component tag in the `Home` function.
+* **Scrollspy Tracking**: In [components/layout/Navbar.tsx](components/layout/Navbar.tsx), uncomment the `"initiatives"` value inside the `sectionIds` array in the `useEffect` hook.
+* **Navigation Links**: In [data/navigation.ts](data/navigation.ts), uncomment the `{ label: "Initiatives", href: "/initiatives" }` objects in both the `navLinks` and `footerLinks.quickLinks` arrays.
+
+### 3. Affiliations Page
+* **Page Route**: Rename the folder `app/_affiliations` back to `app/affiliations` to reactivate the public `/affiliations` page.
+* **Navigation Links**: In [data/navigation.ts](data/navigation.ts), uncomment the `{ label: "Affiliations", href: "/affiliations" }` objects in both the `navLinks` and `footerLinks.connect` arrays.
+
+### 4. Marquee (Moving Bar) Component
+* **Component Relocation**: Move `components/archive/Marquee.tsx` back to `components/sections/Marquee.tsx`.
+* **Homepage Integration**: In [app/page.tsx](app/page.tsx), uncomment the `Marquee` import statement and the `<Marquee />` component tag in the `Home` function.
+
+---
+
 ## 🚥 Getting Started
 
 ### Prerequisites
