@@ -65,7 +65,7 @@ export default function CommunityPage() {
       <div className="page-hero mesh-bg-community pb-24 !pt-32 md:!pt-40">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(26,47,94,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(26,47,94,0.035)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
 
-        <div className="section-container relative z-10">
+        <div className="section-container relative z-10 flex flex-col">
           <div className="animate-fade-up delay-1">
             <p className="font-mono text-[11px] tracking-[0.3em] uppercase text-[var(--green-lt)] mb-5 flex items-center gap-3.5 opacity-80">
               <span className="w-7 h-px bg-[var(--green-lt)] opacity-50" />
@@ -83,7 +83,7 @@ export default function CommunityPage() {
           </p>
 
           {/* Cards Grid embedded directly inside the hero for above-the-fold visibility */}
-          <div className="grid grid-cols-2 gap-8 max-md:grid-cols-1 mt-12 relative z-10">
+          <div className="grid grid-cols-2 gap-8 max-md:grid-cols-1 relative z-10" style={{ marginTop: "2rem" }}>
             
             {/* WhatsApp Card */}
             <RevealOnScroll>
@@ -158,7 +158,7 @@ export default function CommunityPage() {
           {/* Right Side Logo aligned relative to new top padding */}
           <Link 
             href="/"
-            className="absolute top-[120px] md:top-[150px] right-4 animate-fade-in delay-2 max-lg:hidden block cursor-pointer"
+            className="absolute top-0 right-4 animate-fade-in delay-2 max-lg:hidden block cursor-pointer"
           >
             <Image
               src="/ecell-logo.png"
