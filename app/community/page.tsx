@@ -113,16 +113,14 @@ export default function CommunityPage() {
                 <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-[#25D366]/[0.02] to-transparent -translate-x-full group-hover:animate-sweep pointer-events-none" />
                 
                 <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#25D366] bg-[#25D366]/10 border border-[#25D366]/20 px-3 py-1 rounded-full">
-                      Announcements
-                    </span>
-                    <span className="font-mono text-[9px] text-white/30 tracking-wider">READ-ONLY</span>
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <h3 className="font-['Bebas_Neue',sans-serif] text-[36px] tracking-[0.03em] leading-none text-white">
+                      WhatsApp Community
+                    </h3>
+                    <div className="text-[#25D366] opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 shrink-0">
+                      <WhatsAppIcon className="w-9 h-9" />
+                    </div>
                   </div>
-
-                  <h3 className="font-['Bebas_Neue',sans-serif] text-[36px] tracking-[0.03em] leading-none text-white mb-4">
-                    WhatsApp Community
-                  </h3>
                   
                   <p className="text-white/45 font-light leading-[1.8] mb-8 text-[14px]">
                     Stay in the loop with official E-Cell updates. Get instant access to micro-grant deadlines, physical networking mixer alerts, speaker circuit announcements, and key community notices.
@@ -149,16 +147,14 @@ export default function CommunityPage() {
                 <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-[#5865F2]/[0.02] to-transparent -translate-x-full group-hover:animate-sweep pointer-events-none" />
                 
                 <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#5865F2] bg-[#5865F2]/10 border border-[#5865F2]/20 px-3 py-1 rounded-full">
-                      Chat & Collab
-                    </span>
-                    <span className="font-mono text-[9px] text-white/30 tracking-wider">ACTIVE DISCUSSIONS</span>
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <h3 className="font-['Bebas_Neue',sans-serif] text-[36px] tracking-[0.03em] leading-none text-white">
+                      Discord Server
+                    </h3>
+                    <div className="text-[#5865F2] opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 shrink-0">
+                      <DiscordIcon className="w-9 h-9" />
+                    </div>
                   </div>
-
-                  <h3 className="font-['Bebas_Neue',sans-serif] text-[36px] tracking-[0.03em] leading-none text-white mb-4">
-                    Discord Server
-                  </h3>
 
                   <p className="text-white/45 font-light leading-[1.8] mb-8 text-[14px]">
                     The digital headquarters of Woxsen builders. Discuss tech stacks, find co-founders, share projects in #ship-it, solicit help from mentors, participate in hackathons, and hang out in voice channels.

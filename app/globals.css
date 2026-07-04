@@ -332,6 +332,30 @@ body::after {
     #020817;
 }
 
+/* ===== COMMUNITY PILL BADGES ===== */
+.community-badge {
+  font-family: var(--font-space-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.community-badge-whatsapp {
+  color: #25D366;
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.2);
+}
+.community-badge-discord {
+  color: #5865F2;
+  background: rgba(88, 101, 242, 0.08);
+  border: 1px solid rgba(88, 101, 242, 0.2);
+}
+
 /* ===== SCROLL LINE ===== */
 .scroll-line {
   width: 1px;
