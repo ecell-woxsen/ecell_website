@@ -14,7 +14,11 @@ export const navLinks: NavLink[] = [
   // { label: "Initiatives", href: "/initiatives" },
   { label: "Team", href: "/team" },
   { label: "Community", href: "/community" },
-  { label: "Affiliations", href: "/affiliations" },
+  /*
+   * TO RESTORE AFFILIATIONS:
+   * Uncomment the line below to add "Affiliations" back to the navbar.
+   */
+  // { label: "Affiliations", href: "/affiliations" },
   { label: "Submit Idea →", href: "/submit-idea", isCTA: true },
 ];
 
@@ -38,6 +42,10 @@ export const footerLinks = {
   connect: [
     { label: "Contact Us", href: "/#contact" },
     { label: "Community", href: "/community" },
-    { label: "Affiliations", href: "/affiliations" },
+    /*
+     * TO RESTORE AFFILIATIONS:
+     * Uncomment the line below to add "Affiliations" back to the footer.
+     */
+    // { label: "Affiliations", href: "/affiliations" },
   ],
 };
