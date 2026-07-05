@@ -8,6 +8,7 @@ export interface TeamMember {
   bio?: string;
   linkedin?: string;
   isLeadership?: boolean;
+  category: "Presidency" | "Tech" | "Operations" | "Outreach" | "PR";
 }
 
 export const teamMembers: TeamMember[] = [
@@ -20,17 +21,9 @@ export const teamMembers: TeamMember[] = [
     bio: "Leads E-Cell's vision and strategic direction. Previously co-founded a D2C brand reaching ₹12L ARR in 8 months.",
     linkedin: "https://linkedin.com",
     isLeadership: true,
+    category: "Presidency",
   },
-  {
-    id: "shivaa-kiran",
-    name: "Ramuni Shivaa Kiran",
-    role: "Vice President",
-    department: "BBA · Class of 2028",
-    initials: "RSK",
-    bio: "Drives operations and community building. Passionate about connecting student founders with the right mentors.",
-    linkedin: "https://linkedin.com",
-    isLeadership: true,
-  },
+
   {
     id: "harshith-c",
     name: "Harshith Chakravarthy",
@@ -40,6 +33,7 @@ export const teamMembers: TeamMember[] = [
     bio: "Strategic advisor guiding E-Cell's long-term roadmap. Brings experience from two successful campus ventures.",
     linkedin: "https://linkedin.com",
     isLeadership: true,
+    category: "Presidency",
   },
   {
     id: "shaik-imad",
@@ -49,6 +43,7 @@ export const teamMembers: TeamMember[] = [
     initials: "SI",
     bio: "Builds the digital infrastructure that powers E-Cell — from the website to internal tools.",
     linkedin: "https://linkedin.com",
+    category: "Tech",
   },
   {
     id: "mk",
@@ -58,15 +53,17 @@ export const teamMembers: TeamMember[] = [
     initials: "MK",
     bio: "Orchestrates every E-Cell event and initiative from concept to execution.",
     linkedin: "https://linkedin.com",
+    category: "Operations",
   },
   {
-    id: "sreeya",
-    name: "Sreeya Chatterjee",
+    id: "reetika-malempati",
+    name: "Reetika Malempati",
     role: "Head of Outreach & Partnerships",
     department: "BE · Class of 2027",
-    initials: "SC",
+    initials: "RM",
     bio: "Forges partnerships with VCs, accelerators, and industry leaders across India.",
     linkedin: "https://linkedin.com",
+    category: "Outreach",
   },
   {
     id: "meera-jain",
@@ -76,6 +73,7 @@ export const teamMembers: TeamMember[] = [
     initials: "MJ",
     bio: "Shapes E-Cell's story — from press coverage to social media campaigns.",
     linkedin: "https://linkedin.com",
+    category: "PR",
   },
   {
     id: "vikram-singh",
@@ -85,6 +83,7 @@ export const teamMembers: TeamMember[] = [
     initials: "VS",
     bio: "The backbone of day-to-day operations, ensuring every program runs smoothly.",
     linkedin: "https://linkedin.com",
+    category: "Operations",
   },
 ];
 
