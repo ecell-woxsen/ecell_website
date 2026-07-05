@@ -184,8 +184,8 @@ export default function Navbar() {
           background: var(--green);
           box-shadow: 0 0 6px var(--green);
           flex-shrink: 0;
-          margin-left: 10px;
-          margin-right: 4px;
+          margin-left: 6px;
+          margin-right: 2px;
           animation: dotPulse 2.5s ease-in-out infinite;
         }
         @keyframes dotPulse {
@@ -198,29 +198,29 @@ export default function Navbar() {
           width: 1px;
           height: 20px;
           background: rgba(255, 255, 255, 0.1);
-          margin: 0 6px;
+          margin: 0 4px;
           flex-shrink: 0;
         }
 
-        /* ── Desktop links (hidden ≤1024px) ── */
+        /* ── Desktop links (hidden ≤1150px) ── */
         .nav-links {
           display: flex;
           align-items: center;
           gap: 2px;
           list-style: none;
         }
-        @media (max-width: 1024px) {
+        @media (max-width: 1150px) {
           .nav-links { display: none; }
         }
 
         .nav-link {
           font-family: "Space Mono", monospace;
-          font-size: 10px;
-          letter-spacing: 0.14em;
+          font-size: 9.5px;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
           color: rgba(245, 248, 255, 0.52);
           text-decoration: none;
-          padding: 6px 12px;
+          padding: 6px 9px;
           border-radius: 9999px;
           transition: color 0.2s, background 0.2s;
           white-space: nowrap;
@@ -234,16 +234,16 @@ export default function Navbar() {
         /* ── CTA ── */
         .nav-cta {
           font-family: "Space Mono", monospace;
-          font-size: 10px;
-          letter-spacing: 0.14em;
+          font-size: 9.5px;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
           text-decoration: none;
           background: var(--green);
           color: var(--white);
           border: 1px solid var(--green);
           border-radius: 9999px;
-          padding: 6px 14px;
-          margin-left: 4px;
+          padding: 6px 11px;
+          margin-left: 2px;
           transition: background 0.2s, color 0.2s;
           white-space: nowrap;
         }
@@ -252,7 +252,7 @@ export default function Navbar() {
           color: var(--green-lt);
         }
 
-        /* ── Hamburger (shown ≤1024px) ── */
+        /* ── Hamburger (shown ≤1150px) ── */
         .nav-hamburger {
           display: none;
           flex-direction: column;
@@ -278,7 +278,7 @@ export default function Navbar() {
         .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-        @media (max-width: 1024px) {
+        @media (max-width: 1150px) {
           .nav-hamburger { display: flex; }
         }
 
@@ -336,30 +336,7 @@ export default function Navbar() {
         }
         .nav-mobile-cta:hover { background: var(--green-mid); }
 
-        /* ── Scale down padding and fonts on medium screens to prevent layout crowding ── */
-        @media (min-width: 1025px) and (max-width: 1240px) {
-          .nav-island {
-            padding: 8px 12px 8px 8px;
-          }
-          .nav-link {
-            padding: 6px 9px;
-            font-size: 9.5px;
-            letter-spacing: 0.1em;
-          }
-          .nav-cta {
-            padding: 6px 11px;
-            font-size: 9.5px;
-            letter-spacing: 0.1em;
-            margin-left: 2px;
-          }
-          .nav-divider {
-            margin: 0 4px;
-          }
-          .nav-dot {
-            margin-left: 6px;
-            margin-right: 2px;
-          }
-        }
+        /* Removed medium viewport override as compact layout is now permanent for all desktop sizes */
       `}</style>
 
       <div
@@ -451,7 +428,7 @@ export default function Navbar() {
 
       {/* Top-Right Woxsen University Logo Overlay (only on subpages, since the home page has it baked into the video) */}
       {pathname !== "/" && (
-        <div className="fixed top-6 right-12 z-[900] pointer-events-none select-none max-lg:hidden">
+        <div className="fixed top-6 right-12 z-[900] pointer-events-none select-none max-xl:hidden">
           <Image
             src="/wou-logo.png"
             alt="Woxsen University Logo"
