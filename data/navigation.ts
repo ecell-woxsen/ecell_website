@@ -11,7 +11,7 @@ export const navLinks: NavLink[] = [
   { label: "Team", href: "/team" },
   { label: "Community", href: "/#community" },
   { label: "Affiliations", href: "/affiliations" },
-  { label: "Submit Idea →", href: "/submit-idea", isCTA: true },
+  { label: "Submit Your Idea →", href: "/submit-idea", isCTA: true },
 ];
 
 export const footerLinks = {

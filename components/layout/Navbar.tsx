@@ -117,7 +117,7 @@ export default function Navbar() {
             0 2px 8px rgba(0, 0, 0, 0.3),
             inset 0 1px 0 rgba(255, 255, 255, 0.06),
             0 0 0 1px rgba(30, 107, 46, 0.08);
-          padding: 8px 10px;
+          padding: 8px 14px 8px 10px; /* Increased right padding for visual balance with CTA button */
           transition:
             border-radius 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
             box-shadow 0.3s ease,
@@ -335,6 +335,31 @@ export default function Navbar() {
           transition: background 0.2s;
         }
         .nav-mobile-cta:hover { background: var(--green-mid); }
+
+        /* ── Scale down padding and fonts on medium screens to prevent layout crowding ── */
+        @media (min-width: 1025px) and (max-width: 1240px) {
+          .nav-island {
+            padding: 8px 12px 8px 8px;
+          }
+          .nav-link {
+            padding: 6px 9px;
+            font-size: 9.5px;
+            letter-spacing: 0.1em;
+          }
+          .nav-cta {
+            padding: 6px 11px;
+            font-size: 9.5px;
+            letter-spacing: 0.1em;
+            margin-left: 2px;
+          }
+          .nav-divider {
+            margin: 0 4px;
+          }
+          .nav-dot {
+            margin-left: 6px;
+            margin-right: 2px;
+          }
+        }
       `}</style>
 
       <div
