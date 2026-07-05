@@ -129,25 +129,33 @@ body::after {
 }
 
 /* ===== HERO ANIMATIONS ===== */
+:root {
+  --delay-base: 0s;
+  --letter-delay-base: 0s;
+}
+
 .animate-fade-up {
   opacity: 0;
   animation: fadeUp 0.8s forwards;
+  animation-delay: var(--delay-base);
 }
 .animate-fade-in {
   opacity: 0;
   animation: fadeIn 1s forwards;
+  animation-delay: var(--delay-base);
 }
 .animate-scale-in {
   opacity: 0;
   animation: scaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay-base);
 }
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.35s; }
-.delay-3 { animation-delay: 0.5s; }
-.delay-4 { animation-delay: 0.65s; }
-.delay-5 { animation-delay: 0.9s; }
-.delay-6 { animation-delay: 1.2s; }
-.delay-7 { animation-delay: 1.3s; }
+.delay-1 { animation-delay: calc(var(--delay-base) + 0.2s); }
+.delay-2 { animation-delay: calc(var(--delay-base) + 0.35s); }
+.delay-3 { animation-delay: calc(var(--delay-base) + 0.5s); }
+.delay-4 { animation-delay: calc(var(--delay-base) + 0.65s); }
+.delay-5 { animation-delay: calc(var(--delay-base) + 0.9s); }
+.delay-6 { animation-delay: calc(var(--delay-base) + 1.2s); }
+.delay-7 { animation-delay: calc(var(--delay-base) + 1.3s); }
 
 @keyframes letterReveal {
   from {
@@ -980,20 +988,39 @@ body::after {
 }
 
 /* ===== CINEMATIC SPLASH INTRO ===== */
-.splash-overlay {
+.splash-overlay-wrapper {
   position: fixed;
   inset: 0;
-  background: #020817;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99999;
   pointer-events: none;
-  animation: splash-fade-out 0.4s cubic-bezier(0.25, 1, 0.5, 1) 1.6s forwards;
+  animation: splash-wrapper-fade-out 0.3s linear 1.6s forwards;
 }
 
-@keyframes splash-fade-out {
-  to { opacity: 0; visibility: hidden; pointer-events: none; }
+@keyframes splash-wrapper-fade-out {
+  to { opacity: 0; visibility: hidden; }
+}
+
+.splash-bg-half {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 8, 23, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 1;
+  transition: backdrop-filter 0.6s ease;
+}
+
+.splash-bg-top {
+  clip-path: polygon(0 0, 100% 0, 100% 30%, 0 70%);
+  animation: split-top-left 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+}
+
+.splash-bg-bottom {
+  clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0 100%);
+  animation: split-bottom-right 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
 }
 
 .splash-logo-container {
@@ -1003,6 +1030,7 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
   animation: logo-fade-scale-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -1080,10 +1108,5 @@ body::after {
 
 /* Page content entry overlay keyframes */
 .page-content-wrapper {
-  animation: page-reveal-fade 0.65s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
-}
-
-@keyframes page-reveal-fade {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  /* No parent scale/fade reveal to prevent hiding and double-revealing the background video */
 }

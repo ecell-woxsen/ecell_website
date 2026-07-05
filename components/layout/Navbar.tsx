@@ -122,6 +122,21 @@ export default function Navbar() {
             border-radius 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
             box-shadow 0.3s ease,
             padding 0.3s ease;
+          
+          /* Delayed fade and slide down entrance */
+          opacity: 0;
+          animation: nav-island-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--delay-base, 0s) + 1.2s) forwards;
+        }
+
+        @keyframes nav-island-reveal {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .nav-island.menu-open {

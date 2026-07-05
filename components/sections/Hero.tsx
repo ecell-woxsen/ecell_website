@@ -110,7 +110,7 @@ export default function Hero() {
                 key={`p1-${index}`}
                 className="inline-block animate-letter-reveal"
                 style={{
-                  animationDelay: `${index * 0.04}s`,
+                  animationDelay: `calc(var(--letter-delay-base, 0s) + ${index * 0.04}s)`,
                   whiteSpace: char === " " ? "pre" : "normal"
                 }}
               >
@@ -123,7 +123,7 @@ export default function Hero() {
                   key={`p2-${index}`}
                   className="inline-block text-[var(--green-lt)] animate-letter-reveal text-[1.25em]"
                   style={{
-                    animationDelay: `${(part1.length + index) * 0.04}s`,
+                    animationDelay: `calc(var(--letter-delay-base, 0s) + ${(part1.length + index) * 0.04}s)`,
                     whiteSpace: char === " " ? "pre" : "normal"
                   }}
                 >
@@ -144,7 +144,7 @@ export default function Hero() {
                 key={`p3-${index}`}
                 className="inline-block animate-letter-reveal"
                 style={{
-                  animationDelay: `${(part1.length + part2.length + index) * 0.04}s`,
+                  animationDelay: `calc(var(--letter-delay-base, 0s) + ${(part1.length + part2.length + index) * 0.04}s)`,
                   whiteSpace: char === " " ? "pre" : "normal"
                 }}
               >
@@ -191,7 +191,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 scroll-indicator max-sm:hidden">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 scroll-indicator animate-fade-in delay-5 max-sm:hidden">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-white/30">
           <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
