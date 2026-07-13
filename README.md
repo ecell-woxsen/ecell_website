@@ -81,7 +81,7 @@ The following sections, pages, and components have been temporarily archived to 
 - **Bun** (Preferred) or **Node.js**
 - A terminal with Git installed
 
-### Installation
+### Installation & Setup
 
 1. **Clone the repository:**
    ```bash
@@ -96,15 +96,52 @@ The following sections, pages, and components have been temporarily archived to 
    npm install
    ```
 
-3. **Run the development server:**
+3. **Set up Environment Variables:**
+   Copy the example environment file to create your local configuration:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Open `.env.local` and fill in the missing keys (e.g. Resend, Groq, and custom Auth paths). See [Environment Variables Configuration](#-environment-variables-configuration) below for details.
+
+4. **Initialize & Start Convex (Backend Database):**
+   This project uses [Convex](https://convex.dev) for real-time data storage and serverless backend functions. Run the dev environment to automatically link the project:
+   ```bash
+   npx convex dev
+   # or
+   bunx convex dev
+   ```
+   *Note: This command will guide you through signing up/logging in to Convex and creating a development deployment. Once linked, it automatically generates the schema clients and appends your Convex deployment credentials to `.env.local`.*
+
+5. **Run the Next.js development server:**
+   In a separate terminal window, start the frontend development server:
    ```bash
    bun dev
    # or
    npm run dev
    ```
 
-4. **Open the browser:**
+6. **Open the browser:**
    Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🔑 Environment Variables Configuration
+
+The application uses environment variables to communicate with various backend cloud services. Below is a description of the keys defined in [.env.example](.env.example):
+
+### 🔷 Convex Cloud Database
+* **`CONVEX_DEPLOYMENT`**: Identifies your active Convex project environment (e.g. `dev:earnest-mallard-521`).
+* **`NEXT_PUBLIC_CONVEX_URL`**: Public URL of your Convex API endpoint (e.g. `https://earnest-mallard-521.convex.cloud`).
+* **`NEXT_PUBLIC_CONVEX_SITE_URL`**: Public URL of your Convex HTTP actions endpoints (e.g. `https://earnest-mallard-521.convex.site`).
+* *Note: Running `npx convex dev` handles creating and writing these values for you automatically.*
+
+### 📧 Email Dispatch (Resend)
+* **`RESEND_API_KEY`**: API key from [Resend](https://resend.com) used to send automated notification emails for submitted startup ideas, newsletter signs, and contact forms.
+
+### 🤖 AI Form Processing (Groq)
+* **`GROQ_API_KEY`**: API key from the [Groq Console](https://console.groq.com) to leverage AI-assisted categorization and summary parsing of contact form messages using `llama3-8b-8192`. If not defined, contact messages will process normally, skipping AI enrichment.
+
+### 🛡️ Authentication & Portal Configuration
+* **`BETTER_AUTH_SECRET`**: A cryptographically secure 32-character random string used to secure user sessions.
+* **`ADMIN_LOGIN_PATH`** & **`NEXT_PUBLIC_ADMIN_LOGIN_PATH`**: An obfuscated custom route segment used to access the E-Cell admin portal (e.g. `portal-y9k4v2z8` exposes `/portal-y9k4v2z8` as the admin entrypoint). Make sure to set these to identical values.
 
 ## 📦 Scripts
 
