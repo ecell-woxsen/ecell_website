@@ -1,5 +1,6 @@
 import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
+import Aurora from "@/components/ui/Aurora";
 import { values, miniPillars, aboutBody } from "@/data/values";
 
 function getValueIcon(id: string) {
@@ -41,7 +42,17 @@ export default function About() {
       className="section-base bg-[#020817] relative overflow-hidden about-sec"
       id="about"
     >
-      <div className="section-container">
+      {/* Background Aurora component - scoped to overall about section with site theme colors */}
+      <div className="absolute inset-0 pointer-events-none z-0 opacity-60">
+        <Aurora
+          colorStops={["#0e1a38", "#1e6b2e", "#4caf62"]}
+          blend={0.6}
+          amplitude={1.2}
+          speed={0.5}
+        />
+      </div>
+
+      <div className="section-container relative z-10">
         <div className="grid grid-cols-2 gap-20 items-center max-lg:grid-cols-1 max-lg:gap-12">
           {/* Left */}
           <RevealOnScroll>

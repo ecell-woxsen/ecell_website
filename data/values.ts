@@ -44,6 +44,6 @@ export const miniPillars: MiniPillar[] = [
   { id: "connect", number: "04", label: "Connect" },
 ];
 
-export const aboutBody = `E-Cell Woxsen is the <strong>entrepreneurship nerve centre</strong> of Woxsen University. We don't just talk about building — we build. Since 2019, we've shipped 24 student startups, hosted 80+ events, and created a 1,200-member community that operates like a real-world accelerator.
+export const aboutBody = `E-Cell Woxsen is the <strong>entrepreneurship nerve centre</strong> of Woxsen University. We don't just talk about building — we build. Since 2019, we've built a community that operates like a real-world accelerator.
 
 Our mission is simple: <strong>lower the activation energy for first-time founders.</strong> Whether you're a coder, designer, marketer, or dreamer — if you have grit and an idea worth pursuing, E-Cell is your launchpad.`;

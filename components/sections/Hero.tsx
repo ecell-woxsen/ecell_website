@@ -191,29 +191,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Center-Aligned Stats */}
-      <div
-        className="absolute bottom-[80px] left-1/2 -translate-x-1/2 flex gap-16 justify-center items-center animate-fade-up delay-5 z-10 max-sm:hidden"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          left: "50%",
-          transform: "translateX(-50%)"
-        }}
-      >
-        {Object.values(siteConfig.stats).map((stat) => (
-          <div key={stat.label} className="text-center" style={{ textAlign: "center" }}>
-            <div className="font-['Bebas_Neue',sans-serif] text-[40px] md:text-[46px] leading-none text-[var(--green-lt)]">
-              {stat.value}
-            </div>
 
-            <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mt-1">
-              {stat.label}
-            </div>
-          </div>
-        ))}
-      </div>
     </section>
   );
 }
