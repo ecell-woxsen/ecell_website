@@ -1,7 +1,8 @@
 import SectionHeader from "@/components/ui/SectionHeader";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Aurora from "@/components/ui/Aurora";
-import { values, miniPillars, aboutBody } from "@/data/values";
+import WindyProcessFlow from "@/components/ui/WindyProcessFlow";
+import { values, aboutBody } from "@/data/values";
 
 function getValueIcon(id: string) {
   switch (id) {
@@ -42,7 +43,7 @@ export default function About() {
       className="section-base bg-[#020817] relative overflow-hidden about-sec"
       id="about"
     >
-      {/* Background Aurora component - scoped to overall about section with site theme colors */}
+      {/* Background Aurora component */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-60">
         <Aurora
           colorStops={["#0e1a38", "#1e6b2e", "#4caf62"]}
@@ -50,6 +51,11 @@ export default function About() {
           amplitude={1.2}
           speed={0.5}
         />
+      </div>
+
+      {/* Background Windy Process Flow - full section horizontal span, large icons, low opacity */}
+      <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center opacity-30 overflow-hidden">
+        <WindyProcessFlow />
       </div>
 
       <div className="section-container relative z-10">
@@ -61,22 +67,6 @@ export default function About() {
               className="text-[15px] text-white/[0.48] font-light leading-[1.9] mb-9 [&_strong]:text-white/[0.85] [&_strong]:font-medium"
               dangerouslySetInnerHTML={{ __html: aboutBody }}
             />
-
-            <div className="grid grid-cols-2 gap-2 mt-9">
-              {miniPillars.map((p) => (
-                <div
-                  key={p.id}
-                  className="card-pad bg-[rgba(30,107,46,0.07)] border border-[var(--border-g)] rounded-xl transition-all duration-300 hover:bg-[rgba(26,47,94,0.3)] hover:border-[rgba(26,47,94,0.5)] text-center"
-                >
-                  <div className="font-['Bebas_Neue',sans-serif] text-[34px] text-[var(--green-lt)] leading-none mb-1.5">
-                    {p.number}
-                  </div>
-                  <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-white/[0.45]">
-                    {p.label}
-                  </div>
-                </div>
-              ))}
-            </div>
           </RevealOnScroll>
 
           {/* Right — Values */}
