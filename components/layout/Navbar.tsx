@@ -15,7 +15,7 @@ export default function Navbar() {
   // Intersection Observer for scroll spy active section highlighting
   useEffect(() => {
     // Note: Restore "initiatives" by uncommenting it in the array below if you add the section back.
-    const sectionIds = ["about", /* "initiatives", */ "community", "contact", "newsletter"];
+    const sectionIds = ["about", "events", /* "initiatives", */ "community", "contact", "newsletter"];
     
     const observerOptions = {
       root: null,

@@ -7,7 +7,7 @@ import ImpactBanner from "@/components/sections/ImpactBanner";
  * 1. Uncomment the imports below (referencing the archived locations, or move the files back to components/sections).
  * 2. Uncomment the <Events /> and <Initiatives /> JSX components inside the Home function below.
  */
-// import Events from "@/components/archive/Events";
+import Events from "@/components/sections/Events";
 // import Initiatives from "@/components/archive/Initiatives";
 import PitchCTA from "@/components/sections/PitchCTA";
 import Contact from "@/components/sections/Contact";
@@ -34,11 +34,8 @@ export default function Home() {
       {/* <Marquee /> */}
       <About />
       <ImpactBanner />
-      {/* 
-        * RESTORING EVENTS & INITIATIVES SECTIONS:
-        * Uncomment the tags below to render them again.
-        */}
-      {/* <Events /> */}
+      <Events />
+      {/* <Initiatives /> */}
       {/* <Initiatives /> */}
       <PitchCTA />
       <Contact />

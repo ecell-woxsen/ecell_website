@@ -6,11 +6,7 @@ export interface NavLink {
 
 export const navLinks: NavLink[] = [
   { label: "About", href: "/#about" },
-  /*
-   * TO RESTORE EVENTS & INITIATIVES:
-   * Uncomment the two lines below to add "Events" and "Initiatives" back to the navbar.
-   */
-  // { label: "Events", href: "/events" },
+  { label: "Events", href: "/events" },
   // { label: "Initiatives", href: "/initiatives" },
   { label: "Team", href: "/team" },
   { label: "Community", href: "/community" },
@@ -25,11 +21,7 @@ export const navLinks: NavLink[] = [
 export const footerLinks = {
   quickLinks: [
     { label: "About Us", href: "/#about" },
-    /*
-     * TO RESTORE EVENTS & INITIATIVES:
-     * Uncomment the two lines below to add "Events" and "Initiatives" back to the footer.
-     */
-    // { label: "Events", href: "/events" },
+    { label: "Events", href: "/events" },
     // { label: "Initiatives", href: "/initiatives" },
     { label: "Team", href: "/team" },
   ],
