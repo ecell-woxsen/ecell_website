@@ -22,8 +22,8 @@ export const footerLinks = {
   quickLinks: [
     { label: "About Us", href: "/#about" },
     { label: "Events", href: "/events" },
-    // { label: "Initiatives", href: "/initiatives" },
     { label: "Team", href: "/team" },
+    { label: "Community", href: "/community" },
   ],
   resources: [
     { label: "Submit Your Idea", href: "/submit-idea" },
@@ -31,13 +31,9 @@ export const footerLinks = {
     { label: "Pitch Guidelines", href: "#" },
     { label: "Mentor Network", href: "#" },
   ],
-  connect: [
-    { label: "Contact Us", href: "/#contact" },
-    { label: "Community", href: "/community" },
-    /*
-     * TO RESTORE AFFILIATIONS:
-     * Uncomment the line below to add "Affiliations" back to the footer.
-     */
-    // { label: "Affiliations", href: "/affiliations" },
+  support: [
+    { label: "Get Help", href: "/community" },
+    { label: "FAQs", href: "#" },
+    { label: "Guidelines", href: "#" },
   ],
 };
